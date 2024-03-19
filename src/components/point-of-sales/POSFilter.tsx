@@ -1,0 +1,286 @@
+import { CloseOutlined, DeleteOutlined, TagsOutlined } from "@ant-design/icons";
+import { useCheckboxGroup } from "@refinedev/antd";
+import { HttpError, useApiUrl, useList, useTranslate } from "@refinedev/core";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Collapse,
+  CollapseProps,
+  Drawer,
+  Flex,
+  Grid,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
+import { useState } from "react";
+import { IColorResponse, IProdAttributeResponse } from "../../interfaces";
+import {
+  ColorIcon,
+  MaterialIcon,
+  SizeIcon,
+  SoleIcon,
+  StyleIcon,
+  TradeMarkIcon,
+} from "../icons";
+
+const { Title } = Typography;
+
+type POSFilterProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
+  const t = useTranslate();
+  const breakpoint = Grid.useBreakpoint();
+
+  const { checkboxGroupProps: brandCheckboxGroupProps } = useCheckboxGroup({
+    resource: "brands",
+    optionLabel: "name",
+    optionValue: "id",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const { checkboxGroupProps: materialCheckboxGroupProps } = useCheckboxGroup({
+    resource: "materials",
+    optionLabel: "name",
+    optionValue: "id",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const { checkboxGroupProps: soleCheckboxGroupProps } = useCheckboxGroup({
+    resource: "soles",
+    optionLabel: "name",
+    optionValue: "id",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const { checkboxGroupProps: styleCheckboxGroupProps } = useCheckboxGroup({
+    resource: "styles",
+    optionLabel: "name",
+    optionValue: "id",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const { checkboxGroupProps: tradeMarkCheckboxGroupProps } = useCheckboxGroup({
+    resource: "trade-marks",
+    optionLabel: "name",
+    optionValue: "id",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const { data: colorData } = useList<IColorResponse, HttpError>({
+    resource: "colors",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const colors = colorData?.data ?? [];
+
+  const { data: sizeData } = useList<IProdAttributeResponse, HttpError>({
+    resource: "sizes",
+    pagination: {
+      pageSize: 1000,
+    },
+  });
+
+  const sizes = sizeData?.data ?? [];
+
+  const [selectedColor, setSelectedColor] = useState<IColorResponse>();
+  const [selectedSize, setSelectedSize] = useState<IProdAttributeResponse>();
+
+  const handleColorChange = (color: IColorResponse, checked: boolean) => {
+    setSelectedColor(checked ? color : undefined);
+  };
+
+  const handleSizeChange = (size: IProdAttributeResponse, checked: boolean) => {
+    setSelectedSize(checked ? size : undefined);
+  };
+
+  const items: CollapseProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <span>
+          <TagsOutlined /> {t("brands.brands")}
+        </span>
+      ),
+      children: (
+        <Checkbox.Group
+          {...brandCheckboxGroupProps}
+          style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+        />
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <span>
+          <ColorIcon /> {t("colors.colors")}
+        </span>
+      ),
+      children: (
+        <Space wrap>
+          {colors.length > 0 && (
+            <>
+              {colors.map((color, index) => (
+                <Tag.CheckableTag
+                  key={index}
+                  checked={selectedColor === color}
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50%",
+                    backgroundColor: "#" + color.code,
+                    border:
+                      selectedColor === color
+                        ? "2px solid #fb5231"
+                        : "2px solid transparent",
+                  }}
+                  onChange={(checked) => handleColorChange(color, checked)}
+                />
+              ))}
+            </>
+          )}
+        </Space>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <span>
+          <SizeIcon /> {t("sizes.sizes")}
+        </span>
+      ),
+      children: (
+        <Space wrap>
+          {sizes.length > 0 && (
+            <>
+              {sizes.map((size, index) => (
+                <Tag.CheckableTag
+                  key={index}
+                  checked={selectedSize === size}
+                  style={{
+                    border:
+                      selectedSize === size
+                        ? "1px solid #fb5231"
+                        : "1px solid #000000",
+                    borderRadius: "0",
+                    padding: "6px 12px",
+                  }}
+                  onChange={(checked) => handleSizeChange(size, checked)}
+                >
+                  {size.name}
+                </Tag.CheckableTag>
+              ))}
+            </>
+          )}
+        </Space>
+      ),
+    },
+    {
+      key: "4",
+      label: (
+        <span>
+          <MaterialIcon /> {t("materials.materials")}
+        </span>
+      ),
+      children: (
+        <Checkbox.Group
+          {...materialCheckboxGroupProps}
+          style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+        />
+      ),
+    },
+    {
+      key: "5",
+      label: (
+        <span>
+          <SoleIcon /> {t("soles.soles")}
+        </span>
+      ),
+      children: (
+        <Checkbox.Group
+          {...soleCheckboxGroupProps}
+          style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+        />
+      ),
+    },
+    {
+      key: "6",
+      label: (
+        <span>
+          <StyleIcon /> {t("styles.styles")}
+        </span>
+      ),
+      children: (
+        <Checkbox.Group
+          {...styleCheckboxGroupProps}
+          style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+        />
+      ),
+    },
+    {
+      key: "7",
+      label: (
+        <span>
+          <TradeMarkIcon /> {t("trade-marks.trade-marks")}
+        </span>
+      ),
+      children: (
+        <Checkbox.Group
+          {...tradeMarkCheckboxGroupProps}
+          style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+        />
+      ),
+    },
+  ];
+
+  return (
+    <Drawer
+      width={breakpoint.sm ? "500px" : "100%"}
+      zIndex={1001}
+      onClose={onClose}
+      open={open}
+      style={{ borderTopLeftRadius: "1rem", borderBottomLeftRadius: "1rem" }}
+      closable={false}
+      footer={
+        <Flex align="center" justify="space-between">
+          <Button type="primary" ghost icon={<DeleteOutlined />}>
+            Xoá chọn tất cả
+          </Button>
+          <Space>
+            <Button type="default">Bỏ qua</Button>
+            <Button type="primary">Xong</Button>
+          </Space>
+        </Flex>
+      }
+    >
+      <Row>
+        <Col span={20}>
+          <Title level={4}>Lọc theo thuộc tính sản phẩm</Title>
+        </Col>
+        <Col span={4} style={{ textAlign: "end" }}>
+          <Button type="text" onClick={onClose} icon={<CloseOutlined />} />
+        </Col>
+        <Col span={24}>
+          <Collapse defaultActiveKey={["2", "3"]} ghost items={items} />
+        </Col>
+      </Row>
+    </Drawer>
+  );
+};
