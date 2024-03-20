@@ -68,7 +68,6 @@ export const OrderSteps: React.FC<OrderStepsProps> = ({ record, callBack }) => {
               currentBreakPoints.includes("lg") ? "horizontal" : "vertical"
             }
             current={events.findIndex((el) => el.status === record?.status)}
-            type={currentBreakPoints.includes("lg") ? "navigation" : "default"}
           >
             {events.map((event: IEvent, index: number) => (
               <Steps.Step
@@ -89,8 +88,7 @@ export const OrderSteps: React.FC<OrderStepsProps> = ({ record, callBack }) => {
                       event.date && dayjs(new Date(event.date)).format("LLL")
                     }
                   >
-                    {event.date &&
-                      dayjs(new Date(event.date)).format("DD/MM/YYYY")}
+                    {event.date && dayjs(new Date(event.date)).format("DD/MM")}
                   </Tooltip>
                 }
               />

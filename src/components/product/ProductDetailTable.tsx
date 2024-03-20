@@ -1,6 +1,7 @@
 import { CheckSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import { useCreateMany, useNavigation, useTranslate } from "@refinedev/core";
 import {
+  App,
   Button,
   Card,
   InputNumber,
@@ -10,12 +11,12 @@ import {
   Typography,
   Upload,
   UploadFile,
-  message,
 } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { RcFile } from "antd/es/upload";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
+import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { getBase64 } from "../../helpers/image";
 import { productDetailToRequest } from "../../helpers/mapper";
@@ -26,7 +27,6 @@ import {
   IUserSelected,
 } from "../../interfaces";
 import ColumnActions from "../table/ColumnActions";
-import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 
 const { Text } = Typography;
 
@@ -59,7 +59,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const handleSubmit = async () => {
     const convertedPayload: IProductDetailRequest[] =
@@ -134,17 +134,11 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
   const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      messageApi.open({
-        type: "error",
-        content: "You can only upload JPG/PNG file!",
-      });
+      message.error(t("image.error.invalid"));
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      messageApi.open({
-        type: "error",
-        content: "Image must smaller than 2MB!",
-      });
+      message.error(t("image.error.exceed"));
     }
     return isJpgOrPng && isLt2M;
   };
@@ -201,6 +195,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
                 price,
                 quantity,
                 status,
+                saleCount,
               } = updatedProductDetails[index];
               updatedProductDetails[index] = {
                 id,
@@ -216,6 +211,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
                 price,
                 quantity,
                 status,
+                saleCount,
               };
             } else {
               updatedProductDetails[index] = {
@@ -231,6 +227,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
                 image: "",
                 price: 0,
                 quantity: 0,
+                saleCount: 0,
                 status: "ACTIVE",
               };
             }
@@ -408,7 +405,6 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
         </Button>
       }
     >
-      {contextHolder}
       <Table
         pagination={{
           ...pagination,

@@ -1,22 +1,12 @@
-import { getValueFromEvent } from "@refinedev/antd";
 import { useTranslate } from "@refinedev/core";
-import {
-  Avatar,
-  Form,
-  FormProps,
-  Space,
-  Spin,
-  Typography,
-  Upload,
-  message,
-} from "antd";
+import { App, Avatar, Space, Spin, Typography, Upload } from "antd";
 import {
   RcFile,
   UploadChangeParam,
   UploadFile,
   UploadProps,
 } from "antd/es/upload/interface";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getBase64Image } from "../../helpers/image";
 import { styles } from "./style";
 
@@ -32,7 +22,7 @@ const ImageUploadTwo: React.FC<IImageUploadTwoProps> = ({
   setImageUrl,
 }) => {
   const t = useTranslate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const [loadingImage, setLoadingImage] = useState(false);
 
   const handleChange: UploadProps["onChange"] = (
@@ -53,24 +43,17 @@ const ImageUploadTwo: React.FC<IImageUploadTwoProps> = ({
   const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      messageApi.open({
-        type: "error",
-        content: t("image.error.invalid"),
-      });
+      message.error(t("image.error.invalid"));
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      messageApi.open({
-        type: "error",
-        content: t("image.error.exceed"),
-      });
+      message.error(t("image.error.exceed"));
     }
     return isJpgOrPng && isLt2M;
   };
 
   return (
     <Spin spinning={loadingImage}>
-      {contextHolder}
       <Upload.Dragger
         name="file"
         beforeUpload={beforeUpload}

@@ -242,12 +242,12 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
           const value = maxPromotionProductDetail.promotion.value;
           return (
             <Row style={{ display: "flex", alignItems: "center" }}>
-              <Col span={4}>
-                <Badge.Ribbon text={`${value} %`} color="red">
+              <Col span={6}>
+                <Badge.Ribbon text={`${value}%`} color="red" placement="start">
                   <Avatar shape="square" size={74} src={image} />
                 </Badge.Ribbon>
               </Col>
-              <Col span={20}>
+              <Col span={18}>
                 <Text style={{ wordBreak: "inherit" }}>
                   {product.name} [{size.name} - {color.name}]
                 </Text>
@@ -257,10 +257,10 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
         } else {
           return (
             <Row style={{ display: "flex", alignItems: "center" }}>
-              <Col span={4}>
+              <Col span={6}>
                 <Avatar shape="square" size={74} src={image} />
               </Col>
-              <Col span={20}>
+              <Col span={18}>
                 <Text style={{ wordBreak: "inherit" }}>
                   {product.name} [{size.name} - {color.name}]
                 </Text>

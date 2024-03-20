@@ -1,6 +1,7 @@
 import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useTranslate, useUpdate } from "@refinedev/core";
 import {
+  App,
   Avatar,
   Button,
   Form,
@@ -12,7 +13,6 @@ import {
   Table,
   Tooltip,
   Typography,
-  message,
 } from "antd";
 import { ColumnsType } from "antd/es/table";
 import _, { debounce, isNumber } from "lodash";
@@ -48,7 +48,7 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
   showCancel,
 }) => {
   const t = useTranslate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
 
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdate();
 
@@ -244,17 +244,11 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
     if (!isNumber(value) || value <= 0) return;
 
     if (value > record.productDetail.quantity) {
-      return messageApi.open({
-        type: "info",
-        content: "Rất tiếc, đã đạt giới hạn số lượng sản phẩm",
-      });
+      message.info(t("products.error.limitReached"));
     }
 
     if (value > 5) {
-      return messageApi.open({
-        type: "info",
-        content: "Bạn chỉ có thể mua tối đa 5 sản phẩm",
-      });
+      message.info(t("products.error.purchaseLimit"));
     }
 
     if (value !== record.quantity) {
@@ -445,7 +439,6 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
       okText={t("actions.submitChanges")}
       onOk={handleOk}
     >
-      {contextHolder}
       <div className="row">
         <div className="col-12">
           <div className="table-content table-responsive cart-table-content">

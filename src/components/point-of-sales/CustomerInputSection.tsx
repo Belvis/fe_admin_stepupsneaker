@@ -10,6 +10,7 @@ import {
   message,
   Spin,
   theme,
+  App,
 } from "antd";
 import { SearchOutlined, PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { ICustomerResponse, IOption, IOrderResponse } from "../../interfaces";
@@ -37,7 +38,7 @@ type CustomerInputSectionProps = {
 
 const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
   const t = useTranslate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { mutate, isLoading } = useUpdate();
   const { refetchOrder } = useContext(POSContext);
   const { mode } = useContext(ColorModeContext);
@@ -95,20 +96,11 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
       },
       {
         onError: (error, variables, context) => {
-          messageApi.open({
-            type: "error",
-            content:
-              t("orders.notification.customer.edit.error") +
-              " " +
-              error.message,
-          });
+          message.error(t("orders.notification.customer.edit.error"));
         },
         onSuccess: (data, variables, context) => {
           refetchOrder();
-          messageApi.open({
-            type: "success",
-            content: t("orders.notification.customer.edit.success"),
-          });
+          message.success(t("orders.notification.customer.edit.success"));
         },
       }
     );
@@ -173,7 +165,6 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
 
   return (
     <Spin spinning={isLoading} style={{ width: "100%" }}>
-      {contextHolder}
       {order.customer == null && order.customer == undefined
         ? customerSection
         : customerInfoSection}

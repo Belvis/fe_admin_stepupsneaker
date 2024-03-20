@@ -1,6 +1,7 @@
 import { useTranslate, useUpdate } from "@refinedev/core";
 import { ColSpanType, IOrderResponse } from "../../interfaces";
 import {
+  App,
   Button,
   Card,
   Col,
@@ -16,7 +17,7 @@ import ShoppingCartHeader from "./ShoppingCartHeader";
 import { OrderItem } from "./OrderItem";
 import { debounce } from "lodash";
 import { NumberField } from "@refinedev/antd";
-import { PlusSquareFilled } from "@ant-design/icons";
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import { DiscountModal } from "./DiscountModal";
 import { useContext, useState } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
@@ -36,8 +37,8 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
 }) => {
   const t = useTranslate();
   const { token } = useToken();
-  const { mutate: mutateUpdate } = useUpdate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { mutate: mutateUpdate, isLoading } = useUpdate();
+  const { message } = App.useApp();
 
   const { refetchOrder } = useContext(POSContext);
   const { shippingMoney, discount } = useContext(DeliverySalesContext);
@@ -68,7 +69,7 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
     if (value !== order.note)
       mutateUpdate(
         {
-          resource: "orders",
+          resource: "orders/check-out",
           values: {
             ...order,
             customer: order.customer ? order.customer.id : null,
@@ -86,33 +87,33 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
         },
         {
           onError: (error, variables, context) => {
-            messageApi.open({
-              type: "error",
-              content: t("orders.notification.note.edit.error"),
-            });
+            message.error(t("orders.notification.note.edit.error"));
           },
           onSuccess: (data, variables, context) => {
             refetchOrder();
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.note.edit.success"),
-            });
+            message.success(t("orders.notification.note.edit.success"));
           },
         }
       );
   }
 
   function editOrderShippingMoney(value: string): void {
-    if (value !== order.shippingMoney.toString())
+    const shippingMoney = Number(value);
+
+    if (isNaN(shippingMoney)) {
+      message.error(t("orders.notification.shippingMoney.edit.invalid"));
+      return;
+    }
+    if (shippingMoney !== order.shippingMoney)
       mutateUpdate(
         {
-          resource: "orders",
+          resource: "orders/check-out",
           values: {
             ...order,
             customer: order.customer ? order.customer.id : null,
             employee: order.employee ? order.employee.id : null,
             voucher: order.voucher ? order.voucher.id : null,
-            shippingMoney: value,
+            shippingMoney: shippingMoney,
           },
           id: order.id,
           successNotification: () => {
@@ -124,21 +125,50 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
         },
         {
           onError: (error, variables, context) => {
-            messageApi.open({
-              type: "error",
-              content: t("orders.notification.note.edit.error"),
-            });
+            message.error(t("orders.notification.shippingMoney.edit.error"));
           },
           onSuccess: (data, variables, context) => {
             refetchOrder();
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.note.edit.success"),
-            });
+            message.success(
+              t("orders.notification.shippingMoney.edit.success")
+            );
           },
         }
       );
   }
+
+  const removeOrderVoucher = () => {
+    mutateUpdate(
+      {
+        resource: "orders/check-out",
+        values: {
+          ...order,
+          employee: order.employee ? order.employee.id : "",
+          customer: order.customer ? order.customer.id : "",
+          address: order.address ? order.address.id : "",
+          voucher: "",
+        },
+        id: order.id,
+        successNotification: () => {
+          return false;
+        },
+        errorNotification: () => {
+          return false;
+        },
+      },
+      {
+        onError: (error, variables, context) => {
+          message.error(
+            t("orders.notification.voucher.edit.error") + error.message
+          );
+        },
+        onSuccess: (data, variables, context) => {
+          refetchOrder();
+          message.success(t("orders.notification.voucher.edit.success"));
+        },
+      }
+    );
+  };
 
   return (
     <Col
@@ -149,13 +179,12 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
         justifyContent: "space-between",
       }}
     >
-      {contextHolder}
       <Space
         direction="vertical"
         style={{
           overflow: "auto",
           width: "100%",
-          maxHeight: "350px",
+          maxHeight: "215px",
         }}
       >
         <ShoppingCartHeader />
@@ -163,7 +192,7 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
           <OrderItem key={orderItem.id} orderDetail={orderItem} count={index} />
         ))}
       </Space>
-      <Card style={{ background: token.colorPrimaryBg }}>
+      <Card style={{ background: token.colorPrimaryBg }} loading={isLoading}>
         <Row gutter={[16, 24]} style={{ height: "100%" }}>
           <Col span={14}>
             <Space>
@@ -200,25 +229,38 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
               <Flex gap="middle" justify="space-between" align="center">
                 <Space size="large" wrap>
                   <Text>{t("orders.tab.discount")}</Text>
-                  <Tooltip
-                    title={
-                      !order.customer
-                        ? t("orders.validation.discount.retailCustomer")
-                        : ""
-                    }
-                  >
+                  {!order.voucher ? (
+                    <Tooltip
+                      title={
+                        !order.customer
+                          ? t("orders.validation.discount.retailCustomer")
+                          : ""
+                      }
+                    >
+                      <Button
+                        disabled={!order.customer}
+                        type="text"
+                        size="small"
+                        icon={
+                          <PlusSquareFilled
+                            style={{ color: token.colorPrimary }}
+                          />
+                        }
+                        onClick={showDiscountModal}
+                      />
+                    </Tooltip>
+                  ) : (
                     <Button
-                      disabled={!order.customer}
                       type="text"
                       size="small"
                       icon={
-                        <PlusSquareFilled
+                        <MinusSquareFilled
                           style={{ color: token.colorPrimary }}
                         />
                       }
-                      onClick={showDiscountModal}
+                      onClick={removeOrderVoucher}
                     />
-                  </Tooltip>
+                  )}
                 </Space>
                 <Title level={5}>
                   <NumberField

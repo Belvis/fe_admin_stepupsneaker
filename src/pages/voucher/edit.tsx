@@ -238,6 +238,9 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
                       showTime={{ format: "HH:mm:ss" }}
                       format="YYYY-MM-DD HH:mm"
                       className="w-100"
+                      disabledDate={(current) =>
+                        dayjs(current).isBefore(dayjs().startOf("day"))
+                      }
                       onChange={(dates) => {
                         if (dates && dates.length === 2) {
                           const [start, end] = dates;
@@ -258,9 +261,6 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
                           }
                         }
                       }}
-                      disabledDate={(current) =>
-                        dayjs(current).isBefore(dayjs().startOf("day"))
-                      }
                     />
                   </Form.Item>
                   <Form.Item

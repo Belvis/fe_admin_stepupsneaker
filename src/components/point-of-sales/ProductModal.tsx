@@ -14,6 +14,7 @@ import {
   Tag,
   Typography,
   message,
+  App,
 } from "antd";
 
 import { NumberField } from "@refinedev/antd";
@@ -42,34 +43,25 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   callBack,
 }) => {
   const t = useTranslate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
 
   const [qty, setQty] = useState(1);
 
   const decreaseQty = () => {
     if (qty <= 1) {
-      return messageApi.open({
-        type: "error",
-        content: "Đã đạt số lượng nhỏ nhất",
-      });
+      message.error(t("products.error.minReached"));
     }
     setQty(qty - 1);
   };
 
   const increaseQty = () => {
     if (qty >= 5) {
-      return messageApi.open({
-        type: "error",
-        content: "Chỉ có thể mua tối da 5 sản phẩm",
-      });
+      message.error(t("products.error.purchaseLimit"));
     }
 
     if (qty >= productStock) {
-      return messageApi.open({
-        type: "error",
-        content: "Rất tiếc, đã đạt giới hạn số lượng sản phẩm",
-      });
+      message.error(t("products.error.limitReached"));
     }
     setQty(qty + 1);
   };
@@ -123,26 +115,17 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         },
         {
           onError: (error, variables, context) => {
-            messageApi.open({
-              type: "error",
-              content: error.message,
-            });
+            message.error(t("common.error") + error.message);
           },
           onSuccess: (data, variables, context) => {
             close();
             callBack();
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.product.add.success"),
-            });
+            message.success(t("common.update.success"));
           },
         }
       );
     } else {
-      messageApi.open({
-        type: "error",
-        content: t("orders.notification.product.add.notFound"),
-      });
+      message.error(t("orders.notification.product.add.notFound"));
     }
   };
 
@@ -181,7 +164,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({
       zIndex={1001}
       footer={<></>}
     >
-      {contextHolder}
       <Row gutter={[16, 24]}>
         <Col span={12}>
           <Image src={productClient.image[0]} />

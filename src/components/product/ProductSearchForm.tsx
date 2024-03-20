@@ -130,6 +130,12 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
       formProps={formProps}
       fields={[
         {
+          label: "",
+          name: "q",
+          type: "input",
+          placeholder: t(`productDetails.filters.search.placeholder`),
+        },
+        {
           label: t("productDetails.fields.color"),
           placeholder: t(`productDetails.filters.color.placeholder`),
           name: "color",

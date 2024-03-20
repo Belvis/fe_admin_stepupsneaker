@@ -1,23 +1,9 @@
-import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
-import { useList, useTranslate, useUpdate } from "@refinedev/core";
-import {
-  AutoComplete,
-  Avatar,
-  Button,
-  Col,
-  Flex,
-  Input,
-  Row,
-  Spin,
-  Typography,
-  message,
-  theme,
-} from "antd";
-import { debounce } from "lodash";
-import { useContext, useState } from "react";
+import { SearchOutlined } from "@ant-design/icons";
+import { useTranslate } from "@refinedev/core";
+import { App, AutoComplete, Input, Spin, theme } from "antd";
+import { useContext } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
-import { POSContext } from "../../contexts/point-of-sales";
-import { IEmployeeResponse, IOption, IOrderResponse } from "../../interfaces";
+import { IOrderResponse } from "../../interfaces";
 import {
   CloseButtonWrapper,
   CustomerInfor,
@@ -28,78 +14,15 @@ import {
 
 const { useToken } = theme;
 
-const { Text } = Typography;
 type EmployeeInputSectionProps = {
   order: IOrderResponse;
 };
 
 const EmployeeSection: React.FC<EmployeeInputSectionProps> = ({ order }) => {
   const t = useTranslate();
-  const [messageApi, contextHolder] = message.useMessage();
-  const { mutate, isLoading } = useUpdate();
-  const { refetchOrder } = useContext(POSContext);
+  const { message } = App.useApp();
   const { mode } = useContext(ColorModeContext);
   const { token } = useToken();
-
-  const [employeeSearch, setEmployeeSearch] = useState<string>("");
-  const [employeeOptions, setEmployeeOptions] = useState<IOption[]>([]);
-
-  const { refetch } = useList<IEmployeeResponse>({
-    resource: "employees",
-    config: {
-      filters: [{ field: "q", operator: "contains", value: employeeSearch }],
-    },
-    pagination: {
-      pageSize: 1000,
-    },
-    queryOptions: {
-      enabled: employeeSearch !== "",
-      onSuccess: (data) => {
-        const employeeOptions = data.data.map((item) =>
-          renderItem(item.fullName, item.phoneNumber, item.image, item)
-        );
-        if (employeeOptions.length > 0) {
-          setEmployeeOptions(employeeOptions);
-        }
-      },
-    },
-  });
-
-  function editOrderEmployee(value: string | null): void {
-    mutate(
-      {
-        resource: "orders",
-        values: {
-          ...order,
-          employee: value,
-          customer: order.customer ? order.customer.id : null,
-          voucher: order.voucher ? order.voucher.id : null,
-        },
-        id: order.id,
-        successNotification: () => {
-          return false;
-        },
-        errorNotification: () => {
-          return false;
-        },
-      },
-      {
-        onError: (error, variables, context) => {
-          messageApi.open({
-            type: "error",
-            content: t("orders.notification.employee.edit.error"),
-          });
-        },
-        onSuccess: (data, variables, context) => {
-          refetchOrder();
-          messageApi.open({
-            type: "success",
-            content: t("orders.notification.employee.edit.siccess"),
-          });
-        },
-      }
-    );
-  }
 
   const employeeSection = (
     <>
@@ -107,12 +30,7 @@ const EmployeeSection: React.FC<EmployeeInputSectionProps> = ({ order }) => {
         style={{
           width: "100%",
         }}
-        options={employeeOptions}
-        onSelect={(_, option: any) => {
-          editOrderEmployee(option.employee.id);
-        }}
         filterOption={false}
-        onSearch={debounce((value: string) => setEmployeeSearch(value), 300)}
       >
         <Input
           placeholder={t("search.placeholder.employees")}
@@ -130,27 +48,12 @@ const EmployeeSection: React.FC<EmployeeInputSectionProps> = ({ order }) => {
           {order.employee?.fullName} - {order.employee.phoneNumber}
         </CustomerName>
       </TextContainer>
-      <CloseButtonWrapper>
-        <Button
-          shape="circle"
-          type="link"
-          icon={
-            <CloseOutlined
-              style={{
-                fontSize: token.fontSize,
-                color: mode == "light" ? token.colorBgMask : "#ffffff",
-              }}
-            />
-          }
-          onClick={() => editOrderEmployee(null)}
-        />
-      </CloseButtonWrapper>
+      <CloseButtonWrapper></CloseButtonWrapper>
     </CustomerInfor>
   );
 
   return (
-    <Spin spinning={isLoading} style={{ width: "100%" }}>
-      {contextHolder}
+    <Spin style={{ width: "100%" }} spinning={false}>
       {order.employee == null && order.employee == undefined
         ? employeeSection
         : employeeInfoSection}
@@ -159,26 +62,3 @@ const EmployeeSection: React.FC<EmployeeInputSectionProps> = ({ order }) => {
 };
 
 export default EmployeeSection;
-
-const renderItem = (
-  name: string,
-  phoneNumber: string,
-  imageUrl: string,
-  employee: IEmployeeResponse
-) => ({
-  value: name,
-  label: (
-    <Row style={{ display: "flex", alignItems: "center" }}>
-      <Col span={6}>
-        <Avatar size={32} src={imageUrl} style={{ minWidth: "32px" }} />
-      </Col>
-      <Col span={18}>
-        <Flex vertical>
-          <Text>{name}</Text>
-          <Text>{phoneNumber}</Text>
-        </Flex>
-      </Col>
-    </Row>
-  ),
-  employee: employee,
-});

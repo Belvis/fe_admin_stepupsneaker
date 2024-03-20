@@ -1,6 +1,7 @@
 import { getValueFromEvent } from "@refinedev/antd";
 import { useTranslate } from "@refinedev/core";
 import {
+  App,
   Avatar,
   Form,
   FormProps,
@@ -8,7 +9,6 @@ import {
   Spin,
   Typography,
   Upload,
-  message,
 } from "antd";
 import {
   RcFile,
@@ -28,7 +28,7 @@ interface IImageUploadProps {
 
 const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
   const t = useTranslate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const [loadingImage, setLoadingImage] = useState(false);
   const imageUrl = Form.useWatch("image", formProps.form);
 
@@ -50,24 +50,17 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
   const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      messageApi.open({
-        type: "error",
-        content: t("image.error.invalid"),
-      });
+      message.error(t("image.error.invalid"));
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      messageApi.open({
-        type: "error",
-        content: t("image.error.exceed"),
-      });
+      message.error(t("image.error.exceed"));
     }
     return isJpgOrPng && isLt2M;
   };
 
   return (
     <Spin spinning={loadingImage}>
-      {contextHolder}
       <Form.Item
         name="image"
         valuePropName="file"

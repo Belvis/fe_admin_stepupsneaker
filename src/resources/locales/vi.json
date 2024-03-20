@@ -372,6 +372,9 @@
         "eligible": "Danh sách khách hàng đã được áp dụng cho Phiếu giảm giá",
         "ineligible": "Danh sách khách hàng chưa được áp dụng cho Phiếu giảm giá"
       }
+    },
+    "validation": {
+      "ineligible": "Đơn hàng chưa đủ điều kiện để được áp dụng giảm giá"
     }
   },
   "voucherHistories": {
@@ -655,6 +658,15 @@
         "email": "E-mail",
         "fullName": "Tên người nhận hàng",
         "reduceMoney": "Tiền được giảm"
+      },
+      "orderStatuses": {
+        "pending": "Đang chuẩn bị đơn hàng",
+        "ready": "Đơn hàng đã sẵn sàng",
+        "on the way": "Đơn hàng đang trên đường tới",
+        "delivered": "Đơn hàng được giao",
+        "cancelled": "Đơn hàng bị hủy",
+        "undefined": "Unknown",
+        "null": "Unknown"
       }
     },
     "recentOrders": {
@@ -790,63 +802,70 @@
       "product": {
         "add": {
           "success": "Thêm sản phẩm vào giỏ hàng thành công.",
-          "error": "Thêm sản phẩm vào giỏ hàng thất bại.",
+          "error": "Thêm sản phẩm vào giỏ hàng thất bại: ",
           "notFound": "Không tìm thấy sản phẩm phù hợp."
         },
         "edit": {
           "success": "Chỉnh sửa đơn hàng thành công.",
-          "error": "Chỉnh sửa đơn hàng thất bại."
+          "error": "Chỉnh sửa đơn hàng thất bại: "
         }
       },
       "employee": {
         "edit": {
           "success": "Chỉnh sửa nhân viên trong đơn hàng thành công.",
-          "error": "Chỉnh sửa nhân viên trong đơn hàng thất bại."
+          "error": "Chỉnh sửa nhân viên trong đơn hàng thất bại: "
         }
       },
       "customer": {
         "edit": {
           "success": "Chỉnh sửa khách hàng trong đơn hàng thành công.",
-          "error": "Chỉnh sửa khách hàng trong đơn hàng thất bại."
+          "error": "Chỉnh sửa khách hàng trong đơn hàng thất bại: "
         }
       },
       "note": {
         "edit": {
           "success": "Chỉnh sửa ghi chú đơn hàng thành công.",
-          "error": "Chỉnh sửa ghi chú đơn hàng thất bại."
+          "error": "Chỉnh sửa ghi chú đơn hàng thất bại: "
         }
       },
       "shippingMoney": {
         "edit": {
           "success": "Chỉnh sửa phí giao hàng thành công.",
-          "error": "Chỉnh sửa phí giao hàng thất bại."
+          "error": "Chỉnh sửa phí giao hàng thất bại: ",
+          "invalid": "Giá trị không hợp lệ"
         }
       },
       "voucher": {
         "edit": {
           "success": "Chỉnh sửa giảm giá đơn hàng thành công.",
-          "error": "Chỉnh sửa giảm giá đơn hàng thất bại.",
+          "error": "Chỉnh sửa giảm giá đơn hàng thất bại: ",
           "notFound": "Vui lòng chọn giảm giá trước."
         }
       },
       "orderDetail": {
         "remove": {
           "success": "Xoá sản phẩm khỏi đơn hàng thành công.",
-          "error": "Xoá sản phẩm khỏi đơn hàng thất bại."
+          "error": "Xoá sản phẩm khỏi đơn hàng thất bại: "
         }
       },
       "tab": {
         "add": {
           "success": "Thêm đơn hàng mới thành công.",
-          "error": "Thêm đơn hàng mới thất bại."
+          "error": "Thêm đơn hàng mới thất bại: "
         },
         "remove": {
           "success": "Xoá đơn hàng thành công.",
-          "error": "Xoá đơn hàng thất bại."
+          "error": "Xoá đơn hàng thất bại: "
         },
         "advancedAdd": {
           "error": "Vui lòng thêm đơn hàng trước"
+        },
+        "checkoutDrawer": {
+          "error": "Khách hàng thanh toán không được nhỏ hơn Khách cần trả."
         }
+      },
+      "order": {
+        "error": "Cập nhật đơn hàng th"
       }
     },
     "modal": {
@@ -857,6 +876,16 @@
       "discount": {
         "retailCustomer": "Khách lẻ không thể sử dụng giảm giá."
       }
+    }
+  },
+  "orderDetails": {
+    "orderDetails": "Chi tiết đơn hàng",
+    "titles": {},
+    "fields": {
+      "products": "Sản phẩm",
+      "qty": "SL",
+      "price": "Đơn giá",
+      "totalPrice": "Thành tiền"
     }
   },
   "payments": {
@@ -960,6 +989,11 @@
         "label": "Trạng thái",
         "placeholder": "Lọc theo trạng thái"
       }
+    },
+    "error": {
+      "limitReached": "Rất tiếc, đã đạt đến giới hạn số lượng sản phẩm",
+      "purchaseLimit": "Bạn chỉ có thể mua tối đa 5 sản phẩm",
+      "minReached": "Đã đạt số lượng nhỏ nhất"
     }
   },
   "productDetails": {
@@ -1145,7 +1179,12 @@
   },
   "common": {
     "maxLength": "Tối đa {{length}} ký tự",
-    "rowSelection": "{{count}} mục đã được chọn"
+    "rowSelection": "{{count}} mục đã được chọn",
+    "copied": "Đã copy vào bộ nhớ đệm",
+    "update": {
+      "success": "Cập nhật hoàn tất"
+    },
+    "error": "Đã có lỗi xảy ra: "
   },
   "image": {
     "error": {

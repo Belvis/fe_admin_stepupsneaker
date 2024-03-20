@@ -11,7 +11,7 @@ import {
   useList,
   useTranslate,
 } from "@refinedev/core";
-import { AutoComplete, Button, Input, Space, Spin, Tabs, message } from "antd";
+import { App, AutoComplete, Button, Input, Space, Spin, Tabs } from "antd";
 import { debounce } from "lodash";
 import { useContext, useEffect, useState } from "react";
 import { dataProvider } from "../../api/dataProvider";
@@ -28,7 +28,7 @@ export const POSTab: React.FC = () => {
   const t = useTranslate();
   const API_URL = useApiUrl();
   const { getOne } = dataProvider(API_URL);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const {
     productShow,
     setSelectedProduct,
@@ -128,19 +128,12 @@ export const POSTab: React.FC = () => {
       },
       {
         onError: (error, variables, context) => {
-          messageApi.open({
-            type: "error",
-            content:
-              t("orders.notification.tab.add.error") + " " + error.message,
-          });
+          message.error(t("orders.notification.tab.add.error") + error.message);
         },
         onSuccess: (data, variables, context) => {
           const id = data.data?.id;
           setActiveKey(id as string);
-          messageApi.open({
-            type: "success",
-            content: t("orders.notification.tab.add.success"),
-          });
+          message.success(t("orders.notification.tab.add.success"));
         },
       }
     );
@@ -166,11 +159,7 @@ export const POSTab: React.FC = () => {
       },
       {
         onError: (error, variables, context) => {
-          messageApi.open({
-            type: "error",
-            content:
-              t("orders.notification.tab.add.error") + " " + error.message,
-          });
+          message.error(t("orders.notification.tab.add.error") + error.message);
         },
         onSuccess: (data, variables, context) => {
           if (lastIndex == -1 && items.length == 1) {
@@ -178,11 +167,8 @@ export const POSTab: React.FC = () => {
             setActiveKey("1");
           } else {
             setActiveKey(items[lastIndex].key);
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.tab.remove.success"),
-            });
           }
+          message.success(t("orders.notification.tab.add.success"));
         },
       }
     );
@@ -190,10 +176,7 @@ export const POSTab: React.FC = () => {
 
   const handleAdvancedAddShow = () => {
     if (!activeKey || activeKey == "1") {
-      messageApi.open({
-        type: "error",
-        content: t("orders.notification.tab.advancedAdd.error"),
-      });
+      message.error(t("orders.notification.tab.add.advancedAdd.error"));
     } else {
       advancedAddShow();
     }
@@ -201,10 +184,7 @@ export const POSTab: React.FC = () => {
 
   const handleScanShow = () => {
     if (!activeKey || activeKey == "1") {
-      messageApi.open({
-        type: "error",
-        content: t("orders.notification.tab.advancedAdd.error"),
-      });
+      message.error(t("orders.notification.tab.add.advancedAdd.error"));
     } else {
       scanShow();
     }
@@ -257,7 +237,6 @@ export const POSTab: React.FC = () => {
     <Spin
       spinning={isLoadingOrder || isLoadingOrderCreate || isLoadingOrderDelete}
     >
-      {contextHolder}
       <Tabs
         className="h-100"
         tabBarExtraContent={operations}

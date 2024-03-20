@@ -1,6 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { useDelete, useTranslate, useUpdate } from "@refinedev/core";
 import {
+  App,
   Avatar,
   Button,
   Card,
@@ -18,6 +19,7 @@ import { IOrderDetailResponse } from "../../interfaces";
 import { orderDetailToRequest } from "../../helpers/mapper";
 import { POSContext } from "../../contexts/point-of-sales";
 import { useContext } from "react";
+import { getDiscountPrice } from "../../helpers/money";
 const { useToken } = theme;
 const { Text } = Typography;
 
@@ -30,11 +32,14 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
   const t = useTranslate();
   const { token } = useToken();
 
-  const [messageApi, contextHolder] = message.useMessage();
+  console.log(orderDetail);
+
+  const { message } = App.useApp();
+
   const { mutate } = useDelete();
   const { mutate: updateQuantity } = useUpdate();
 
-  const { refetchOrder } = useContext(POSContext);
+  const { refetchOrder, activeKey } = useContext(POSContext);
 
   function handleDelete() {
     mutate(
@@ -50,22 +55,15 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
       },
       {
         onError: (error, variables, context) => {
-          messageApi.open({
-            type: "error",
-            content:
-              t("orders.notification.orderDetail.remove.error") +
+          message.error(
+            t("orders.notification.orderDetail.remove.error") +
               " " +
-              error.message,
-          });
+              error.message
+          );
         },
         onSuccess: (data, variables, context) => {
-          messageApi
-            .open({
-              type: "success",
-              content: t("orders.notification.orderDetail.remove.success"),
-              duration: 0.2,
-            })
-            .then(() => refetchOrder());
+          refetchOrder();
+          message.success(t("orders.notification.orderDetail.remove.success"));
         },
       }
     );
@@ -77,21 +75,17 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
   const handleQuantityChange = (value: number | null) => {
     if (isNumber(value) && value > 0) {
       if (value > orderDetail.productDetail.quantity) {
-        return messageApi.open({
-          type: "info",
-          content: "Rất tiếc, đã đạt giới hạn số lượng sản phẩm",
-        });
+        return message.info(t("products.error.limitReached"));
       }
 
       if (value > 5) {
-        return messageApi.open({
-          type: "info",
-          content: "Bạn chỉ có thể mua tối da 5 sản phẩm",
-        });
+        return message.info(t("products.error.purchaseLimit"));
       }
 
       if (value !== orderDetail.quantity) {
-        const payLoad = orderDetailToRequest([orderDetail])[0];
+        console.log("ranhere");
+
+        const payLoad = orderDetailToRequest([orderDetail], activeKey)[0];
         updateQuantity(
           {
             resource: "order-details",
@@ -105,16 +99,10 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
           },
           {
             onError: (error, variables, context) => {
-              messageApi.open({
-                type: "error",
-                content: error.message,
-              });
+              message.error(t("common.error") + error.message);
             },
             onSuccess: (data, variables, context) => {
-              messageApi.open({
-                type: "success",
-                content: "Cập nhật đơn hàng thành công",
-              });
+              message.success(t("common.update.success"));
               refetchOrder();
             },
           }
@@ -122,6 +110,28 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
       }
     }
   };
+
+  const promotionProductDetailsActive = (
+    productDetail.promotionProductDetails ?? []
+  ).filter((productDetail) => productDetail.promotion.status == "ACTIVE");
+
+  const maxPromotionProductDetail = promotionProductDetailsActive.reduce(
+    (maxProduct, currentProduct) => {
+      return currentProduct.promotion.value > maxProduct.promotion.value
+        ? currentProduct
+        : maxProduct;
+    },
+    promotionProductDetailsActive[0]
+  );
+
+  const discount =
+    promotionProductDetailsActive.length > 0
+      ? maxPromotionProductDetail.promotion.value
+      : 0;
+
+  const discountedPrice = getDiscountPrice(productDetail.price, discount);
+  const finalProductPrice = +(productDetail.price * 1);
+  const finalDiscountedPrice = +((discountedPrice ?? discount) * 1);
 
   return (
     <Card
@@ -131,12 +141,11 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
       }}
       className="order-items"
     >
-      {contextHolder}
       <Row align="middle" justify="center">
-        <Col span={2}>
+        <Col span={1}>
           <Text>{count + 1}</Text>
         </Col>
-        <Col span={8}>
+        <Col span={9}>
           <Flex gap={15}>
             <Avatar
               shape="square"
@@ -145,16 +154,20 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
             />
             <Flex vertical>
               <Text strong>{product.name}</Text>
-              <Text>Kích cỡ: {size.name}</Text>
-              <Text>Màu sắc: {color.name}</Text>
+              <Text>
+                {t("products.fields.size")}: {size.name}
+              </Text>
+              <Text>
+                {t("products.fields.color")}: {color.name}
+              </Text>
             </Flex>
           </Flex>
         </Col>
         <Col span={3}>
           <InputNumber
             min={1}
-            className="order-tab-quantity"
-            bordered={false}
+            className="order-tab-quantity text-center"
+            variant="borderless"
             style={{
               width: "100%",
               borderBottom: `1px solid ${token.colorPrimary}`,
@@ -167,19 +180,23 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
             )}
           />
         </Col>
-        <Col span={4} style={{ textAlign: "end" }}>
+        <Col span={4} className="text-end">
           <Text>
             <NumberField
               options={{
                 currency: "VND",
                 style: "currency",
               }}
-              value={price}
+              value={
+                discountedPrice !== null
+                  ? finalDiscountedPrice
+                  : finalProductPrice
+              }
               locale={"vi"}
             />
           </Text>
         </Col>
-        <Col span={4} style={{ textAlign: "end" }}>
+        <Col span={4} className="text-end">
           <Text>
             <NumberField
               options={{
@@ -191,7 +208,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
             />
           </Text>
         </Col>
-        <Col span={3} style={{ textAlign: "center" }}>
+        <Col span={3} className="text-end">
           <Button
             shape="circle"
             type="text"

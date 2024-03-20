@@ -51,12 +51,13 @@ export const productDetailToRequest = (
 };
 
 export const orderDetailToRequest = (
-  orderDetails: IOrderDetailResponse[] = []
+  orderDetails: IOrderDetailResponse[] = [],
+  orderId: string
 ): IOrderDetailRequest[] => {
   return orderDetails.map(
     ({ id, order, productDetail, quantity, price, totalPrice, status }) => ({
       id,
-      order: order.id,
+      order: orderId,
       productDetail: productDetail.id,
       quantity,
       price,

@@ -11,6 +11,7 @@ import OverviewTab from "../../components/dashboard/OverViewTab";
 import { OrderTimeline } from "../../components/dashboard/OrderTimeline";
 import { RecentOrders } from "../../components/dashboard/RecentOrders";
 import { TrendingMenu } from "../../components/dashboard/TrendingMenu";
+import { OrderTimelineTwo } from "../../components/dashboard/OrderTimelineTwo";
 
 const { Text } = Typography;
 
@@ -141,9 +142,11 @@ export const DashboardPage: React.FC = () => {
       </Col>
       <Col xl={7} lg={8} md={24} sm={24} xs={24}>
         <Card
-          bodyStyle={{
-            height: 550,
-            overflowY: "scroll",
+          styles={{
+            body: {
+              height: 550,
+              overflowY: "scroll",
+            },
           }}
           title={
             <Text strong style={{ textTransform: "capitalize" }}>
@@ -151,7 +154,7 @@ export const DashboardPage: React.FC = () => {
             </Text>
           }
         >
-          <OrderTimeline />
+          <OrderTimelineTwo />
         </Card>
       </Col>
       <Col xl={17} lg={16} md={24} sm={24} xs={24}>

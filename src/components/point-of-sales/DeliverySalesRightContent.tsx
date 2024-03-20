@@ -20,7 +20,11 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 import { validateFullName } from "../../helpers/validate";
-import { IOrderResponse, IPaymentMethodResponse } from "../../interfaces";
+import {
+  IOrderResponse,
+  IPaymentMethodResponse,
+  IPaymentResponse,
+} from "../../interfaces";
 import { AddressFormFour } from "../form/AddressFormFour";
 import { PaymentModal } from "./PaymentModal";
 
@@ -41,8 +45,10 @@ export const DeliverySalesRightContent: React.FC<
     form,
     discount,
     paymentMethods,
+    isCOD,
     setPaymentMethods,
     setPayments,
+    setIsCOD,
   } = useContext(DeliverySalesContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -52,7 +58,6 @@ export const DeliverySalesRightContent: React.FC<
   const totalPrice = orderDetails.reduce((total, orderDetail) => {
     return total + orderDetail.totalPrice;
   }, 0);
-  const [change, setChange] = useState(initialPrice - totalPrice);
 
   const { data, isLoading } = useList<IPaymentMethodResponse, HttpError>({
     resource: "payment-methods",
@@ -65,6 +70,26 @@ export const DeliverySalesRightContent: React.FC<
   });
 
   useEffect(() => {
+    const defaultPayment = {
+      id: "",
+      order: order,
+      paymentMethod: paymentMethods?.[0] ?? ({} as IPaymentMethodResponse),
+      totalMoney: totalPrice,
+      description: "",
+      createdAt: 0,
+      updatedAt: 0,
+    };
+
+    const newPayment: IPaymentResponse = {
+      ...defaultPayment,
+      transactionCode: isCOD ? "" : "CASH",
+      paymentStatus: isCOD ? "PENDING" : "COMPLETED",
+    };
+
+    setPayments([newPayment]);
+  }, [isCOD]);
+
+  useEffect(() => {
     if (data && data.data && data.data.length > 0) {
       setPaymentMethods(data.data);
       setPayments([
@@ -73,6 +98,7 @@ export const DeliverySalesRightContent: React.FC<
           order: order,
           paymentMethod: data.data[0],
           transactionCode: "",
+          paymentStatus: "COMPLETED",
           totalMoney: totalPrice,
           description: "",
           createdAt: 0,
@@ -82,16 +108,22 @@ export const DeliverySalesRightContent: React.FC<
     }
   }, [data]);
 
-  useEffect(() => {
-    if (payments) {
-      const customerPaid = payments.reduce(
-        (acc, payment) => acc + payment.totalMoney,
-        0
-      );
-      const changeAmount = customerPaid - (totalPrice - discount);
-      setChange(changeAmount);
+  if (order.customer) {
+    const defaultAddress = order?.customer.addressList.find(
+      (address) => address.isDefault === true
+    );
+
+    if (defaultAddress) {
+      form.setFieldsValue({
+        phoneNumber: defaultAddress.phoneNumber,
+        provinceId: Number(defaultAddress.provinceId),
+        districtId: Number(defaultAddress.districtId),
+        wardCode: defaultAddress.wardCode,
+        more: defaultAddress.more,
+        fullName: order.customer.fullName,
+      });
     }
-  }, [payments]);
+  }
 
   const handleModalOk = () => {
     setIsModalVisible(false);
@@ -103,6 +135,65 @@ export const DeliverySalesRightContent: React.FC<
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const handleSwitchChange = (checked: boolean) => {
+    setIsCOD(checked);
+  };
+
+  const calculateTotalPayment = () => {
+    if (!payments) return "Loading...";
+    const totalPaid = payments
+      .filter((payment) => payment.paymentStatus !== "PENDING")
+      .reduce((acc, payment) => acc + payment.totalMoney, 0);
+    return (
+      <NumberField
+        options={{
+          currency: "VND",
+          style: "currency",
+        }}
+        value={totalPaid}
+        locale={"vi"}
+      />
+    );
+  };
+
+  const calculateCODPayment = () => {
+    if (!payments) return "Loading...";
+    const codPaid = payments
+      .filter((payment) => payment.paymentStatus !== "COMPLETED")
+      .reduce((acc, payment) => acc + payment.totalMoney, 0);
+    return (
+      <NumberField
+        options={{
+          currency: "VND",
+          style: "currency",
+        }}
+        value={codPaid}
+        locale={"vi"}
+      />
+    );
+  };
+
+  const calculateChange = () => {
+    if (!payments || !payments.length) return "Loading...";
+
+    const totalPaid = payments
+      .filter((payment) => payment.paymentStatus !== "PENDING")
+      .reduce((acc, payment) => acc + payment.totalMoney, 0);
+
+    const changeAmount = totalPaid - (totalPrice - discount);
+
+    return (
+      <NumberField
+        options={{
+          currency: "VND",
+          style: "currency",
+        }}
+        value={changeAmount}
+        locale={"vi"}
+      />
+    );
   };
 
   return (
@@ -134,23 +225,7 @@ export const DeliverySalesRightContent: React.FC<
                   onClick={showModal}
                 />
               </Space>
-              <Title level={4}>
-                {payments ? (
-                  <NumberField
-                    options={{
-                      currency: "VND",
-                      style: "currency",
-                    }}
-                    value={payments.reduce(
-                      (acc, payment) => acc + payment.totalMoney,
-                      0
-                    )}
-                    locale={"vi"}
-                  />
-                ) : (
-                  "Loading..."
-                )}
-              </Title>
+              <Title level={4}>{calculateTotalPayment()}</Title>
             </Flex>
           </Col>
           <Col span={24}>
@@ -160,19 +235,12 @@ export const DeliverySalesRightContent: React.FC<
                 <Switch
                   checkedChildren={<CheckOutlined />}
                   unCheckedChildren={<CloseOutlined />}
+                  onChange={handleSwitchChange}
+                  value={isCOD}
                   size="small"
                 />
               </Space>
-              <Text strong>
-                <NumberField
-                  options={{
-                    currency: "VND",
-                    style: "currency",
-                  }}
-                  value={0}
-                  locale={"vi"}
-                />
-              </Text>
+              <Text strong>{calculateCODPayment()}</Text>
             </Flex>
           </Col>
           <Col span={24}>
@@ -180,16 +248,7 @@ export const DeliverySalesRightContent: React.FC<
               <Space size="large" wrap>
                 <Text strong>{t("orders.tab.change")}</Text>
               </Space>
-              <Text strong>
-                <NumberField
-                  options={{
-                    currency: "VND",
-                    style: "currency",
-                  }}
-                  value={change}
-                  locale={"vi"}
-                />
-              </Text>
+              <Text strong>{calculateChange()}</Text>
             </Flex>
           </Col>
           <Col span={24} style={{ padding: 0 }}>

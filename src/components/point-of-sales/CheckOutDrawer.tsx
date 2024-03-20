@@ -15,6 +15,7 @@ import {
   useUpdate,
 } from "@refinedev/core";
 import {
+  App,
   AutoComplete,
   Avatar,
   Button,
@@ -33,7 +34,6 @@ import {
   Spin,
   Tooltip,
   Typography,
-  message,
   theme,
 } from "antd";
 import { debounce } from "lodash";
@@ -41,6 +41,8 @@ import { useContext, useEffect, useState } from "react";
 
 import _ from "lodash";
 import styled from "styled-components";
+import { POSContext } from "../../contexts/point-of-sales";
+import { formatTimestamp } from "../../helpers/timestamp";
 import {
   IEmployeeResponse,
   IOption,
@@ -50,6 +52,8 @@ import {
   IPaymentResponse,
   IVoucherListResponse,
 } from "../../interfaces";
+import { DiscountModal } from "./DiscountModal";
+import { PaymentModal } from "./PaymentModal";
 import {
   CloseButtonWrapper,
   CustomerInfor,
@@ -57,10 +61,6 @@ import {
   TextContainer,
   UserIcon,
 } from "./styled";
-import { formatTimestamp } from "../../helpers/timestamp";
-import { PaymentModal } from "./PaymentModal";
-import { DiscountModal } from "./DiscountModal";
-import { POSContext } from "../../contexts/point-of-sales";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -81,7 +81,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   const { mutate: mutateUpdate, isLoading: isLoadingOrderUpdate } = useUpdate();
   const { mutate: paymentMutateCreateMany } = useCreateMany();
   const { list } = useNavigation();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
 
   const { refetchOrder } = useContext(POSContext);
@@ -164,6 +164,8 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
                   order: order,
                   paymentMethod: paymentMethods[0],
                   transactionCode: "Cash",
+                  paymentStatus: "COMPLETED",
+
                   totalMoney: totalMoney,
                   description: "Cash",
                   createdAt: 0,
@@ -254,7 +256,8 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           id: "",
           order: order,
           paymentMethod: data.data[0],
-          transactionCode: "string",
+          transactionCode: "CASH",
+          paymentStatus: "COMPLETED",
           totalMoney: totalPrice,
           description: "string",
           createdAt: 0,
@@ -272,7 +275,8 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         id: "",
         order: order,
         paymentMethod: paymentMethod,
-        transactionCode: "string",
+        transactionCode: "CASH",
+        paymentStatus: "COMPLETED",
         totalMoney: totalPrice,
         description: "string",
         createdAt: 0,
@@ -288,10 +292,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     );
 
     if (customerPaid < totalPrice - discount) {
-      messageApi.open({
-        type: "error",
-        content: "Khách hàng thanh toán không được nhỏ hơn Khách cần trả.",
-      });
+      message.error(t("orders.notification.checkoutDrawer.error"));
       return;
     }
 
@@ -520,20 +521,11 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       },
       {
         onError: (error, variables, context) => {
-          messageApi.open({
-            type: "error",
-            content:
-              t("orders.notification.employee.edit.error") +
-              " " +
-              error.message,
-          });
+          message.error(t("orders.notification.employee.edit.error"));
         },
         onSuccess: (data, variables, context) => {
           refetchOrder();
-          messageApi.open({
-            type: "success",
-            content: t("orders.notification.employee.edit.success"),
-          });
+          message.success(t("orders.notification.employee.edit.success"));
         },
       }
     );
@@ -558,7 +550,6 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         </Button>
       }
     >
-      {contextHolder}
       <Row>
         <Col span={24}>
           <Row>

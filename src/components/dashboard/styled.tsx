@@ -15,6 +15,19 @@ export const TitleArea = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  h3,
+  span {
+    color: #ffffff !important;
+    margin-bottom: 0 !important;
+  }
+
+  @media screen and (max-width: 576px) {
+    span {
+      font-size: 16px !important;
+      line-height: 1.2;
+    }
+  }
 `;
 
 export const TitleAreaAmount = styled.div`
@@ -226,4 +239,8 @@ export const TextWrapper = styled.div`
       font-size: 16px;
     }
   }
+`;
+
+export const Number = styled(Typography.Text)`
+  cursor: pointer;
 `;

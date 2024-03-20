@@ -1,5 +1,6 @@
 import { useCreateMany, useTranslate } from "@refinedev/core";
 import {
+  App,
   Button,
   Col,
   Empty,
@@ -8,7 +9,6 @@ import {
   ModalProps,
   Row,
   Space,
-  message,
 } from "antd";
 import {
   Dispatch,
@@ -17,11 +17,11 @@ import {
   useEffect,
   useState,
 } from "react";
+import { POSContext } from "../../contexts/point-of-sales";
+import { getPriceProductFinal } from "../../helpers/money";
 import { IOrderDetailRequest, IProductDetailResponse } from "../../interfaces";
 import { ProductDetailItem } from "./ProductDetailItem";
 import ShoppingCartHeader from "./ShoppingCartHeader";
-import { POSContext } from "../../contexts/point-of-sales";
-import { getPriceProductFinal } from "../../helpers/money";
 
 type SelectedItemsModalProps = {
   modalProps: ModalProps;
@@ -42,7 +42,7 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
 }) => {
   const t = useTranslate();
   const { mutate } = useCreateMany();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
   const { refetchOrder, activeKey } = useContext(POSContext);
 
@@ -100,17 +100,12 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
         },
         {
           onError: (error, variables, context) => {
-            messageApi.open({
-              type: "error",
-              content:
-                t("orders.notification.tab.add.error") + " " + error.message,
-            });
+            message.error(
+              t("orders.notification.tab.add.error") + error.message
+            );
           },
           onSuccess: () => {
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.product.add.success"),
-            });
+            message.success(t("orders.notification.tab.add.success"));
             refetchOrder();
             parentClose();
           },
@@ -139,7 +134,6 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
         </>
       )}
     >
-      {contextHolder}
       <Row>
         <Col span={24}>
           <Space direction="vertical" style={{ width: "100%" }}>

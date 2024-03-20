@@ -463,9 +463,7 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
             </Form.Item>
           </Col>
           <Col span={7} style={{ textAlign: "center" }}>
-            <Text style={{ fontSize: "12px" }}>
-              length x width x height (cm)
-            </Text>
+            <Text style={{ fontSize: "12px" }}>LxWxH (cm)</Text>
             <Button
               type="primary"
               size={"small"}

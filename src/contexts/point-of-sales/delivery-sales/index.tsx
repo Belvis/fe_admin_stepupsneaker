@@ -26,6 +26,8 @@ type DeliverySalesContextType = {
   setPaymentMethods: React.Dispatch<
     React.SetStateAction<IPaymentMethodResponse[] | undefined>
   >;
+  isCOD: boolean;
+  setIsCOD: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const DeliverySalesContext = createContext<DeliverySalesContextType>(
@@ -40,6 +42,7 @@ export const DeliverySalesContextProvider: React.FC<PropsWithChildren> = ({
   const [payments, setPayments] = useState<IPaymentResponse[]>();
   const [paymentMethods, setPaymentMethods] =
     useState<IPaymentMethodResponse[]>();
+  const [isCOD, setIsCOD] = useState<boolean>(false);
 
   const [form] = Form.useForm<ITransportAddress>();
 
@@ -55,6 +58,8 @@ export const DeliverySalesContextProvider: React.FC<PropsWithChildren> = ({
         form,
         paymentMethods,
         setPaymentMethods,
+        isCOD,
+        setIsCOD,
       }}
     >
       {children}

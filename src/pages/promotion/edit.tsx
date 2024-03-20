@@ -176,6 +176,26 @@ export const PromotionEdit: React.FC<IResourceComponentsProps> = () => {
                       disabledDate={(current) =>
                         dayjs(current).isBefore(dayjs().startOf("day"))
                       }
+                      onChange={(dates) => {
+                        if (dates && dates.length === 2) {
+                          const [start, end] = dates;
+                          if (
+                            start &&
+                            end &&
+                            start.isValid() &&
+                            end.isValid()
+                          ) {
+                            formProps.form?.setFieldValue(
+                              "startDate",
+                              start.valueOf()
+                            );
+                            formProps.form?.setFieldValue(
+                              "endDate",
+                              end.valueOf()
+                            );
+                          }
+                        }
+                      }}
                     />
                   </Form.Item>
                   <Form.Item

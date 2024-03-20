@@ -11,6 +11,7 @@ export type QueryObserverResult<TData = unknown, TError = unknown> =
   | QueryObserverLoadingResult<TData, TError>;
 export type ColSpanType = number | string;
 export type ProductStatus = "ACTIVE" | "IN_ACTIVE";
+export type PaymentStatus = "PENDING" | "COMPLETED";
 export type VoucherStatus =
   | "IN_ACTIVE"
   | "ACTIVE"
@@ -359,7 +360,8 @@ export interface IOrderDetailResponse {
 }
 export interface IOrderHistoryResponse {
   id: string;
-  order: IOrder;
+  orderId: String;
+  orderCode: String;
   actionDescription: string;
   actionStatus: OrderStatus;
   note: string;
@@ -369,6 +371,7 @@ export interface IPaymentResponse {
   id: string;
   order: IOrderResponse;
   paymentMethod: IPaymentMethodResponse;
+  paymentStatus: PaymentStatus;
   transactionCode: string;
   totalMoney: number;
   description: string;

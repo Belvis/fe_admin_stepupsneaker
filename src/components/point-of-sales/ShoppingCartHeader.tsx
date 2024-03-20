@@ -1,23 +1,37 @@
-import { Card, Col, Row } from "antd";
+import { useTranslate } from "@refinedev/core";
+import { Card, Col, Row, Typography } from "antd";
+
+const { Text } = Typography;
 
 const ShoppingCartHeader = () => {
+  const t = useTranslate();
+
   return (
-    <Card size="small">
+    <Card
+      size="small"
+      styles={{
+        body: {
+          padding: "12px 24px",
+        },
+      }}
+    >
       <Row align="middle">
-        <Col span={2}>#</Col>
-        <Col span={8}>Sản phẩm</Col>
-        <Col span={3} style={{ textAlign: "center" }}>
-          SL
+        <Col span={2}>
+          <Text strong>#</Text>
         </Col>
-        <Col span={4} style={{ textAlign: "end" }}>
-          Đơn giá
+        <Col span={8}>
+          <Text strong>{t("orderDetails.fields.products")}</Text>
         </Col>
-        <Col span={4} style={{ textAlign: "end" }}>
-          Tổng giá
+        <Col span={3} className="text-center">
+          <Text strong>{t("orderDetails.fields.qty")}</Text>
         </Col>
-        <Col span={3} style={{ textAlign: "center" }}>
-          Hành động
+        <Col span={4} className="text-end">
+          <Text strong>{t("orderDetails.fields.price")}</Text>
         </Col>
+        <Col span={4} className="text-end">
+          <Text strong>{t("orderDetails.fields.totalPrice")}</Text>
+        </Col>
+        <Col span={3} className="text-end"></Col>
       </Row>
     </Card>
   );

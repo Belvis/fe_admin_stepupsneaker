@@ -1,23 +1,21 @@
+import { DeleteOutlined } from "@ant-design/icons";
+import { NumberField } from "@refinedev/antd";
+import { useTranslate } from "@refinedev/core";
 import {
   Button,
   Col,
   Flex,
   Grid,
   InputNumber,
-  InputRef,
   Modal,
   Row,
   Select,
   Space,
   Typography,
-  message,
   theme,
 } from "antd";
-import { useTranslate } from "@refinedev/core";
-import { useEffect, useRef, useState } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
-import { NumberField } from "@refinedev/antd";
+import { useEffect, useRef, useState } from "react";
 import {
   IOrderResponse,
   IPaymentMethodResponse,
@@ -54,7 +52,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 }) => {
   const t = useTranslate();
   const { token } = useToken();
-  const [messageApi, contextHolder] = message.useMessage();
   const breakpoint = Grid.useBreakpoint();
 
   const [thisPayments, setThisPayments] = useState<
@@ -86,7 +83,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const inputRef = useRef<any>(null);
   const [money, setMoney] = useState(0);
   const [customerPaid, setThisCustomerPaid] = useState<number>(initialPrice);
-  const [change, setChange] = useState(initialPrice - totalPrice);
 
   const suggestedMoney = [0, 100000, 200000, 300000];
 
@@ -186,7 +182,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       onCancel={onCancel}
       open={open}
     >
-      {contextHolder}
       <Row gutter={[16, 24]}>
         <Col span={24}>
           <Flex gap="middle" justify="space-between" align="center">

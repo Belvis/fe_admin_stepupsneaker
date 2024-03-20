@@ -1,5 +1,15 @@
 import React, { useContext } from "react";
-import { Col, Space, Card, Row, Typography, theme, message, Spin } from "antd";
+import {
+  Col,
+  Space,
+  Card,
+  Row,
+  Typography,
+  theme,
+  message,
+  Spin,
+  App,
+} from "antd";
 import ShoppingCartHeader from "./ShoppingCartHeader";
 import { ColSpanType, IOrderResponse } from "../../interfaces";
 import { OrderItem } from "./OrderItem";
@@ -24,7 +34,7 @@ const DirectSalesLeft: React.FC<DirectSalesLeftProps> = ({
   const t = useTranslate();
   const { token } = useToken();
   const { mutate, isLoading } = useUpdate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { refetchOrder } = useContext(POSContext);
 
   const orderDetails = order?.orderDetails || [];
@@ -54,17 +64,11 @@ const DirectSalesLeft: React.FC<DirectSalesLeftProps> = ({
         },
         {
           onError: (error, variables, context) => {
-            messageApi.open({
-              type: "error",
-              content: t("orders.notification.editNote.error"),
-            });
+            message.error(t("orders.notification.note.edit.error"));
           },
           onSuccess: (data, variables, context) => {
             refetchOrder();
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.editNote.success"),
-            });
+            message.success(t("orders.notification.note.edit.success"));
           },
         }
       );
@@ -72,7 +76,6 @@ const DirectSalesLeft: React.FC<DirectSalesLeftProps> = ({
 
   return (
     <Col span={span} style={directSalesLeftStyle}>
-      {contextHolder}
       <Space direction="vertical" style={shoppingCartContainerStyle}>
         <ShoppingCartHeader />
         {orderDetails.map((orderItem, index) => (

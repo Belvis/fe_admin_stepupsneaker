@@ -1,7 +1,7 @@
-import { Card, Row, Col, Image, message } from "antd";
+import { useTranslate, useUpdate } from "@refinedev/core";
+import { App, Card, Col, Image, Row } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { useTranslate, useUpdate } from "@refinedev/core";
 import { IOrderResponse, IVoucherResponse } from "../../interfaces";
 
 interface VoucherProps {
@@ -31,7 +31,7 @@ const Voucher: React.FC<VoucherProps> = ({
     id,
   } = item;
 
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const { mutate: mutateUpdate, isLoading: isLoadingOrderUpdate } = useUpdate();
   const t = useTranslate();
 
@@ -63,10 +63,7 @@ const Voucher: React.FC<VoucherProps> = ({
   const handleCopyCode = () => {
     if (code) {
       navigator.clipboard.writeText(code).then(() => {
-        messageApi.open({
-          type: "success",
-          content: "Đã copy vào bộ nhớ đệm",
-        });
+        message.success(t("common.copied"));
       });
       setText(code);
       setTimeout(() => {
@@ -85,20 +82,14 @@ const Voucher: React.FC<VoucherProps> = ({
               voucher: item,
             };
           } else {
-            messageApi.open({
-              type: "error",
-              content: "Đơn hàng chưa đủ điều kiện để được áp dụng giảm giá",
-            });
+            message.error(t("vouchers.validation.ineligible"));
             return prev;
           }
         });
 
         return close();
       } catch (error: any) {
-        return messageApi.open({
-          type: "error",
-          content: "Áp dụng voucher không thành công: " + error.message,
-        });
+        message.error(t("common.error", +error.message));
       }
     }
   };
@@ -125,26 +116,19 @@ const Voucher: React.FC<VoucherProps> = ({
         },
         {
           onError: (error, variables, context) => {
-            messageApi.open({
-              type: "error",
-              content: t("orders.notification.voucher.edit.error"),
-            });
+            message.error(
+              t("orders.notification.voucher.edit.error") + error.message
+            );
           },
           onSuccess: (data, variables, context) => {
             callBack();
-            messageApi.open({
-              type: "success",
-              content: t("orders.notification.voucher.edit.success"),
-            });
+            message.success(t("orders.notification.voucher.edit.success"));
             return close();
           },
         }
       );
     } else {
-      messageApi.open({
-        type: "error",
-        content: t("orders.notification.voucher.edit.notFound"),
-      });
+      message.error(t("orders.notification.voucher.edit.notFound"));
     }
   };
 
@@ -156,7 +140,6 @@ const Voucher: React.FC<VoucherProps> = ({
           "0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09)",
       }}
     >
-      {contextHolder}
       <Row gutter={16} align="middle">
         <Col span={6} style={{ position: "relative" }}>
           <div
