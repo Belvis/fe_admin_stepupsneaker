@@ -45,8 +45,10 @@
 
   color: #8e8e8e;
 }
-.ant-input-number-input-wrap {
-  input.ant-input-number-input {
-    text-align: center;
+.text-center {
+  .ant-input-number-input-wrap {
+    input.ant-input-number-input {
+      text-align: center;
+    }
   }
 }

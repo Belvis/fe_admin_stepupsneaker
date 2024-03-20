@@ -105,6 +105,8 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
     }
   };
 
+  console.log(fields);
+
   return (
     <Form
       {...formProps}
@@ -141,7 +143,7 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
                 >
                   {field.type === "select" ? (
                     <Select
-                      {...field.props}
+                      {...(field.props && { ...field.props })}
                       placeholder={field.placeholder}
                       style={{
                         width: field.width ?? "100%",

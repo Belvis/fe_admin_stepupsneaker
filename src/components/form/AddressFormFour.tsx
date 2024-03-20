@@ -153,7 +153,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
           to_ward_code: form.getFieldValue("wardCode"),
           height: form.getFieldValue("height"),
           length: form.getFieldValue("length"),
-          weight: form.getFieldValue("weight"),
+          weight:
+            form.getFieldValue("weight") * form.getFieldValue("weightUnit"),
           width: form.getFieldValue("width"),
           insurance_value: 500000,
         },
@@ -384,8 +385,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
                   width: "100%",
                 }}
                 options={[
-                  { value: "gram", label: "gram" },
-                  { value: "kg", label: "kg" },
+                  { value: "1", label: "gram" },
+                  { value: "1000", label: "kg" },
                 ]}
               />
             </Form.Item>

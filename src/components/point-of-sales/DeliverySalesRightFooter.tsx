@@ -47,7 +47,7 @@ export const DeliverySalesRightFooter: React.FC<
 
     mutateUpdate(
       {
-        resource: "orders/check-oyt",
+        resource: "orders/check-out",
         values: submitData,
         id: order.id,
       },

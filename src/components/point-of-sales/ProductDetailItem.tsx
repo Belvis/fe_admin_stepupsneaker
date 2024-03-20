@@ -72,10 +72,10 @@ export const ProductDetailItem: React.FC<ProductDetailItemProps> = ({
       className="order-items"
     >
       <Row align="middle" justify="center">
-        <Col span={2}>
+        <Col span={1}>
           <Text>{count + 1}</Text>
         </Col>
-        <Col span={8}>
+        <Col span={9}>
           <Flex gap={15}>
             <Avatar shape="square" size={64} src={productDetail.image} />
             <Flex vertical>
@@ -92,7 +92,7 @@ export const ProductDetailItem: React.FC<ProductDetailItemProps> = ({
         <Col span={3}>
           <InputNumber
             min={1}
-            className="order-tab-quantity"
+            className="order-tab-quantity text-center"
             variant="borderless"
             style={{
               width: "100%",

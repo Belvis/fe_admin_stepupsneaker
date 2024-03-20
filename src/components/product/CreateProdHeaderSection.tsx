@@ -40,7 +40,7 @@ export const CreateProdHeaderSection: React.FC<
       filters: [{ field: "q", operator: "contains", value }],
     },
     pagination: {
-      pageSize: 1000,
+      pageSize: 10,
     },
     queryOptions: {
       enabled: false,

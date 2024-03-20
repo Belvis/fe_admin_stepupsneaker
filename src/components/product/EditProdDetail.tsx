@@ -11,9 +11,8 @@ import {
   ModalProps,
   Row,
   Select,
-  Tag,
-  Typography,
 } from "antd";
+import { useEffect } from "react";
 import { getProductStatusOptions } from "../../constants/status";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { productDetailToRequest } from "../../helpers/mapper";
@@ -26,7 +25,6 @@ import {
 import ImageUpload from "../form/ImageUpload";
 import { ProdAttributeSelectTwo } from "./ProdAttributeSelectTwo";
 import { renderColor } from "./ProductSearchForm";
-import { useEffect } from "react";
 
 type EditProdDetailProps = {
   modalProps: ModalProps;
@@ -41,17 +39,9 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
 }) => {
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
-  const { id: productId } = useParsed();
 
-  useEffect(() => {
-    console.log("formProps.initialValues");
-    console.log(
-      "formProps.form?.getFieldsValue",
-      formProps.form?.getFieldsValue()
-    );
-  }, []);
   const { selectProps: colorSelectProps } = useSelect<IColorResponse>({
-    resource: "colors?pageSize=1000&",
+    resource: "colors?pageSize=10&",
     optionLabel: "code",
     optionValue: "id",
     debounce: 500,
@@ -62,9 +52,6 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
         value,
       },
     ],
-    pagination: {
-      pageSize: 1000,
-    },
   });
 
   const onFinishHandler = (values: IProductDetailResponse) => {

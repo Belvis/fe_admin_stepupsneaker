@@ -43,7 +43,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
   }, []);
 
   return (
-    <Modal title="Quét mã QR" {...modalProps} zIndex={2001}>
+    <Modal title="Quét mã QR" {...modalProps} zIndex={2001} footer={<></>}>
       <div className="videoWrapper">
         <video className="qrVideo" ref={videoElementRef} />
       </div>

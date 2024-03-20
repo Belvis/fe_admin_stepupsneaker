@@ -1,7 +1,7 @@
 import { useSelect } from "@refinedev/antd";
+import { useTranslate } from "@refinedev/core";
 import { Form, Select } from "antd";
 import { IProdAttributeResponse } from "../../interfaces";
-import { useTranslate } from "@refinedev/core";
 
 type ProdAttributeSelectTwoProps = {
   attributeName: string;
@@ -20,7 +20,7 @@ export const ProdAttributeSelectTwo: React.FC<ProdAttributeSelectTwoProps> = ({
     selectProps,
     queryResult: { refetch },
   } = useSelect<IProdAttributeResponse>({
-    resource: `${attributeName}s?pageSize=1000&`,
+    resource: `${attributeName}s?pageSize=10&`,
     optionLabel,
     optionValue,
     debounce: 500,

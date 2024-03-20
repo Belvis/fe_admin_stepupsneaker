@@ -189,7 +189,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <Text strong>{t("payments.fields.money")}</Text>
             </Space>
             <InputNumber
-              min={1}
               ref={inputRef}
               formatter={(value) =>
                 `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -306,7 +305,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               </Flex>
             ))
           ) : (
-            <Text>No payment available</Text>
+            <Text>Chưa có thanh toán nào</Text>
           )}
         </Col>
         <Col span={24}>

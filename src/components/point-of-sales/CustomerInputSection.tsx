@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   AutoComplete,
   Input,
@@ -63,7 +63,7 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
       filters: [{ field: "q", operator: "contains", value: customerSearch }],
     },
     pagination: {
-      pageSize: 1000,
+      pageSize: 10,
     },
     queryOptions: {
       enabled: customerSearch !== "",
@@ -78,6 +78,9 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
     },
   });
 
+  useEffect(() => {
+    refetchCustomer();
+  }, []);
   function editOrderCustomer(value: string | null): void {
     mutate(
       {

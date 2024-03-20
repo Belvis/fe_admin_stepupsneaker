@@ -57,7 +57,7 @@ export const POSTab: React.FC = () => {
       ],
     },
     pagination: {
-      pageSize: 1000,
+      pageSize: 10,
     },
     queryOptions: {
       enabled: false,

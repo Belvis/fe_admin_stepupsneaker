@@ -1,10 +1,10 @@
 import { useTranslate } from "@refinedev/core";
 import CommonSearchForm from "../form/CommonSearchForm";
 import { FormProps, Tag } from "antd";
-import { useSelect } from "@refinedev/antd";
 import { IColorResponse, IProdAttributeResponse } from "../../interfaces";
 import { getProductStatusOptions } from "../../constants/status";
 import { isLightColor } from "../../helpers/color";
+import { useSelect } from "@refinedev/antd";
 
 type ProductSearchFormProps = {
   formProps: FormProps;
@@ -35,7 +35,7 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
   const t = useTranslate();
 
   const { selectProps: brandSelectProps } = useSelect<IProdAttributeResponse>({
-    resource: "brands?pageSize=1000&",
+    resource: "brands?pageSize=10&",
     optionLabel: "name",
     optionValue: "id",
     debounce: 500,
@@ -49,7 +49,7 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
   });
 
   const { selectProps: styleSelectProps } = useSelect<IProdAttributeResponse>({
-    resource: "styles?pageSize=1000&",
+    resource: "styles?pageSize=10&",
     optionLabel: "name",
     optionValue: "id",
     debounce: 500,
@@ -64,7 +64,7 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
 
   const { selectProps: materialSelectProps } =
     useSelect<IProdAttributeResponse>({
-      resource: "materials?pageSize=1000&",
+      resource: "materials?pageSize=10&",
       optionLabel: "name",
       optionValue: "id",
       debounce: 500,
@@ -79,7 +79,7 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
 
   const { selectProps: tradeMarkSelectProps } =
     useSelect<IProdAttributeResponse>({
-      resource: "trade-marks?pageSize=1000&",
+      resource: "trade-marks?pageSize=10&",
       optionLabel: "name",
       optionValue: "id",
       debounce: 500,
@@ -93,10 +93,13 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
     });
 
   const { selectProps: soleSelectProps } = useSelect<IProdAttributeResponse>({
-    resource: "soles?pageSize=1000&",
+    resource: "soles?pageSize=10&",
     optionLabel: "name",
     optionValue: "id",
     debounce: 500,
+    pagination: {
+      pageSize: 10,
+    },
     onSearch: (value) => [
       {
         field: "q",
@@ -107,21 +110,29 @@ export const ProductSearchForm: React.FC<ProductSearchFormProps> = ({
   });
 
   const { selectProps: colorSelectProps } = useSelect<IColorResponse>({
-    resource: "colors?pageSize=1000&",
+    resource: "colors?pageSize=10&",
     optionLabel: "code",
     optionValue: "id",
-    pagination: {
-      pageSize: 1000,
-    },
+    onSearch: (value) => [
+      {
+        field: "q",
+        operator: "eq",
+        value,
+      },
+    ],
   });
 
   const { selectProps: sizeSelectProps } = useSelect<IProdAttributeResponse>({
-    resource: "sizes?pageSize=1000&",
+    resource: "sizes?pageSize=10&",
     optionLabel: "name",
     optionValue: "id",
-    pagination: {
-      pageSize: 1000,
-    },
+    onSearch: (value) => [
+      {
+        field: "q",
+        operator: "eq",
+        value,
+      },
+    ],
   });
 
   return (
