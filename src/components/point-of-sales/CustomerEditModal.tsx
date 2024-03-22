@@ -25,6 +25,8 @@ import { IAddressResponse, ICustomerResponse } from "../../interfaces";
 import { AddressForm } from "../form/AddressForm";
 import ImageUpload from "../form/ImageUpload";
 import { useEffect } from "react";
+import { FieldLabel } from "../form/FieldLabel";
+import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
 
 type CustomerEditModalProps = {
   modalProps: ModalProps;
@@ -55,8 +57,23 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
     });
 
   useEffect(() => {
+    formProps.form?.setFieldValue(
+      "addressList",
+      formProps.initialValues?.addressList
+    );
+    formProps.form?.setFieldValue(
+      "dateOfBirth",
+      formProps.initialValues?.dateOfBirth
+    );
+  }, [formProps.initialValues]);
+  useEffect(() => {
     const addressList = formProps.form?.getFieldValue("addressList");
     const dateOfBirth = formProps.form?.getFieldValue("dateOfBirth");
+
+    console.log("addressList", addressList);
+    console.log("dateOfBirth", dateOfBirth);
+    console.log("formProps", formProps.initialValues);
+
     if (addressList) {
       const defaultAddress = addressList.find(
         (address: IAddressResponse) => address.isDefault === true
@@ -129,7 +146,13 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
             <Row gutter={10}>
               <Col xs={24} lg={12}>
                 <Form.Item
-                  label={t("customers.fields.fullName")}
+                  label={
+                    <FieldLabel
+                      fieldName={t("customers.fields.fullName")}
+                      maxLength={LENGTH_NAME}
+                      t={t}
+                    />
+                  }
                   name="fullName"
                   rules={[
                     {
@@ -137,10 +160,16 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                     },
                   ]}
                 >
-                  <Input />
+                  <Input maxLength={LENGTH_NAME} showCount />
                 </Form.Item>
                 <Form.Item
-                  label={t("customers.fields.email")}
+                  label={
+                    <FieldLabel
+                      fieldName={t("customers.fields.email")}
+                      maxLength={LENGTH_EMAIL}
+                      t={t}
+                    />
+                  }
                   name="email"
                   rules={[
                     {
@@ -148,7 +177,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                     },
                   ]}
                 >
-                  <Input />
+                  <Input maxLength={LENGTH_EMAIL} showCount />
                 </Form.Item>
               </Col>
               <Col xs={24} lg={12}>
@@ -205,7 +234,9 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                       ]}
                     >
                       <Select
-                        placeholder={t("customers.fields.status.placeholder")}
+                        placeholder={t(
+                          "customers.fields.status.statusPlaceholder"
+                        )}
                         options={getCustomerStatusOptions(t)}
                       />
                     </Form.Item>
@@ -213,12 +244,18 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                 </Row>
               </Col>
             </Row>
-            <Divider orientation="left" style={{ color: "#000000" }}>
+            <Divider orientation="left">
               {t("customers.fields.address")}
             </Divider>
             <AddressForm formProps={formProps} />
           </Col>
         </Row>
+        <Form.Item name="addressList" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="dateOfBirth" hidden>
+          <Input />
+        </Form.Item>
       </Form>
     </Modal>
   );

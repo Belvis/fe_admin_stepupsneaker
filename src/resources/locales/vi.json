@@ -541,6 +541,7 @@
         }
       },
       "status": "Trạng thái",
+      "statusPlaceholder": "Chọn trạng thái",
       "password": "Mật khẩu",
       "phoneNumber": "Số điện thoại",
       "province": {

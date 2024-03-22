@@ -172,7 +172,9 @@ export const CustomerEdit: React.FC<IResourceComponentsProps> = () => {
                         ]}
                       >
                         <Select
-                          placeholder={t("customers.fields.status.placeholder")}
+                          placeholder={t(
+                            "customers.fields.status.statusPlaceholder"
+                          )}
                           options={getCustomerStatusOptions(t)}
                         />
                       </Form.Item>

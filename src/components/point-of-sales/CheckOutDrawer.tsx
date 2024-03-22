@@ -40,7 +40,6 @@ import { debounce } from "lodash";
 import { useContext, useEffect, useState } from "react";
 
 import _ from "lodash";
-import styled from "styled-components";
 import { POSContext } from "../../contexts/point-of-sales";
 import { formatTimestamp } from "../../helpers/timestamp";
 import {
@@ -52,6 +51,7 @@ import {
   IPaymentResponse,
   IVoucherListResponse,
 } from "../../interfaces";
+import { DiscountMessage, DiscountMoney } from "../order/style";
 import { DiscountModal } from "./DiscountModal";
 import { PaymentModal } from "./PaymentModal";
 import {
@@ -99,6 +99,9 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   const [discount, setDiscount] = useState(0);
   const [paymentMethods, setPaymentMethods] =
     useState<IPaymentMethodResponse[]>();
+  const [selectedMethod, setSelectedMethod] = useState(
+    paymentMethods && paymentMethods.length > 0 ? paymentMethods[0] : null
+  );
   const [payments, setPayments] = useState<IPaymentResponse[]>();
 
   useEffect(() => {
@@ -270,6 +273,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   function handleRadioChange(e: RadioChangeEvent): void {
     const paymentMethod = e.target.value;
 
+    setSelectedMethod(paymentMethod);
     setPayments([
       {
         id: "",
@@ -475,11 +479,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       <Space direction="vertical" style={{ width: "100%" }}>
         <Radio.Group
           name="radiogroup"
-          defaultValue={
-            paymentMethods && paymentMethods.length > 0
-              ? paymentMethods[0]
-              : null
-          }
+          value={selectedMethod}
           onChange={handleRadioChange}
         >
           {paymentMethods && paymentMethods.length > 0 ? (
@@ -748,7 +748,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
 
             if (shouldDisplayVoucher) {
               return (
-                <DiscountMessage>
+                <DiscountMessage level={5}>
                   <GiftOutlined /> Mua thêm{" "}
                   <DiscountMoney>
                     {new Intl.NumberFormat("vi-VN", {
@@ -854,16 +854,6 @@ function convertToPayload(
     transactionCode: payment.transactionCode,
   }));
 }
-
-const DiscountMessage = styled.h5`
-  color: #fb5231;
-  line-height: 1.3rem;
-`;
-
-const DiscountMoney = styled.span`
-  color: #fb5231;
-  font-weight: bold;
-`;
 
 const calculateTotalPrice = (order: IOrderResponse): number => {
   if (!order || !order.orderDetails) {

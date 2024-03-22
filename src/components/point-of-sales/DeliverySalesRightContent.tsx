@@ -219,6 +219,7 @@ export const DeliverySalesRightContent: React.FC<
                 <Button
                   size="small"
                   type="text"
+                  disabled={isCOD}
                   icon={
                     <CreditCardFilled style={{ color: token.colorPrimary }} />
                   }

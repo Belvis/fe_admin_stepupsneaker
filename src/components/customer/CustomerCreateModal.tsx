@@ -29,6 +29,8 @@ import { ICustomerResponse } from "../../interfaces";
 import { AddressForm } from "../form/AddressForm";
 import ImageUpload from "../form/ImageUpload";
 import { QRScannerModal } from "../qr-scanner/QRScannerModal";
+import { FieldLabel } from "../form/FieldLabel";
+import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
 
 type CustomerCreateModalProps = {
   modalProps: ModalProps;
@@ -134,7 +136,13 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
             <Row gutter={10}>
               <Col xs={24} lg={12}>
                 <Form.Item
-                  label={t("customers.fields.fullName")}
+                  label={
+                    <FieldLabel
+                      fieldName={t("customers.fields.fullName")}
+                      maxLength={LENGTH_NAME}
+                      t={t}
+                    />
+                  }
                   name="fullName"
                   rules={[
                     {
@@ -142,10 +150,16 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
                     },
                   ]}
                 >
-                  <Input />
+                  <Input maxLength={LENGTH_NAME} showCount />
                 </Form.Item>
                 <Form.Item
-                  label={t("customers.fields.email")}
+                  label={
+                    <FieldLabel
+                      fieldName={t("customers.fields.email")}
+                      maxLength={LENGTH_EMAIL}
+                      t={t}
+                    />
+                  }
                   name="email"
                   rules={[
                     {
@@ -153,7 +167,7 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
                     },
                   ]}
                 >
-                  <Input />
+                  <Input maxLength={LENGTH_EMAIL} showCount />
                 </Form.Item>
               </Col>
               <Col xs={24} lg={12}>
