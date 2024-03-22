@@ -305,7 +305,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
 
     mutateUpdate(
       {
-        resource: "orders/check-out",
+        resource: "orders/direct/check-out",
         values: {
           ...order,
           customer: order.customer ? order.customer.id : null,
@@ -339,6 +339,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         onSuccess: (data, variables, context) => {
           refetchOrder();
           onClose();
+          list("orders");
         },
       }
     );

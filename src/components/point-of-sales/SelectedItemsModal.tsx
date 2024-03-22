@@ -84,7 +84,7 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    const payLoad = orderDetailToPayload(items, activeKey);
+    const payLoad = orderDetailToPayload(copiedItems, activeKey);
 
     try {
       mutate(

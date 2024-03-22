@@ -23,7 +23,7 @@ export const DeliverySalesRightFooter: React.FC<
   const { mutate: paymentMutateCreateMany } = useCreateMany();
   const { list } = useNavigation();
 
-  const { form, shippingMoney, discount, payments } =
+  const { form, shippingMoney, discount, payments, isCOD } =
     useContext(DeliverySalesContext);
   const { refetchOrder } = useContext(POSContext);
 
@@ -43,11 +43,12 @@ export const DeliverySalesRightFooter: React.FC<
       type: "ONLINE",
       totalMoney: totalPrice - discount + shippingMoney,
       status: "WAIT_FOR_CONFIRMATION",
+      isCOD,
     };
 
     mutateUpdate(
       {
-        resource: "orders/check-out",
+        resource: "orders/delivery/check-out",
         values: submitData,
         id: order.id,
       },
