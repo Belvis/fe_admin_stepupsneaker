@@ -84,7 +84,7 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
   function editOrderCustomer(value: string | null): void {
     mutate(
       {
-        resource: "orders/check-out",
+        resource: "orders/direct/check-out",
         values: {
           ...order,
           customer: value,

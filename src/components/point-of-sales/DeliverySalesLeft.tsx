@@ -69,7 +69,7 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
     if (value !== order.note)
       mutateUpdate(
         {
-          resource: "orders/check-out",
+          resource: "orders/direct/check-out",
           values: {
             ...order,
             customer: order.customer ? order.customer.id : null,
@@ -107,7 +107,7 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
     if (shippingMoney !== order.shippingMoney)
       mutateUpdate(
         {
-          resource: "orders/check-out",
+          resource: "orders/direct/check-out",
           values: {
             ...order,
             customer: order.customer ? order.customer.id : null,
@@ -140,7 +140,7 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
   const removeOrderVoucher = () => {
     mutateUpdate(
       {
-        resource: "orders/check-out",
+        resource: "orders/direct/check-out",
         values: {
           ...order,
           employee: order.employee ? order.employee.id : "",
