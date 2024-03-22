@@ -294,7 +294,7 @@ const ChangeDetail: React.FC<ChangeDetailProps> = ({
     >
       {changes && keys && (
         <Space direction="vertical" style={{ width: "100%" }}>
-          {keys.map((key) => renderChange(key))}
+          {keys.map((key) => key !== "versionUpdate" && renderChange(key))}
         </Space>
       )}
     </Modal>

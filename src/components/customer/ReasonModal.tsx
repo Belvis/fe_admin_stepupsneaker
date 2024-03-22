@@ -47,14 +47,14 @@ const ReasonModal: React.FC<ReasonModalProps> = ({
               id: order.id,
               successNotification: (data, values, resource) => {
                 return {
-                  message: `Hủy đơn hàng thành công!`,
+                  message: t("common.update.success"),
                   description: "Thành công",
                   type: "success",
                 };
               },
               errorNotification(error) {
                 return {
-                  message: "Cập nhật đơn hàng thất bại: " + error?.message,
+                  message: t("common.error") + error?.message,
                   description: "Đã xảy ra lỗi",
                   type: "success",
                 };
