@@ -57,6 +57,11 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
     });
 
   useEffect(() => {
+    formProps.form?.resetFields();
+    handleFormEffect();
+  }, [modalProps.open]);
+
+  useEffect(() => {
     formProps.form?.setFieldValue(
       "addressList",
       formProps.initialValues?.addressList
@@ -68,7 +73,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
     formProps.form?.setFieldValue("image", formProps.initialValues?.image);
   }, [formProps.initialValues]);
 
-  useEffect(() => {
+  const handleFormEffect = () => {
     const addressList = formProps.form?.getFieldValue("addressList");
     const dateOfBirth = formProps.form?.getFieldValue("dateOfBirth");
 
@@ -94,7 +99,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
     if (dateOfBirth) {
       formProps.form?.setFieldValue("dob", dayjs(new Date(dateOfBirth)));
     }
-  }, [formProps.form && formLoading]);
+  };
 
   const handleOnFinish = (values: any) => {
     const submitData = {
