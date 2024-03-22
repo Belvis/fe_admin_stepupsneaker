@@ -176,7 +176,7 @@ export const POSTab: React.FC = () => {
 
   const handleAdvancedAddShow = () => {
     if (!activeKey || activeKey == "1") {
-      message.error(t("orders.notification.tab.add.advancedAdd.error"));
+      message.error(t("orders.notification.tab.advancedAdd.error"));
     } else {
       advancedAddShow();
     }
@@ -184,7 +184,7 @@ export const POSTab: React.FC = () => {
 
   const handleScanShow = () => {
     if (!activeKey || activeKey == "1") {
-      message.error(t("orders.notification.tab.add.advancedAdd.error"));
+      message.error(t("orders.notification.tab.advancedAdd.error"));
     } else {
       scanShow();
     }
