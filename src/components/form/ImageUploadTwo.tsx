@@ -79,7 +79,9 @@ const ImageUploadTwo: React.FC<IImageUploadTwoProps> = ({
               alt="Default avatar"
             />
           )}
-          <Text style={styles.imageDescription}>{t("image.description")}</Text>
+          <Text style={styles.imageDescription}>
+            {t(`image.description.${imageUrl ? "edit" : "add"}`)}
+          </Text>
           <Text style={styles.imageValidation}>
             {t("image.validation", { size: 1080 })}
           </Text>

@@ -149,10 +149,12 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
                       validator: validateFullName,
                     },
                   ]}
+                  required
                 >
                   <Input maxLength={LENGTH_NAME} showCount />
                 </Form.Item>
                 <Form.Item
+                  required
                   label={
                     <FieldLabel
                       fieldName={t("customers.fields.email")}
@@ -172,6 +174,7 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
               </Col>
               <Col xs={24} lg={12}>
                 <Form.Item
+                  required
                   label={t("customers.fields.dateOfBirth")}
                   name="dateOfBirth"
                   rules={[
@@ -196,6 +199,7 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
                   />
                 </Form.Item>
                 <Form.Item
+                  required
                   label={t("customers.fields.gender.label")}
                   name="gender"
                   rules={[

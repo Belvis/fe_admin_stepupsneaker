@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { NumberField } from "@refinedev/antd";
 import {
@@ -49,8 +49,8 @@ const ChangeDetail: React.FC<ChangeDetailProps> = ({
     if (changes) {
       switch (key) {
         case "orderDetails":
-          const newOD: IOrderDetailResponse = changes[key].newValue[0];
-          const oldOD: IOrderDetailResponse = changes[key].oldValue[0];
+          const newODs: IOrderDetailResponse[] = changes[key].newValue;
+          const oldODs: IOrderDetailResponse[] = changes[key].oldValue;
 
           return (
             <Descriptions
@@ -58,47 +58,54 @@ const ChangeDetail: React.FC<ChangeDetailProps> = ({
               layout="vertical"
               size="small"
               bordered
+              key={key}
             >
               <Descriptions.Item label="Cũ">
-                {oldOD ? (
-                  <>
-                    <div>
-                      <strong>Sản phẩm</strong>:{" "}
-                      {oldOD.productDetail.product.name}
-                    </div>
-                    <div>
-                      <strong>Số lượng</strong>: {oldOD.quantity}
-                    </div>
-                    <div>
-                      <strong>Đơn giá</strong>: {renderValue(oldOD.price)}
-                    </div>
-                    <div>
-                      <strong>Thành tiền</strong>:{" "}
-                      {renderValue(oldOD.totalPrice)}
-                    </div>
-                  </>
+                {oldODs && oldODs.length > 0 ? (
+                  oldODs.map((oldOD, index) => (
+                    <Fragment key={index}>
+                      <div>
+                        <strong>Sản phẩm</strong>:{" "}
+                        {oldOD.productDetail.product.name}
+                      </div>
+                      <div>
+                        <strong>Số lượng</strong>: {oldOD.quantity}
+                      </div>
+                      <div>
+                        <strong>Đơn giá</strong>: {renderValue(oldOD.price)}
+                      </div>
+                      <div>
+                        <strong>Thành tiền</strong>:{" "}
+                        {renderValue(oldOD.totalPrice)}
+                      </div>
+                      {index !== oldODs.length - 1 && <hr />}
+                    </Fragment>
+                  ))
                 ) : (
                   <div>N/A</div>
                 )}
               </Descriptions.Item>
               <Descriptions.Item label="Mới">
-                {newOD ? (
-                  <>
-                    <div>
-                      <strong>Sản phẩm</strong>:{" "}
-                      {newOD.productDetail.product.name}
-                    </div>
-                    <div>
-                      <strong>Số lượng</strong>: {newOD.quantity}
-                    </div>
-                    <div>
-                      <strong>Đơn giá</strong>: {renderValue(newOD.price)}
-                    </div>
-                    <div>
-                      <strong>Thành tiền</strong>:{" "}
-                      {renderValue(newOD.totalPrice)}
-                    </div>
-                  </>
+                {newODs && newODs.length > 0 ? (
+                  newODs.map((newOD, index) => (
+                    <Fragment key={index}>
+                      <div>
+                        <strong>Sản phẩm</strong>:{" "}
+                        {newOD.productDetail.product.name}
+                      </div>
+                      <div>
+                        <strong>Số lượng</strong>: {newOD.quantity}
+                      </div>
+                      <div>
+                        <strong>Đơn giá</strong>: {renderValue(newOD.price)}
+                      </div>
+                      <div>
+                        <strong>Thành tiền</strong>:{" "}
+                        {renderValue(newOD.totalPrice)}
+                      </div>
+                      {index !== newODs.length - 1 && <hr />}
+                    </Fragment>
+                  ))
                 ) : (
                   <div>N/A</div>
                 )}

@@ -10,18 +10,25 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IOrderAuditResponse, RevisionType } from "../../interfaces";
 import ChangeDetail from "./ChangeDetail";
 import { CreatedAt, TimelineContent, TimelineItem } from "./style";
+import { getRandomId } from "../../helpers/random";
 
 dayjs.extend(relativeTime);
 
 type TimeLineProps = {
   id?: string;
+  shouldRefetch: boolean;
+  setShouldRefetch: Dispatch<SetStateAction<boolean>>;
 };
 
-export const TimeLine: React.FC<TimeLineProps> = ({ id }) => {
+export const TimeLine: React.FC<TimeLineProps> = ({
+  id,
+  shouldRefetch,
+  setShouldRefetch,
+}) => {
   const t = useTranslate();
 
   const { data, isLoading, isError, refetch } = useOne<
@@ -33,8 +40,11 @@ export const TimeLine: React.FC<TimeLineProps> = ({ id }) => {
   });
 
   useEffect(() => {
-    refetch();
-  }, []);
+    if (shouldRefetch) {
+      refetch();
+      setShouldRefetch(false);
+    }
+  }, [shouldRefetch]);
 
   const audits = data?.data ?? [];
 
@@ -120,7 +130,7 @@ export const TimeLine: React.FC<TimeLineProps> = ({ id }) => {
                     >
                       <CreatedAt italic>{dayjs(at).fromNow()}</CreatedAt>
                     </Tooltip>
-                    <Text>
+                    <Text key={getRandomId(10)}>
                       {t(
                         `dashboard.timeline.type.${
                           getStatusColor(revisionType)?.text
@@ -135,7 +145,7 @@ export const TimeLine: React.FC<TimeLineProps> = ({ id }) => {
                             {Object.keys(changes).map(
                               (key, index, array) =>
                                 key !== "versionUpdate" && (
-                                  <Text strong>
+                                  <Text key={getRandomId(10)} strong>
                                     {t(`dashboard.timeline.changes.${key}`)}
                                     {index < array.length - 1 && ", "}
                                   </Text>
@@ -145,7 +155,9 @@ export const TimeLine: React.FC<TimeLineProps> = ({ id }) => {
                         )}
                     </Text>
 
-                    <Text strong>Bởi: {creator}</Text>
+                    <Text key={getRandomId(10)} strong>
+                      Bởi: {creator}
+                    </Text>
                     {changes && (
                       <Link
                         target="_blank"

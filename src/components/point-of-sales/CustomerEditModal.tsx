@@ -65,7 +65,9 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
       "dateOfBirth",
       formProps.initialValues?.dateOfBirth
     );
+    formProps.form?.setFieldValue("image", formProps.initialValues?.image);
   }, [formProps.initialValues]);
+
   useEffect(() => {
     const addressList = formProps.form?.getFieldValue("addressList");
     const dateOfBirth = formProps.form?.getFieldValue("dateOfBirth");
@@ -146,6 +148,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
             <Row gutter={10}>
               <Col xs={24} lg={12}>
                 <Form.Item
+                  required
                   label={
                     <FieldLabel
                       fieldName={t("customers.fields.fullName")}
@@ -163,6 +166,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                   <Input maxLength={LENGTH_NAME} showCount />
                 </Form.Item>
                 <Form.Item
+                  required
                   label={
                     <FieldLabel
                       fieldName={t("customers.fields.email")}
@@ -182,6 +186,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
               </Col>
               <Col xs={24} lg={12}>
                 <Form.Item
+                  required
                   label={t("customers.fields.dateOfBirth")}
                   name="dob"
                   rules={[
@@ -207,6 +212,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                 <Row gutter={10}>
                   <Col span={12}>
                     <Form.Item
+                      required
                       label={t("customers.fields.gender.label")}
                       name="gender"
                       rules={[
@@ -224,6 +230,7 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                   </Col>
                   <Col span={12}>
                     <Form.Item
+                      required
                       label={t("customers.fields.status")}
                       name="status"
                       rules={[

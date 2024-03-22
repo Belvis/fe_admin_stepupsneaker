@@ -93,7 +93,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
               />
             )}
             <Text style={styles.imageDescription}>
-              {t("image.description")}
+              {t(`image.description.${imageUrl ? "edit" : "add"}`)}
             </Text>
             <Text style={styles.imageValidation}>
               {t("image.validation", { size: 1080 })}

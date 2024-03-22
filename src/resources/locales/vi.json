@@ -1193,7 +1193,10 @@
       "invalid": "Bạn chỉ có thể đăng tải file JPG/PNG!",
       "exceed": "Ảnh phải nhỏ hơn 2MB!"
     },
-    "description": "Thêm hình ảnh",
+    "description": {
+      "add": "Thêm hình ảnh",
+      "edit": "Chỉnh sửa hình ảnh"
+    },
     "validation": "phải là {{size}}x{{size}} px"
   }
 }
