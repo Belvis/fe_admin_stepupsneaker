@@ -934,7 +934,19 @@
       "change": "Tiền thừa"
     },
     "pending": "Chưa thanh toán",
-    "retailCustomer": "Khách lẻ"
+    "retailCustomer": "Khách lẻ",
+    "modal": {
+      "title": "Mã QR thanh toán",
+      "buttons": {
+        "footer": {
+          "label": "Xác nhận thanh toán",
+          "placeholder": "Nhập vào mã giao dịch"
+        }
+      },
+      "error": {
+        "transactionCode": "Mã giao dịch không được để trống"
+      }
+    }
   },
   "paymentMethods": {
     "paymentMethods": "Phương thức thanh toán",
@@ -1173,7 +1185,11 @@
       "value": "Giá trị không được để trống",
       "constraint": "Điều kiện không được để trống",
       "voucherRange": "Khoảng ngày không được để trống",
-      "address": "Địa chỉ không được để trống"
+      "address": "Địa chỉ không được để trống",
+      "length": "Chiều dài không được để trống",
+      "weight": "Cân nặng không được để trống",
+      "height": "Chiều cao không được để trống",
+      "weightUnit": "Đơn vị không được để trống"
     },
     "vouchers": {
       "exceed": "Giá trị không thể quá {{length}} phần trăm"

@@ -27,6 +27,7 @@ import {
 } from "../../interfaces";
 import { AddressFormFour } from "../form/AddressFormFour";
 import { PaymentModal } from "./PaymentModal";
+import { LENGTH_NAME } from "../../constants/common";
 
 const { useToken } = theme;
 const { Text, Title } = Typography;
@@ -265,7 +266,15 @@ export const DeliverySalesRightContent: React.FC<
                   className="w-100"
                 >
                   <Input
-                    placeholder="Tên người nhận"
+                    maxLength={LENGTH_NAME}
+                    showCount
+                    placeholder={
+                      t("orders.transportAddress.name") +
+                      " " +
+                      "(" +
+                      t("common.maxLength", { length: LENGTH_NAME }) +
+                      ")"
+                    }
                     variant="borderless"
                     style={{
                       width: "100%",

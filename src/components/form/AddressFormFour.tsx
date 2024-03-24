@@ -14,13 +14,14 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { useContext, useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
+import { LENGTH_DESCRIPTION, LENGTH_PHONE } from "../../constants/common";
+import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 import { validateCommon, validatePhoneNumber } from "../../helpers/validate";
 import {
   IDistrictResponse,
   IProvinceResponse,
   IWardResponse,
 } from "../../interfaces";
-import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 
 const { useToken } = theme;
 const { Text } = Typography;
@@ -142,72 +143,89 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
   };
 
   function calculateShippingFee(): void {
-    calculateFeeMutate(
-      {
-        url: `${GHN_API_BASE_URL}/v2/shipping-order/fee`,
-        method: "post",
-        values: {
-          from_district_id: 1542,
-          service_id: 53321,
-          to_district_id: form.getFieldValue("districtId"),
-          to_ward_code: form.getFieldValue("wardCode"),
-          height: form.getFieldValue("height"),
-          length: form.getFieldValue("length"),
-          weight:
-            form.getFieldValue("weight") * form.getFieldValue("weightUnit"),
-          width: form.getFieldValue("width"),
-          insurance_value: 500000,
-        },
-        config: {
-          headers: {
-            "Content-Type": "application/json",
-            Token: GHN_TOKEN,
-            ShopId: GHN_SHOP_ID,
+    form
+      .validateFields([
+        "provinceId",
+        "districtId",
+        "wardCode",
+        "weight",
+        "length",
+        "width",
+        "height",
+      ])
+      .then((values: any) => {
+        calculateFeeMutate(
+          {
+            url: `${GHN_API_BASE_URL}/v2/shipping-order/fee`,
+            method: "post",
+            values: {
+              from_district_id: 1542,
+              service_id: 53321,
+              to_district_id: form.getFieldValue("districtId"),
+              to_ward_code: form.getFieldValue("wardCode"),
+              height: form.getFieldValue("height"),
+              length: form.getFieldValue("length"),
+              weight:
+                form.getFieldValue("weight") * form.getFieldValue("weightUnit"),
+              width: form.getFieldValue("width"),
+              insurance_value: 500000,
+            },
+            config: {
+              headers: {
+                "Content-Type": "application/json",
+                Token: GHN_TOKEN,
+                ShopId: GHN_SHOP_ID,
+              },
+            },
+            successNotification: (data: any, values) => {
+              const shippingMoney = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                currencyDisplay: "symbol",
+              }).format(data?.response.data.total as number);
+
+              return {
+                message:
+                  "Chi phí vận chuyển của bạn được ước tính là " +
+                  shippingMoney,
+                description: "Thành công",
+                type: "success",
+              };
+            },
+            errorNotification: (data, values) => {
+              const shippingMoney = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                currencyDisplay: "symbol",
+              }).format(36500);
+
+              return {
+                message:
+                  "Chi phí vận chuyển của bạn được ước tính là " +
+                  shippingMoney,
+                description: "Thành công",
+                type: "success",
+              };
+            },
           },
-        },
-        successNotification: (data: any, values) => {
-          const shippingMoney = new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-            currencyDisplay: "symbol",
-          }).format(data?.response.data.total as number);
+          {
+            onError: (error, variables, context) => {
+              console.log("An error occurred! ", +error);
 
-          return {
-            message:
-              "Chi phí vận chuyển của bạn được ước tính là " + shippingMoney,
-            description: "Thành công",
-            type: "success",
-          };
-        },
-        errorNotification: (data, values) => {
-          const shippingMoney = new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-            currencyDisplay: "symbol",
-          }).format(36500);
+              const shippingMoney = 36500;
+              setShippingMoney(shippingMoney);
+            },
+            onSuccess: (data: any, variables, context) => {
+              const shippingMoney = data?.response.data.total as number;
 
-          return {
-            message:
-              "Chi phí vận chuyển của bạn được ước tính là " + shippingMoney,
-            description: "Thành công",
-            type: "success",
-          };
-        },
-      },
-      {
-        onError: (error, variables, context) => {
-          console.log("An error occurred! ", +error);
-
-          const shippingMoney = 36500;
-          setShippingMoney(shippingMoney);
-        },
-        onSuccess: (data: any, variables, context) => {
-          const shippingMoney = data?.response.data.total as number;
-
-          setShippingMoney(shippingMoney);
-        },
-      }
-    );
+              setShippingMoney(shippingMoney);
+            },
+          }
+        );
+      })
+      .catch((errorInfo: any) => {
+        return;
+      });
   }
 
   return (
@@ -222,8 +240,16 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
           ]}
         >
           <Input
+            maxLength={LENGTH_PHONE}
+            showCount
+            placeholder={
+              t("customers.fields.phone.placeholder") +
+              " " +
+              "(" +
+              t("common.maxLength", { length: LENGTH_PHONE }) +
+              ")"
+            }
             variant="borderless"
-            placeholder={t("customers.fields.phone.placeholder")}
             style={{
               width: "100%",
               borderBottom: `1px solid ${token.colorPrimary}`,
@@ -341,7 +367,15 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
               borderBottom: `1px solid ${token.colorPrimary}`,
               borderRadius: 0,
             }}
-            placeholder="Địa chi chi tiết"
+            showCount
+            maxLength={LENGTH_DESCRIPTION}
+            placeholder={
+              t("customers.fields.more") +
+              " " +
+              "(" +
+              t("common.maxLength", { length: LENGTH_DESCRIPTION }) +
+              ")"
+            }
           />
         </Form.Item>
       </Col>
@@ -352,7 +386,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
               name="weight"
               rules={[
                 {
-                  required: true,
+                  validator: (_, value) =>
+                    validateCommon(_, value, t, "weight"),
                 },
               ]}
               initialValue={900}
@@ -373,7 +408,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
               name="weightUnit"
               rules={[
                 {
-                  required: true,
+                  validator: (_, value) =>
+                    validateCommon(_, value, t, "weightUnit"),
                 },
               ]}
               initialValue="gram"
@@ -396,7 +432,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
               name="length"
               rules={[
                 {
-                  required: true,
+                  validator: (_, value) =>
+                    validateCommon(_, value, t, "length"),
                 },
               ]}
               initialValue={1}
@@ -414,10 +451,10 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
           </Col>
           <Col span={3}>
             <Form.Item
-              name="witdth"
+              name="width"
               rules={[
                 {
-                  required: true,
+                  validator: (_, value) => validateCommon(_, value, t, "width"),
                 },
               ]}
               initialValue={1}
@@ -438,7 +475,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
               name="height"
               rules={[
                 {
-                  required: true,
+                  validator: (_, value) =>
+                    validateCommon(_, value, t, "height"),
                 },
               ]}
               initialValue={1}
