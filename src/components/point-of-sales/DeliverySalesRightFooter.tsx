@@ -29,16 +29,12 @@ export const DeliverySalesRightFooter: React.FC<
     const convertedPayload: IPaymentRequest[] = paymentToRequest(payments);
 
     const submitData = {
-      ...order,
-      customer: order.customer ? order.customer.id : null,
-      employee: order.employee ? order.employee.id : null,
-      voucher: order.voucher ? order.voucher.id : null,
       fullName: form.getFieldValue("fullName"),
       email: form.getFieldValue("email"),
       shippingMoney: shippingMoney,
+      phoneNumber: form.getFieldValue("phoneNumber"),
       isCOD,
       addressShipping: {
-        phoneNumber: form.getFieldValue("phoneNumber"),
         districtId: form.getFieldValue("districtId"),
         districtName: form.getFieldValue("districtName"),
         provinceId: form.getFieldValue("provinceId"),

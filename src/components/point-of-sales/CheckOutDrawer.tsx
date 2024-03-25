@@ -224,11 +224,6 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       {
         resource: "orders/direct/check-out",
         values: {
-          ...order,
-          customer: order.customer ? order.customer.id : null,
-          employee: order.employee ? order.employee.id : null,
-          voucher: order.voucher ? order.voucher.id : null,
-          address: order.address ? order.address.id : null,
           payments: paymentConvertedPayload,
         },
         id: order.id,
