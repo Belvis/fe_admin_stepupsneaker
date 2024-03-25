@@ -115,8 +115,11 @@ export const DeliverySalesRightContent: React.FC<
       form.setFieldsValue({
         phoneNumber: defaultAddress.phoneNumber,
         provinceId: Number(defaultAddress.provinceId),
+        provinceName: defaultAddress.provinceName,
         districtId: Number(defaultAddress.districtId),
+        districtName: defaultAddress.districtName,
         wardCode: defaultAddress.wardCode,
+        wardName: defaultAddress.wardName,
         more: defaultAddress.more,
         fullName: order.customer.fullName,
       });

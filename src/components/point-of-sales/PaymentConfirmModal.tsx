@@ -65,8 +65,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
         return;
       }
-      setPayments(copiedPayments);
-      submitOrder();
+      setPayments(copiedPayments, () => submitOrder());
       close();
     } else {
       message.error(t("payments.modal.error.transactionCode"));

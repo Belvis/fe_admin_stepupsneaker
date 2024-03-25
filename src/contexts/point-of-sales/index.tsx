@@ -22,6 +22,9 @@ import {
   IProductResponse,
   QueryObserverResult,
 } from "../../interfaces";
+import useStateCallback, {
+  DispatchWithCallback,
+} from "../../hooks/useStateCallBack";
 
 type POSContextType = {
   selectedProduct: IProductResponse;
@@ -36,9 +39,7 @@ type POSContextType = {
     QueryObserverResult<GetListResponse<IOrderResponse>, HttpError>
   >;
   payments: IPaymentResponse[] | undefined;
-  setPayments: React.Dispatch<
-    React.SetStateAction<IPaymentResponse[] | undefined>
-  >;
+  setPayments: DispatchWithCallback<React.SetStateAction<IPaymentResponse[]>>;
   paymentMethods: IPaymentMethodResponse[] | undefined;
   setPaymentMethods: React.Dispatch<
     React.SetStateAction<IPaymentMethodResponse[] | undefined>
@@ -77,7 +78,7 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
   const [items, setItems] = useState<Tab[]>(initialItems);
   const [activeKey, setActiveKey] = useState<string>("1");
 
-  const [payments, setPayments] = useState<IPaymentResponse[]>();
+  const [payments, setPayments] = useStateCallback<IPaymentResponse[]>([]);
   const [paymentMethods, setPaymentMethods] =
     useState<IPaymentMethodResponse[]>();
 

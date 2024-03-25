@@ -271,7 +271,6 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
         return;
       }
-      setPayments(payments);
       submitOrder();
     } else {
       message.error(t("payments.modal.error.transactionCode"));

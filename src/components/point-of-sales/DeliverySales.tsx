@@ -18,9 +18,7 @@ export const DeliverySales: React.FC<DeliverySalesProps> = ({ order }) => {
   const { totalPrice } = useOrderCalculations(orderDetails);
 
   useEffect(() => {
-    if (order.shippingMoney && order.shippingMoney) {
-      setShippingMoney(order.shippingMoney);
-    }
+    setShippingMoney(order.shippingMoney);
   }, [order.shippingMoney]);
 
   useEffect(() => {
