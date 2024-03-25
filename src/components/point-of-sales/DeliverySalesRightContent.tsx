@@ -128,6 +128,7 @@ export const DeliverySalesRightContent: React.FC<
         fullName: order.customer.fullName,
       });
     }
+    form.setFieldValue("email", order.customer.email);
   }
 
   const handleModalOk = () => {

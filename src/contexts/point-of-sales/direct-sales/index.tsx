@@ -46,6 +46,15 @@ export const DirectSalesContextProvider: React.FC<PropsWithChildren> = ({
       prevLayout === "horizontal" ? "vertical" : "horizontal"
     );
   };
+
+  const [brandFilter, setBrandFilter] = useState("");
+  const [materialFilter, setMaterialFilter] = useState("");
+  const [soleFilter, setSoleFilter] = useState("");
+  const [styleFilter, setStyleFilter] = useState("");
+  const [tradeMarkFilter, setTradeMarkFilter] = useState("");
+  const [colorFilter, setColorFilter] = useState("");
+  const [sizeFilter, setSizeFilter] = useState("");
+
   return (
     <DirectSalesContext.Provider
       value={{

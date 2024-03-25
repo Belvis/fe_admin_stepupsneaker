@@ -100,7 +100,6 @@ const Voucher: React.FC<VoucherProps> = ({
         {
           resource: "orders/apply-voucher",
           values: {
-            ...order,
             voucher: id,
           },
           id: order.id,
