@@ -86,6 +86,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     IProductDetailFilterVariables
   >({
     resource: `product-details`,
+    sorters: {
+      mode: "off",
+    },
     filters: {
       permanent: [
         {
@@ -299,6 +302,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       title: t("productDetails.fields.name"),
       dataIndex: "name",
       key: "name",
+      sorter: (a, b) => a.product.name.localeCompare(b.product.name),
       render: (_, { product, size, color }) => (
         <Text style={{ wordBreak: "inherit" }}>
           {product.name} [{size.name} - {color.name}]
@@ -310,6 +314,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       key: "quantity",
       dataIndex: "quantity",
       align: "center",
+      sorter: (a, b) => a.quantity - b.quantity,
       render: (_, record) => (
         <InputNumber
           min={1}
@@ -325,6 +330,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       key: "price",
       dataIndex: "price",
       align: "center",
+      sorter: (a, b) => a.price - b.price,
       render: (_, record) => (
         <InputNumber
           min={1}
@@ -346,6 +352,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       key: "size",
       dataIndex: "size",
       align: "center",
+      sorter: (a, b) => a.size.name.localeCompare(b.size.name),
       render: (_, record) => <Text className="w-100">{record.size.name}</Text>,
     },
     {
@@ -353,6 +360,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       key: "color",
       dataIndex: "color",
       align: "center",
+      sorter: (a, b) => a.color.name.localeCompare(b.color.name),
       render: (_, record) => (
         <ColorPicker value={record.color.code} showText disabled />
       ),
@@ -363,6 +371,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       dataIndex: "status",
       width: "10%",
       align: "center",
+      sorter: (a, b) => a.status.localeCompare(b.status),
       render: (_, { status }) => <ProductStatus status={status} />,
     },
     {

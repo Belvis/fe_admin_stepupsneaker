@@ -6,10 +6,10 @@ import { useMemo } from "react";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { IOrderFilterVariables, IOrderResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
 import { OrderStatus } from "../order/OrderStatus";
 import { OrderType } from "../order/OrderType";
 import OrderDetailsPopover from "../order/OrderDetailsPopover";
+import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
 

@@ -25,7 +25,7 @@ import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { getOrderTypeOptions } from "../../constants/type";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { IOrderFilterVariables, IOrderResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
 

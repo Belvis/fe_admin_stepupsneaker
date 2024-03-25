@@ -24,7 +24,7 @@ import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { IVoucherFilterVariables, IVoucherResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
 

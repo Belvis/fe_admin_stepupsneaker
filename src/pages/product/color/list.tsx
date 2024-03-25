@@ -27,7 +27,7 @@ import {
   IColorResponse,
   IProdAttributeFilterVariables,
 } from "../../../interfaces";
-import calculateIndex from "../../../utils/common/calculateIndex";
+import { calculateIndex } from "../../../utils/common/calculator";
 import { colorPickerStyles } from "./style";
 
 export const ColorList: React.FC<IResourceComponentsProps> = () => {

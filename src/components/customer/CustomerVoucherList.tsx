@@ -5,7 +5,7 @@ import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { IVoucherHistoryResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 

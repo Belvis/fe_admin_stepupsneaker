@@ -8,22 +8,21 @@ import {
   TablePaginationConfig,
   Tooltip,
 } from "antd";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import { IOrderResponse } from "../../interfaces";
 import { CheckOutDrawer } from "./CheckOutDrawer";
+import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
 
 type DirectSalesRightFooterProps = {
   order: IOrderResponse;
-  pagination: TablePaginationConfig;
-  setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
 };
 
 const DirectSalesRightFooter: React.FC<DirectSalesRightFooterProps> = ({
   order,
-  pagination,
-  setPagination,
 }) => {
   const t = useTranslate();
+
+  const { pagination, setPagination } = useContext(DirectSalesContext);
 
   const [checkOutDrawerOpen, setCheckOutDrawerOpen] = useState(false);
 

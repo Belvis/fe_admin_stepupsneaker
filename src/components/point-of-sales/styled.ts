@@ -1,4 +1,4 @@
-import { UserOutlined } from "@ant-design/icons";
+import { CustomerServiceOutlined, UserOutlined } from "@ant-design/icons";
 import { Col, Typography } from "antd";
 import styled from "styled-components";
 
@@ -58,6 +58,11 @@ export const CustomerInfor = styled(Col)`
 `;
 
 export const UserIcon = styled(UserOutlined)`
+  color: ${(props) => props.color};
+  font-size: 16px;
+  margin-right: 8px;
+`;
+export const EmployeeIcon = styled(CustomerServiceOutlined)`
   color: ${(props) => props.color};
   font-size: 16px;
   margin-right: 8px;

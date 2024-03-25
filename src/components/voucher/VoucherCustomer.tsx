@@ -22,7 +22,7 @@ import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 import CommonSearchForm from "../form/CommonSearchForm";
 
 const { Title, Text } = Typography;

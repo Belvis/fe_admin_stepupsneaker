@@ -61,6 +61,7 @@ import {
   TextContainer,
   UserIcon,
 } from "./styled";
+import EmployeeSection from "./EmployeeInputSection";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -79,7 +80,6 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   const t = useTranslate();
   const { token } = useToken();
   const { mutate: mutateUpdate, isLoading: isLoadingOrderUpdate } = useUpdate();
-  const { mutate: paymentMutateCreateMany } = useCreateMany();
   const { list } = useNavigation();
   const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
@@ -194,35 +194,6 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     ],
   });
 
-  const [employeeOptions, setEmployeeOptions] = useState<IOption[]>([]);
-  const [value, setValue] = useState<string>("");
-
-  const { refetch: refetchEmployees } = useList<IEmployeeResponse>({
-    resource: "employees",
-    config: {
-      filters: [{ field: "q", operator: "contains", value }],
-    },
-    pagination: {
-      pageSize: 1000,
-    },
-    queryOptions: {
-      enabled: false,
-      onSuccess: (data) => {
-        const employeeOptions = data.data.map((item) =>
-          renderItem(item.fullName, item.phoneNumber, item.image, item)
-        );
-        if (employeeOptions.length > 0) {
-          setEmployeeOptions(employeeOptions);
-        }
-      },
-    },
-  });
-
-  useEffect(() => {
-    setEmployeeOptions([]);
-    refetchEmployees();
-  }, [value]);
-
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
 
   const showPaymentModal = () => {
@@ -296,7 +267,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     );
 
     if (customerPaid < totalPrice - discount) {
-      message.error(t("orders.notification.checkoutDrawer.error"));
+      message.error(t("orders.notification.tab.checkoutDrawer.error"));
       return;
     }
 
@@ -312,9 +283,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           employee: order.employee ? order.employee.id : null,
           voucher: order.voucher ? order.voucher.id : null,
           address: order.address ? order.address.id : null,
-          totalMoney: totalPrice - discount,
           payments: paymentConvertedPayload,
-          status: "COMPLETED",
         },
         id: order.id,
         successNotification(data, values, resource) {
@@ -391,7 +360,6 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           <Col span={24}>
             <Select
               showSearch
-              placeholder="Select a person"
               optionFilterProp="children"
               style={{ width: "100%" }}
               defaultValue="0691000441548"
@@ -555,51 +523,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         <Col span={24}>
           <Row>
             <Col span={14}>
-              <Spin spinning={isLoadingOrderUpdate}>
-                {order.employee == null && order.employee == undefined ? (
-                  <AutoComplete
-                    style={{
-                      width: "100%",
-                    }}
-                    options={employeeOptions}
-                    onSelect={(_, option: any) => {
-                      editOrderEmployee(option.employee.id);
-                    }}
-                    filterOption={false}
-                    onSearch={debounce((value: string) => setValue(value), 300)}
-                  >
-                    <Input
-                      placeholder={t("search.placeholder.employee")}
-                      suffix={<SearchOutlined />}
-                    />
-                  </AutoComplete>
-                ) : (
-                  <CustomerInfor span={24}>
-                    <TextContainer>
-                      <UserIcon color={token.colorBgMask} />
-                      <CustomerName color={token.colorPrimary}>
-                        {order.employee?.fullName} -{" "}
-                        {order.employee?.phoneNumber}
-                      </CustomerName>
-                    </TextContainer>
-                    <CloseButtonWrapper>
-                      <Button
-                        shape="circle"
-                        type="link"
-                        icon={
-                          <CloseOutlined
-                            style={{
-                              fontSize: token.fontSize,
-                              color: token.colorBgMask,
-                            }}
-                          />
-                        }
-                        onClick={() => editOrderEmployee(null)}
-                      />
-                    </CloseButtonWrapper>
-                  </CustomerInfor>
-                )}
-              </Spin>
+              <EmployeeSection order={order} />
             </Col>
             <Col span={10} style={{ textAlign: "end" }}>
               <Space wrap>

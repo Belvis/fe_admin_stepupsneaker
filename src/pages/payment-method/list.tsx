@@ -14,7 +14,7 @@ import {
   IPaymentMethodFilterVariables,
   IPaymentMethodResponse,
 } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 import { useMemo } from "react";
 
 export const PaymentMethodList: React.FC<IResourceComponentsProps> = () => {

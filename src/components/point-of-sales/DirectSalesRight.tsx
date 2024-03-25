@@ -18,22 +18,6 @@ const DirectSalesRight: React.FC<DirectSalesRightProps> = ({
 }) => {
   const { token } = useToken();
 
-  const [pLayout, setpLayout] = useState<"horizontal" | "vertical">(
-    "horizontal"
-  );
-
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
-    current: 1,
-    pageSize: 5,
-    total: 0,
-  });
-
-  const handleToggleLayout = () => {
-    setpLayout((prevLayout) =>
-      prevLayout === "horizontal" ? "vertical" : "horizontal"
-    );
-  };
-
   return (
     <Col span={span}>
       <Card
@@ -52,23 +36,11 @@ const DirectSalesRight: React.FC<DirectSalesRightProps> = ({
           className="d-flex flex-column justify-content-between h-100"
         >
           {/* Header */}
-          <DirectSalesRightHeader
-            pLayout={pLayout}
-            handleToggleLayout={handleToggleLayout}
-            order={order}
-          />
+          <DirectSalesRightHeader order={order} />
           {/* Content */}
-          <DirectSalesRightContent
-            pLayout={pLayout}
-            pagination={pagination}
-            setPagination={setPagination}
-          />
+          <DirectSalesRightContent />
           {/* Footer */}
-          <DirectSalesRightFooter
-            order={order}
-            pagination={pagination}
-            setPagination={setPagination}
-          />
+          <DirectSalesRightFooter order={order} />
         </Space>
       </Card>
     </Col>

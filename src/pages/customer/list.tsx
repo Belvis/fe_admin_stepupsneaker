@@ -29,7 +29,7 @@ import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 import { AddressModal } from "../../components/address/AddressModal";
 
 const { Text } = Typography;

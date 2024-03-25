@@ -5,22 +5,21 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IOrderResponse } from "../../interfaces";
 import CustomerSection from "./CustomerInputSection";
 import { POSFilter } from "./POSFilter";
+import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
 
 type DirectSalesRightHeaderProps = {
   order: IOrderResponse;
-  pLayout: "horizontal" | "vertical";
-  handleToggleLayout: () => void;
 };
 
 const DirectSalesRightHeader: React.FC<DirectSalesRightHeaderProps> = ({
   order,
-  pLayout,
-  handleToggleLayout,
 }) => {
+  const { pLayout, handleToggleLayout } = useContext(DirectSalesContext);
+
   const [filterDrawerOpen, setFilterDrawerOpen] = useState<boolean>(false);
 
   const showFilterDrawer = () => {

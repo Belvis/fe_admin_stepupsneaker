@@ -27,7 +27,7 @@ import {
   IProdAttributeFilterVariables,
   IProdAttributeResponse,
 } from "../../../interfaces";
-import calculateIndex from "../../../utils/common/calculateIndex";
+import { calculateIndex } from "../../../utils/common/calculator";
 import { EditProdAttribute } from "../../../components/product/EditProdAttribute";
 
 export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {

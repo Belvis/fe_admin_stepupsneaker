@@ -5,6 +5,7 @@ import { IOrderResponse } from "../../interfaces";
 import { DeliverySales } from "./DeliverySales";
 import { DirectSales } from "./DirectSales";
 import { DeliverySalesContextProvider } from "../../contexts/point-of-sales/delivery-sales";
+import { DirectSalesContextProvider } from "../../contexts/point-of-sales/direct-sales";
 
 type TabContentProps = {
   order: IOrderResponse;
@@ -22,7 +23,11 @@ export const TabContent: React.FC<TabContentProps> = ({ order }) => {
           {t("orders.tab.directSales")}
         </Space>
       ),
-      children: <DirectSales order={order} />,
+      children: (
+        <DirectSalesContextProvider>
+          <DirectSales order={order} />,
+        </DirectSalesContextProvider>
+      ),
     },
     {
       key: "2",

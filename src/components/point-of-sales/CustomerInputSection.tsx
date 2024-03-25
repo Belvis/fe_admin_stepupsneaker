@@ -11,6 +11,7 @@ import {
   Spin,
   theme,
   App,
+  Tooltip,
 } from "antd";
 import { SearchOutlined, PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { ICustomerResponse, IOption, IOrderResponse } from "../../interfaces";
@@ -84,9 +85,8 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
   function editOrderCustomer(value: string | null): void {
     mutate(
       {
-        resource: "orders/direct/check-out",
+        resource: "orders/apply-customer",
         values: {
-          ...order,
           customer: value,
         },
         id: order.id,
@@ -137,33 +137,35 @@ const CustomerSection: React.FC<CustomerInputSectionProps> = ({ order }) => {
   );
 
   const customerInfoSection = (
-    <CustomerInfor color={mode === "light" ? "#f5f5f5" : ""} span={24}>
-      <TextContainer>
-        <UserIcon color={mode === "light" ? token.colorBgMask : "#ffffff"} />
-        <CustomerName color={token.colorPrimary} onClick={editShow}>
-          {order.customer?.fullName} -{" "}
-          {
-            order.customer?.addressList.find((add) => add.isDefault === true)
-              ?.phoneNumber
-          }
-        </CustomerName>
-      </TextContainer>
-      <CloseButtonWrapper>
-        <Button
-          shape="circle"
-          type="link"
-          icon={
-            <CloseOutlined
-              style={{
-                fontSize: token.fontSize,
-                color: mode == "light" ? token.colorBgMask : "#ffffff",
-              }}
-            />
-          }
-          onClick={() => editOrderCustomer(null)}
-        />
-      </CloseButtonWrapper>
-    </CustomerInfor>
+    <Tooltip title={t("customers.customers")} placement="left">
+      <CustomerInfor color={mode === "light" ? "#f5f5f5" : ""} span={24}>
+        <TextContainer>
+          <UserIcon color={mode === "light" ? token.colorBgMask : "#ffffff"} />
+          <CustomerName color={token.colorPrimary} onClick={editShow}>
+            {order.customer?.fullName} -{" "}
+            {
+              order.customer?.addressList.find((add) => add.isDefault === true)
+                ?.phoneNumber
+            }
+          </CustomerName>
+        </TextContainer>
+        <CloseButtonWrapper>
+          <Button
+            shape="circle"
+            type="link"
+            icon={
+              <CloseOutlined
+                style={{
+                  fontSize: token.fontSize,
+                  color: mode == "light" ? token.colorBgMask : "#ffffff",
+                }}
+              />
+            }
+            onClick={() => editOrderCustomer(null)}
+          />
+        </CloseButtonWrapper>
+      </CustomerInfor>
+    </Tooltip>
   );
 
   return (

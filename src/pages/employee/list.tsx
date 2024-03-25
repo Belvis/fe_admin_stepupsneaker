@@ -16,7 +16,7 @@ import { getCustomerStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { IEmployeeFilterVariables, IEmployeeResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 import { useMemo } from "react";
 
 const { Text } = Typography;

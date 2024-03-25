@@ -798,6 +798,7 @@
     },
     "transportAddress": {
       "name": "Tên người nhận",
+      "email": "Địa chỉ E-mail",
       "phoneNumber": "Số điện thoại"
     },
     "notification": {

@@ -49,9 +49,8 @@ const DirectSalesLeft: React.FC<DirectSalesLeftProps> = ({
     if (value !== order.note)
       mutate(
         {
-          resource: "orders/direct/check-out",
+          resource: "orders/apply-note",
           values: {
-            ...order,
             note: value,
           },
           id: order.id,

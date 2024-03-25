@@ -98,13 +98,10 @@ const Voucher: React.FC<VoucherProps> = ({
     if (order && type === "use" && close) {
       mutateUpdate(
         {
-          resource: "orders/direct/check-out",
+          resource: "orders/apply-voucher",
           values: {
             ...order,
-            employee: order.employee ? order.employee.id : "",
-            customer: order.customer ? order.customer.id : "",
             voucher: id,
-            address: order.address ? order.address.id : "",
           },
           id: order.id,
           successNotification: () => {

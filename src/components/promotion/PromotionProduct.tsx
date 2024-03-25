@@ -35,7 +35,7 @@ import {
   IProductDetailFilterVariables,
   IProductDetailResponse,
 } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 import CommonSearchForm from "../form/CommonSearchForm";
 import { ProductStatus } from "../product/ProductStatus";
 import { getPromotionStatusOptions } from "../../constants/status";

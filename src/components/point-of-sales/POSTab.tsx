@@ -159,7 +159,9 @@ export const POSTab: React.FC = () => {
       },
       {
         onError: (error, variables, context) => {
-          message.error(t("orders.notification.tab.add.error") + error.message);
+          message.error(
+            t("orders.notification.tab.remove.error") + error.message
+          );
         },
         onSuccess: (data, variables, context) => {
           if (lastIndex == -1 && items.length == 1) {
@@ -168,7 +170,7 @@ export const POSTab: React.FC = () => {
           } else {
             setActiveKey(items[lastIndex].key);
           }
-          message.success(t("orders.notification.tab.add.success"));
+          message.success(t("orders.notification.tab.remove.success"));
         },
       }
     );

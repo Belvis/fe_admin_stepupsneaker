@@ -1,5 +1,6 @@
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
+import { NumberField } from "@refinedev/antd";
 import { useTranslate, useUpdate } from "@refinedev/core";
-import { ColSpanType, IOrderResponse } from "../../interfaces";
 import {
   App,
   Button,
@@ -10,18 +11,16 @@ import {
   Space,
   Tooltip,
   Typography,
-  message,
   theme,
 } from "antd";
-import ShoppingCartHeader from "./ShoppingCartHeader";
-import { OrderItem } from "./OrderItem";
 import { debounce } from "lodash";
-import { NumberField } from "@refinedev/antd";
-import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
-import { DiscountModal } from "./DiscountModal";
 import { useContext, useState } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
+import { ColSpanType, IOrderResponse } from "../../interfaces";
+import { DiscountModal } from "./DiscountModal";
+import { OrderItem } from "./OrderItem";
+import ShoppingCartHeader from "./ShoppingCartHeader";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -69,12 +68,8 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
     if (value !== order.note)
       mutateUpdate(
         {
-          resource: "orders/direct/check-out",
+          resource: "orders/apply-note",
           values: {
-            ...order,
-            customer: order.customer ? order.customer.id : null,
-            employee: order.employee ? order.employee.id : null,
-            voucher: order.voucher ? order.voucher.id : null,
             note: value,
           },
           id: order.id,
@@ -107,12 +102,11 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
     if (shippingMoney !== order.shippingMoney)
       mutateUpdate(
         {
-          resource: "orders/direct/check-out",
+          resource: "orders/apply-shipping",
           values: {
-            ...order,
-            customer: order.customer ? order.customer.id : null,
-            employee: order.employee ? order.employee.id : null,
-            voucher: order.voucher ? order.voucher.id : null,
+            addressShipping: {
+              ...order.address,
+            },
             shippingMoney: shippingMoney,
           },
           id: order.id,
@@ -140,13 +134,9 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
   const removeOrderVoucher = () => {
     mutateUpdate(
       {
-        resource: "orders/direct/check-out",
+        resource: "orders/apply-voucher",
         values: {
-          ...order,
-          employee: order.employee ? order.employee.id : "",
-          customer: order.customer ? order.customer.id : "",
-          address: order.address ? order.address.id : "",
-          voucher: "",
+          voucher: null,
         },
         id: order.id,
         successNotification: () => {

@@ -18,7 +18,7 @@ import CommonSearchForm from "../../components/form/CommonSearchForm";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { IPaymentFilterVariables, IPaymentResponse } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
 

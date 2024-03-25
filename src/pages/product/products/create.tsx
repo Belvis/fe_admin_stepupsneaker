@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
 import { Breadcrumb, Card, Row } from "antd";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { CreateProdColorSection } from "../../../components/product/CreateProdColorSection";
 import { CreateProdHeaderSection } from "../../../components/product/CreateProdHeaderSection";
 import { CreateProdSizeSection } from "../../../components/product/CreateProdSizeSection";

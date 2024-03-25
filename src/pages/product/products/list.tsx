@@ -38,7 +38,7 @@ import {
   IProductFilterVariables,
   IProductResponse,
 } from "../../../interfaces";
-import calculateIndex from "../../../utils/common/calculateIndex";
+import { calculateIndex } from "../../../utils/common/calculator";
 import { EditProduct } from "../../../components/product/EditProduct";
 
 const { Text } = Typography;

@@ -255,6 +255,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
       title: t("productDetails.fields.name"),
       dataIndex: "name",
       key: "name",
+      sorter: (a, b) => a.product.name.localeCompare(b.product.name),
       render: (_, { product, size, color }) => (
         <Text style={{ wordBreak: "inherit" }}>
           {product.name} [{size.name} - {color.name}]
@@ -267,6 +268,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
       dataIndex: "quantity",
       width: "20%",
       align: "center",
+      sorter: (a, b) => a.quantity - b.quantity,
       render: (_, record) => (
         <InputNumber
           min={1}
@@ -283,6 +285,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
       dataIndex: "price",
       width: "20%",
       align: "center",
+      sorter: (a, b) => a.price - b.price,
       render: (_, record) => (
         <InputNumber
           min={1}

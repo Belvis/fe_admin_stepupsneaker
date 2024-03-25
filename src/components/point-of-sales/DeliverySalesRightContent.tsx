@@ -19,7 +19,7 @@ import {
 } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
-import { validateFullName } from "../../helpers/validate";
+import { validateEmail, validateFullName } from "../../helpers/validate";
 import {
   IOrderResponse,
   IPaymentMethodResponse,
@@ -27,7 +27,11 @@ import {
 } from "../../interfaces";
 import { AddressFormFour } from "../form/AddressFormFour";
 import { PaymentModal } from "./PaymentModal";
-import { LENGTH_NAME } from "../../constants/common";
+import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
+import {
+  calculatePayment,
+  calculateChange,
+} from "../../utils/common/calculator";
 
 const { useToken } = theme;
 const { Text, Title } = Typography;
@@ -142,11 +146,14 @@ export const DeliverySalesRightContent: React.FC<
     setIsCOD(checked);
   };
 
-  const calculateTotalPayment = () => {
-    if (!payments) return "Loading...";
-    const totalPaid = payments
-      .filter((payment) => payment.paymentStatus !== "PENDING")
-      .reduce((acc, payment) => acc + payment.totalMoney, 0);
+  const renderTotalPayment = () => {
+    let totalPaid;
+    if (!payments) {
+      totalPaid = 0;
+    } else {
+      totalPaid = calculatePayment(payments, "PENDING");
+    }
+
     return (
       <NumberField
         options={{
@@ -159,11 +166,14 @@ export const DeliverySalesRightContent: React.FC<
     );
   };
 
-  const calculateCODPayment = () => {
-    if (!payments) return "Loading...";
-    const codPaid = payments
-      .filter((payment) => payment.paymentStatus !== "COMPLETED")
-      .reduce((acc, payment) => acc + payment.totalMoney, 0);
+  const renderCODPayment = () => {
+    let codPaid;
+    if (!payments) {
+      codPaid = 0;
+    } else {
+      codPaid = calculatePayment(payments, "COMPLETED");
+    }
+
     return (
       <NumberField
         options={{
@@ -176,14 +186,17 @@ export const DeliverySalesRightContent: React.FC<
     );
   };
 
-  const calculateChange = () => {
-    if (!payments || !payments.length) return "Loading...";
+  const renderChange = () => {
+    let changeAmount;
+    const hasPendingPayment = payments?.find(
+      (payment) => payment.paymentStatus === "PENDING"
+    );
 
-    const totalPaid = payments
-      .filter((payment) => payment.paymentStatus !== "PENDING")
-      .reduce((acc, payment) => acc + payment.totalMoney, 0);
-
-    const changeAmount = totalPaid - (totalPrice - discount);
+    if (!payments || hasPendingPayment || isCOD) {
+      changeAmount = 0;
+    } else {
+      changeAmount = calculateChange(payments, totalPrice, discount);
+    }
 
     return (
       <NumberField
@@ -227,7 +240,7 @@ export const DeliverySalesRightContent: React.FC<
                   onClick={showModal}
                 />
               </Space>
-              <Title level={4}>{calculateTotalPayment()}</Title>
+              <Title level={4}>{renderTotalPayment()}</Title>
             </Flex>
           </Col>
           <Col span={24}>
@@ -242,7 +255,7 @@ export const DeliverySalesRightContent: React.FC<
                   size="small"
                 />
               </Space>
-              <Text strong>{calculateCODPayment()}</Text>
+              <Text strong>{renderCODPayment()}</Text>
             </Flex>
           </Col>
           <Col span={24}>
@@ -250,7 +263,7 @@ export const DeliverySalesRightContent: React.FC<
               <Space size="large" wrap>
                 <Text strong>{t("orders.tab.change")}</Text>
               </Space>
-              <Text strong>{calculateChange()}</Text>
+              <Text strong>{renderChange()}</Text>
             </Flex>
           </Col>
           <Col span={24} style={{ padding: 0 }}>
@@ -273,6 +286,33 @@ export const DeliverySalesRightContent: React.FC<
                       " " +
                       "(" +
                       t("common.maxLength", { length: LENGTH_NAME }) +
+                      ")"
+                    }
+                    variant="borderless"
+                    style={{
+                      width: "100%",
+                      borderBottom: `1px solid ${token.colorPrimary}`,
+                      borderRadius: 0,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  rules={[
+                    {
+                      validator: validateEmail,
+                    },
+                  ]}
+                  className="w-100"
+                >
+                  <Input
+                    maxLength={LENGTH_EMAIL}
+                    showCount
+                    placeholder={
+                      t("orders.transportAddress.email") +
+                      " " +
+                      "(" +
+                      t("common.maxLength", { length: LENGTH_EMAIL }) +
                       ")"
                     }
                     variant="borderless"

@@ -20,7 +20,7 @@ import {
   IPromotionFilterVariables,
   IPromotionResponse,
 } from "../../interfaces";
-import calculateIndex from "../../utils/common/calculateIndex";
+import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
 

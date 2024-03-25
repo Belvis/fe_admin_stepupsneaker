@@ -4,18 +4,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
 import { IProductResponse } from "../../interfaces";
 import { ProductItem } from "./ProductItem";
+import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
 
-type DirectSalesRightContentProps = {
-  pLayout: "horizontal" | "vertical";
-  pagination: TablePaginationConfig;
-  setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
-};
+type DirectSalesRightContentProps = {};
 
-const DirectSalesRightContent: React.FC<DirectSalesRightContentProps> = ({
-  pLayout,
-  pagination,
-  setPagination,
-}) => {
+const DirectSalesRightContent: React.FC<
+  DirectSalesRightContentProps
+> = ({}) => {
+  const { pLayout, pagination, setPagination } = useContext(DirectSalesContext);
+
   const { setSelectedProduct, productShow } = useContext(POSContext);
 
   const [products, setProducts] = useState<IProductResponse[]>([]);

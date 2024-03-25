@@ -1,15 +1,15 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
-import { App, AutoComplete, Input, Spin, theme } from "antd";
-import { useContext } from "react";
+import { App, AutoComplete, Input, Tooltip, theme } from "antd";
+import { Fragment, useContext } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { IOrderResponse } from "../../interfaces";
 import {
   CloseButtonWrapper,
   CustomerInfor,
   CustomerName,
+  EmployeeIcon,
   TextContainer,
-  UserIcon,
 } from "./styled";
 
 const { useToken } = theme;
@@ -41,23 +41,27 @@ const EmployeeSection: React.FC<EmployeeInputSectionProps> = ({ order }) => {
   );
 
   const employeeInfoSection = (
-    <CustomerInfor span={24} color={mode === "light" ? "#f5f5f5" : ""}>
-      <TextContainer>
-        <UserIcon color={mode === "light" ? token.colorBgMask : "#ffffff"} />
-        <CustomerName color={token.colorPrimary}>
-          {order.employee?.fullName} - {order.employee.phoneNumber}
-        </CustomerName>
-      </TextContainer>
-      <CloseButtonWrapper></CloseButtonWrapper>
-    </CustomerInfor>
+    <Tooltip title={t("employees.employees")} placement="left">
+      <CustomerInfor span={24} color={mode === "light" ? "#f5f5f5" : ""}>
+        <TextContainer>
+          <EmployeeIcon
+            color={mode === "light" ? token.colorBgMask : "#ffffff"}
+          />
+          <CustomerName color={token.colorPrimary}>
+            {order.employee?.fullName} - {order.employee.phoneNumber}
+          </CustomerName>
+        </TextContainer>
+        <CloseButtonWrapper></CloseButtonWrapper>
+      </CustomerInfor>
+    </Tooltip>
   );
 
   return (
-    <Spin style={{ width: "100%" }} spinning={false}>
+    <Fragment>
       {order.employee == null && order.employee == undefined
         ? employeeSection
         : employeeInfoSection}
-    </Spin>
+    </Fragment>
   );
 };
 
