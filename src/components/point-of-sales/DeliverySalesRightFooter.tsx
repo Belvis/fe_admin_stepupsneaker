@@ -19,14 +19,11 @@ export const DeliverySalesRightFooter: React.FC<
   const { mutate: mutateUpdate } = useUpdate();
   const { list } = useNavigation();
 
-  const { form, shippingMoney, discount, payments, isCOD, setPayments } =
+  const { form, shippingMoney, discount, isCOD } =
     useContext(DeliverySalesContext);
-  const { refetchOrder } = useContext(POSContext);
+  const { refetchOrder, setPayments, payments } = useContext(POSContext);
 
   const orderDetails = order?.orderDetails || [];
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
 
   function submitOrder(): void {
     const convertedPayload: IPaymentRequest[] = paymentToRequest(payments);
@@ -58,6 +55,20 @@ export const DeliverySalesRightFooter: React.FC<
         resource: `orders/delivery/check-out`,
         values: submitData,
         id: order.id,
+        successNotification(data, values, resource) {
+          return {
+            message: t("common.checkout.success"),
+            description: t("common.success"),
+            type: "success",
+          };
+        },
+        errorNotification: (error: any) => {
+          return {
+            message: t("common.error") + error.message,
+            description: "Oops!..",
+            type: "error",
+          };
+        },
       },
       {
         onError: (error, variables, context) => {
@@ -106,6 +117,7 @@ export const DeliverySalesRightFooter: React.FC<
         </Button>
         <PaymentComfirmModal
           order={order}
+          close={close}
           submitOrder={submitOrder}
           modalProps={restModalProps}
         />

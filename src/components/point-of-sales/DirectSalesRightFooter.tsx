@@ -1,17 +1,9 @@
 import { useTranslate } from "@refinedev/core";
-import {
-  Button,
-  Col,
-  Pagination,
-  PaginationProps,
-  Row,
-  TablePaginationConfig,
-  Tooltip,
-} from "antd";
+import { Button, Col, Pagination, PaginationProps, Row, Tooltip } from "antd";
 import React, { ReactNode, useContext, useState } from "react";
+import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
 import { IOrderResponse } from "../../interfaces";
 import { CheckOutDrawer } from "./CheckOutDrawer";
-import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
 
 type DirectSalesRightFooterProps = {
   order: IOrderResponse;

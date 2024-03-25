@@ -15,24 +15,20 @@ import {
   theme,
 } from "antd";
 import { debounce } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   IOrderResponse,
   IPaymentMethodResponse,
   IPaymentResponse,
 } from "../../interfaces";
+import { POSContext } from "../../contexts/point-of-sales";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { DEFAULT_BANK_ACCOUNT } from "../../constants/common";
 
 type PaymentModalProps = {
   open: boolean;
   handleOk: () => void;
   handleCancel: () => void;
-  paymentMethods: IPaymentMethodResponse[] | undefined;
-  payments: IPaymentResponse[] | undefined;
-  initialPrice: number;
-  totalPrice: number;
-  setPayments: React.Dispatch<
-    React.SetStateAction<IPaymentResponse[] | undefined>
-  >;
   order: IOrderResponse;
 };
 
@@ -43,16 +39,17 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   open,
   handleOk,
   handleCancel,
-  paymentMethods,
-  initialPrice,
-  totalPrice,
-  payments,
-  setPayments,
   order,
 }) => {
   const t = useTranslate();
   const { token } = useToken();
   const breakpoint = Grid.useBreakpoint();
+
+  const { paymentMethods, payments, setPayments } = useContext(POSContext);
+
+  const orderDetails = order.orderDetails ?? [];
+
+  const { totalPrice } = useOrderCalculations(orderDetails);
 
   const [thisPayments, setThisPayments] = useState<
     IPaymentResponse[] | undefined
@@ -82,26 +79,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   const inputRef = useRef<any>(null);
   const [money, setMoney] = useState(0);
-  const [customerPaid, setThisCustomerPaid] = useState<number>(initialPrice);
-
-  const suggestedMoney = [0, 100000, 200000, 300000];
-
-  const buttons = suggestedMoney.map((money, index) => {
-    const totalMoney = totalPrice + money;
-    return (
-      <Col span={24 / suggestedMoney.length}>
-        <Button
-          size="large"
-          shape="round"
-          key={index}
-          onClick={() => setMoney(totalMoney)}
-          style={{ width: "100%" }}
-        >
-          {totalMoney.toLocaleString()}
-        </Button>
-      </Col>
-    );
-  });
+  const [customerPaid, setThisCustomerPaid] = useState<number>(0);
 
   const renderCashMethod = () => (
     <Row
@@ -112,7 +90,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         borderRadius: "0.5rem",
       }}
     >
-      {buttons}
+      {renderButtons(totalPrice, setMoney)}
     </Row>
   );
 
@@ -122,7 +100,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   };
 
   const onCancel = () => {
-    setThisCustomerPaid(initialPrice);
+    setThisCustomerPaid(0);
     setMoney(0);
     setThisPayments(payments);
     handleCancel();
@@ -207,7 +185,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 borderBottom: `1px solid ${token.colorPrimary}`,
                 borderRadius: "0",
               }}
-              bordered={false}
+              variant="borderless"
             />
           </Flex>
         </Col>
@@ -228,7 +206,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 </Col>
               ))
             ) : (
-              <Text>Không có phương thức thanh toán nào khả dụng</Text>
+              <Text>{t("paymentMethods.noPaymentMethods")}</Text>
             )}
           </Row>
         </Col>
@@ -278,15 +256,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                   {payment.paymentMethod.name != "Cash" ? (
                     <Select
                       showSearch
-                      placeholder="Select a person"
                       optionFilterProp="children"
-                      style={{ width: "100%" }}
-                      defaultValue="0691000441548"
+                      className="w-100"
+                      defaultValue={DEFAULT_BANK_ACCOUNT.number}
                       disabled
                       options={[
                         {
-                          value: "0691000441548",
-                          label: "VCB - 0691000441548 - NGUYEN ANH TUAN",
+                          value: DEFAULT_BANK_ACCOUNT.number,
+                          label: `${DEFAULT_BANK_ACCOUNT.bank} - ${DEFAULT_BANK_ACCOUNT.number} - ${DEFAULT_BANK_ACCOUNT.holder}`,
                         },
                       ]}
                     />
@@ -329,3 +306,23 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     </Modal>
   );
 };
+
+const suggestedMoney = [0, 100000, 200000, 300000];
+
+export const renderButtons = (totalPrice: number, onClick: any) =>
+  suggestedMoney.map((money, index) => {
+    const totalMoney = totalPrice + money;
+    return (
+      <Col span={24 / suggestedMoney.length}>
+        <Button
+          size="large"
+          shape="round"
+          key={index}
+          onClick={() => onClick(totalMoney)}
+          style={{ width: "100%" }}
+        >
+          {totalMoney.toLocaleString()}
+        </Button>
+      </Col>
+    );
+  });

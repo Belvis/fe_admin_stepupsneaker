@@ -16,6 +16,9 @@ import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sal
 import { IOrderResponse, IPaymentResponse } from "../../interfaces";
 import { calculateChange } from "../../utils/common/calculator";
 import _ from "lodash";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { QRCODE_ICON_URL, QRCODE_VALUE } from "../../constants/common";
+import { POSContext } from "../../contexts/point-of-sales";
 
 const { Text } = Typography;
 
@@ -23,28 +26,29 @@ type PaymentComfirmModalProps = {
   modalProps: ModalProps;
   order: IOrderResponse;
   submitOrder: () => void;
+  close: () => void;
 };
 
 export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
   order,
   modalProps,
   submitOrder,
+  close,
 }) => {
   const t = useTranslate();
   const { message } = App.useApp();
 
   const [copiedPayments, setCopiedPayments] = useState<IPaymentResponse[]>([]);
 
-  const { discount, payments } = useContext(DeliverySalesContext);
+  const { payments, setPayments } = useContext(POSContext);
+  const { discount } = useContext(DeliverySalesContext);
 
   useEffect(() => {
     setCopiedPayments(_.cloneDeep(payments || []));
   }, [payments]);
 
   const orderDetails = order?.orderDetails || [];
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalPrice } = useOrderCalculations(orderDetails);
 
   const handleConfirm = () => {
     const hasEmptyTransactionCode = copiedPayments
@@ -61,7 +65,9 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
         return;
       }
+      setPayments(copiedPayments);
       submitOrder();
+      close();
     } else {
       message.error(t("payments.modal.error.transactionCode"));
     }
@@ -159,8 +165,8 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       <QRCode
         size={400}
         errorLevel="H"
-        value="00020101021138570010A00000072701270006970436011306910004415480208QRIBFTTA53037045802VN63042141"
-        icon="https://cdn.haitrieu.com/wp-content/uploads/2022/02/Icon-Vietcombank.png"
+        value={QRCODE_VALUE}
+        icon={QRCODE_ICON_URL}
         style={{
           margin: "0 auto",
         }}

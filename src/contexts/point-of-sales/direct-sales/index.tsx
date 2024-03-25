@@ -1,22 +1,38 @@
-import React, { PropsWithChildren, createContext, useState } from "react";
-import { IPaymentMethodResponse, IPaymentResponse } from "../../../interfaces";
+import React, {
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  IPaymentMethodResponse,
+  IPaymentResponse,
+  IProductResponse,
+} from "../../../interfaces";
 import { TablePaginationConfig } from "antd";
+import { HttpError, useList } from "@refinedev/core";
+
+type FilterType = {
+  brands: string[];
+  materials: string[];
+  soles: string[];
+  styles: string[];
+  tradeMarks: string[];
+  colors: string[];
+  sizes: string[];
+};
 
 type DirectSalesContextType = {
   discount: number;
   setDiscount: React.Dispatch<React.SetStateAction<number>>;
-  payments: IPaymentResponse[] | undefined;
-  setPayments: React.Dispatch<
-    React.SetStateAction<IPaymentResponse[] | undefined>
-  >;
-  paymentMethods: IPaymentMethodResponse[] | undefined;
-  setPaymentMethods: React.Dispatch<
-    React.SetStateAction<IPaymentMethodResponse[] | undefined>
-  >;
   pagination: TablePaginationConfig;
   setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
   pLayout: "vertical" | "horizontal";
   handleToggleLayout: () => void;
+  filters: FilterType;
+  setFilters: React.Dispatch<React.SetStateAction<FilterType>>;
+  products: IProductResponse[];
+  isLoadingProduct: boolean;
 };
 
 export const DirectSalesContext = createContext<DirectSalesContextType>(
@@ -27,15 +43,56 @@ export const DirectSalesContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const [discount, setDiscount] = useState(0);
-  const [payments, setPayments] = useState<IPaymentResponse[]>();
-  const [paymentMethods, setPaymentMethods] =
-    useState<IPaymentMethodResponse[]>();
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 5,
     total: 0,
   });
+
+  const [filters, setFilters] = useState<FilterType>({
+    brands: [],
+    materials: [],
+    soles: [],
+    styles: [],
+    tradeMarks: [],
+    colors: [],
+    sizes: [],
+  });
+
+  const {
+    data,
+    isLoading: isLoadingProduct,
+    refetch,
+  } = useList<IProductResponse, HttpError>({
+    resource: "products",
+    filters: [
+      {
+        field: "minQuantity",
+        operator: "eq",
+        value: 1,
+      },
+      {
+        field: "brands",
+        operator: "eq",
+        value: filters.brands,
+      },
+    ],
+    pagination: pagination,
+  });
+
+  const [products, setProducts] = useState<IProductResponse[]>([]);
+
+  useEffect(() => {
+    if (data && data.data) {
+      const fetchedProduct: IProductResponse[] = [...data.data];
+      setProducts(fetchedProduct);
+      setPagination((prevPagination) => ({
+        ...prevPagination,
+        total: data.total,
+      }));
+    }
+  }, [data]);
 
   const [pLayout, setpLayout] = useState<"horizontal" | "vertical">(
     "horizontal"
@@ -47,27 +104,19 @@ export const DirectSalesContextProvider: React.FC<PropsWithChildren> = ({
     );
   };
 
-  const [brandFilter, setBrandFilter] = useState("");
-  const [materialFilter, setMaterialFilter] = useState("");
-  const [soleFilter, setSoleFilter] = useState("");
-  const [styleFilter, setStyleFilter] = useState("");
-  const [tradeMarkFilter, setTradeMarkFilter] = useState("");
-  const [colorFilter, setColorFilter] = useState("");
-  const [sizeFilter, setSizeFilter] = useState("");
-
   return (
     <DirectSalesContext.Provider
       value={{
         discount,
         setDiscount,
-        payments,
-        setPayments,
-        paymentMethods,
-        setPaymentMethods,
         pagination,
         setPagination,
         pLayout,
         handleToggleLayout,
+        filters,
+        setFilters,
+        products,
+        isLoadingProduct,
       }}
     >
       {children}

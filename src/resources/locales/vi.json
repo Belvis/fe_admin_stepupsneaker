@@ -951,6 +951,7 @@
   },
   "paymentMethods": {
     "paymentMethods": "Phương thức thanh toán",
+    "noPaymentMethods": "Không có phương thức thanh toán nào khả dụng",
     "titles": {
       "list": "Phương thức thanh toán",
       "show": "Chi tiết phương thức thanh toán"
@@ -1203,6 +1204,10 @@
     "update": {
       "success": "Cập nhật hoàn tất"
     },
+    "checkout": {
+      "success": "Đơn hàng đã được thanh toán thành công!"
+    },
+    "success": "Thành công",
     "error": "Đã có lỗi xảy ra: "
   },
   "image": {

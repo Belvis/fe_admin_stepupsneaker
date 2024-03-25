@@ -1,7 +1,6 @@
 import { useTranslate } from "@refinedev/core";
-import { Card, Col, Image, Row, Typography, theme } from "antd";
+import { Card, Col, Image, Row, Typography } from "antd";
 import { IProductResponse } from "../../interfaces";
-const { useToken } = theme;
 const { Text, Title } = Typography;
 
 type ProductItemProps = {
@@ -42,7 +41,9 @@ export const ProductItem: React.FC<ProductItemProps> = ({
                 </Title>
               </Row>
               <Row>
-                <Text>Số lượng tồn: x{totalQuantity}</Text>
+                <Text>
+                  {t("products.fields.quantity")}: x{totalQuantity}
+                </Text>
               </Row>
             </Col>
           </Row>
@@ -63,7 +64,9 @@ export const ProductItem: React.FC<ProductItemProps> = ({
               <Title level={5}>
                 {name} #{code}
               </Title>
-              <Text>Số lượng tồn: x{totalQuantity}</Text>
+              <Text>
+                {t("products.fields.quantity")}: x{totalQuantity}
+              </Text>
             </Col>
           </Row>
         </Card>

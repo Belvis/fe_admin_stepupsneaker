@@ -18,6 +18,7 @@ import { useTranslate, useUpdate } from "@refinedev/core";
 import { NumberField } from "@refinedev/antd";
 import { POSContext } from "../../contexts/point-of-sales";
 import { directSalesLeftStyle, shoppingCartContainerStyle } from "./style";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -38,12 +39,7 @@ const DirectSalesLeft: React.FC<DirectSalesLeftProps> = ({
   const { refetchOrder } = useContext(POSContext);
 
   const orderDetails = order?.orderDetails || [];
-  const totalQuantity = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.quantity;
-  }, 0);
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalQuantity, totalPrice } = useOrderCalculations(orderDetails);
 
   function editOrderNote(value: string): void {
     if (value !== order.note)

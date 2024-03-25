@@ -44,6 +44,7 @@ export const POSTab: React.FC = () => {
 
   const { mutate: mutateCreate, isLoading: isLoadingOrderCreate } = useCreate();
   const { mutate: mutateDelete, isLoading: isLoadingOrderDelete } = useDelete();
+
   const { refetch: refetchProducts } = useList<IProductResponse>({
     resource: "products",
     config: {

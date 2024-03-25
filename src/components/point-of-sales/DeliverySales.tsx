@@ -5,6 +5,7 @@ import { DeliverySalesLeft } from "./DeliverySalesLeft";
 import { DeliverySalesRight } from "./DeliverySalesRight";
 import { useContext, useEffect } from "react";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
 
 type DeliverySalesProps = {
   order: IOrderResponse;
@@ -14,9 +15,7 @@ export const DeliverySales: React.FC<DeliverySalesProps> = ({ order }) => {
   const { setShippingMoney, setDiscount } = useContext(DeliverySalesContext);
 
   const orderDetails = order?.orderDetails || [];
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalPrice } = useOrderCalculations(orderDetails);
 
   useEffect(() => {
     if (order.shippingMoney && order.shippingMoney) {

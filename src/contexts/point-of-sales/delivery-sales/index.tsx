@@ -1,31 +1,13 @@
-import { HttpError, useList, useTranslate } from "@refinedev/core";
-import React, {
-  PropsWithChildren,
-  createContext,
-  useEffect,
-  useState,
-} from "react";
-import {
-  IPaymentMethodResponse,
-  IPaymentResponse,
-  ITransportAddress,
-} from "../../../interfaces";
 import { Form, FormInstance } from "antd";
+import React, { PropsWithChildren, createContext, useState } from "react";
+import { ITransportAddress } from "../../../interfaces";
 
 type DeliverySalesContextType = {
   shippingMoney: number;
   setShippingMoney: React.Dispatch<React.SetStateAction<number>>;
   discount: number;
   setDiscount: React.Dispatch<React.SetStateAction<number>>;
-  payments: IPaymentResponse[] | undefined;
-  setPayments: React.Dispatch<
-    React.SetStateAction<IPaymentResponse[] | undefined>
-  >;
   form: FormInstance;
-  paymentMethods: IPaymentMethodResponse[] | undefined;
-  setPaymentMethods: React.Dispatch<
-    React.SetStateAction<IPaymentMethodResponse[] | undefined>
-  >;
   isCOD: boolean;
   setIsCOD: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -39,9 +21,6 @@ export const DeliverySalesContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const [shippingMoney, setShippingMoney] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [payments, setPayments] = useState<IPaymentResponse[]>();
-  const [paymentMethods, setPaymentMethods] =
-    useState<IPaymentMethodResponse[]>();
   const [isCOD, setIsCOD] = useState<boolean>(false);
 
   const [form] = Form.useForm<ITransportAddress>();
@@ -53,11 +32,7 @@ export const DeliverySalesContextProvider: React.FC<PropsWithChildren> = ({
         setShippingMoney,
         discount,
         setDiscount,
-        payments,
-        setPayments,
         form,
-        paymentMethods,
-        setPaymentMethods,
         isCOD,
         setIsCOD,
       }}

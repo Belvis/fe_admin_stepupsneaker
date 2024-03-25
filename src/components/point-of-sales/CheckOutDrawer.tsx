@@ -1,14 +1,11 @@
 import {
   CloseOutlined,
   CreditCardFilled,
-  GiftOutlined,
   PlusSquareFilled,
-  SearchOutlined,
 } from "@ant-design/icons";
-import { NumberField } from "@refinedev/antd";
+import { NumberField, useModal } from "@refinedev/antd";
 import {
   HttpError,
-  useCreateMany,
   useList,
   useNavigation,
   useTranslate,
@@ -16,8 +13,6 @@ import {
 } from "@refinedev/core";
 import {
   App,
-  AutoComplete,
-  Avatar,
   Button,
   Col,
   Divider,
@@ -31,37 +26,37 @@ import {
   Row,
   Select,
   Space,
-  Spin,
   Tooltip,
   Typography,
   theme,
 } from "antd";
-import { debounce } from "lodash";
 import { useContext, useEffect, useState } from "react";
 
-import _ from "lodash";
-import { POSContext } from "../../contexts/point-of-sales";
-import { formatTimestamp } from "../../helpers/timestamp";
 import {
-  IEmployeeResponse,
-  IOption,
+  DEFAULT_BANK_ACCOUNT,
+  QRCODE_ICON_URL,
+  QRCODE_VALUE,
+} from "../../constants/common";
+import { POSContext } from "../../contexts/point-of-sales";
+import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
+import { paymentToRequest } from "../../helpers/mapper";
+import { formatTimestamp } from "../../helpers/timestamp";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
+import {
   IOrderResponse,
   IPaymentMethodResponse,
   IPaymentRequest,
   IPaymentResponse,
-  IVoucherListResponse,
 } from "../../interfaces";
-import { DiscountMessage, DiscountMoney } from "../order/style";
-import { DiscountModal } from "./DiscountModal";
-import { PaymentModal } from "./PaymentModal";
 import {
-  CloseButtonWrapper,
-  CustomerInfor,
-  CustomerName,
-  TextContainer,
-  UserIcon,
-} from "./styled";
+  calculateChange,
+  calculatePayment,
+} from "../../utils/common/calculator";
+import { DiscountModal } from "./DiscountModal";
 import EmployeeSection from "./EmployeeInputSection";
+import { PaymentModal, renderButtons } from "./PaymentModal";
+import VoucherMessage from "./VoucherMessage";
+import { PaymentComfirmModal } from "./PaymentConfirmModal";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -84,105 +79,45 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
 
-  const { refetchOrder } = useContext(POSContext);
+  const {
+    refetchOrder,
+    paymentMethods,
+    payments,
+    setPayments,
+    setPaymentMethods,
+  } = useContext(POSContext);
+  const { discount } = useContext(DirectSalesContext);
+
+  const {
+    show,
+    close,
+    modalProps: { visible, ...restModalProps },
+  } = useModal();
 
   const orderDetails = order?.orderDetails || [];
-  const totalQuantity = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.quantity;
-  }, 0);
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalQuantity, totalPrice } = useOrderCalculations(orderDetails);
 
-  const initialPrice = orderDetails.length > 0 ? orderDetails[0].price : 0;
-  const [change, setChange] = useState(initialPrice - totalPrice);
-  const [discount, setDiscount] = useState(0);
-  const [paymentMethods, setPaymentMethods] =
-    useState<IPaymentMethodResponse[]>();
   const [selectedMethod, setSelectedMethod] = useState(
     paymentMethods && paymentMethods.length > 0 ? paymentMethods[0] : null
   );
-  const [payments, setPayments] = useState<IPaymentResponse[]>();
 
-  useEffect(() => {
-    if (payments) {
-      const customerPaid = payments.reduce(
-        (acc, payment) => acc + payment.totalMoney,
-        0
-      );
-      const changeAmount = customerPaid - (totalPrice - discount);
-      setChange(changeAmount);
+  const handleSuggestedButtonOnClick = (totalMoney: number) => {
+    if (paymentMethods) {
+      setPayments([
+        {
+          id: "",
+          order: order,
+          paymentMethod: paymentMethods[0],
+          transactionCode: "Cash",
+          paymentStatus: "COMPLETED",
+          totalMoney: totalMoney,
+          description: "Cash",
+          createdAt: 0,
+          updatedAt: 0,
+        },
+      ]);
     }
-  }, [payments, totalPrice]);
-
-  useEffect(() => {
-    if (order.voucher && order.voucher.type) {
-      if (order.voucher.type === "PERCENTAGE") {
-        setDiscount((order.voucher.value / 100) * totalPrice);
-      } else {
-        setDiscount(order.voucher.value);
-      }
-    }
-  }, [order.voucher]);
-
-  const [legitVouchers, setLegitVouchers] = useState<IVoucherListResponse[]>(
-    []
-  );
-
-  useEffect(() => {
-    if (order && order.customer && order.customer.customerVoucherList) {
-      const convertedLegitVoucher = _.cloneDeep(
-        order.customer.customerVoucherList
-      );
-      convertedLegitVoucher.map((single) => {
-        const updatedVoucher = { ...single };
-        if (single.voucher.type === "PERCENTAGE") {
-          updatedVoucher.voucher.value =
-            (single.voucher.value * calculateTotalPrice(order)) / 100;
-        }
-        return updatedVoucher;
-      });
-
-      convertedLegitVoucher.sort((a, b) => b.voucher.value - a.voucher.value);
-
-      setLegitVouchers(convertedLegitVoucher);
-    }
-  }, [order.customer]);
-
-  const suggestedMoney = [0, 100000, 200000, 300000];
-
-  const buttons = suggestedMoney.map((money, index) => {
-    const totalMoney = totalPrice + money;
-    return (
-      <Col span={24 / suggestedMoney.length} key={index}>
-        <Button
-          size="large"
-          shape="round"
-          key={index}
-          onClick={() => {
-            if (paymentMethods)
-              setPayments([
-                {
-                  id: "",
-                  order: order,
-                  paymentMethod: paymentMethods[0],
-                  transactionCode: "Cash",
-                  paymentStatus: "COMPLETED",
-
-                  totalMoney: totalMoney,
-                  description: "Cash",
-                  createdAt: 0,
-                  updatedAt: 0,
-                },
-              ]);
-          }}
-          style={{ width: "100%" }}
-        >
-          {totalMoney.toLocaleString()}
-        </Button>
-      </Col>
-    );
-  });
+  };
 
   const { data } = useList<IPaymentMethodResponse, HttpError>({
     resource: "payment-methods",
@@ -193,6 +128,21 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       },
     ],
   });
+
+  const [transferTransactionCode, setTransferTransactionCode] = useState("");
+  const [cardTransactionCode, setCardTransactionCode] = useState("");
+
+  const handleConfirmPayment = (transactionCode: string) => {
+    if (selectedMethod && payments && payments.length == 1) {
+      const updatedPayments = payments.map((payment) => {
+        if (payment.paymentMethod === selectedMethod) {
+          return { ...payment, transactionCode: transactionCode };
+        }
+        return payment;
+      });
+      setPayments(updatedPayments);
+    }
+  };
 
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
 
@@ -221,6 +171,12 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   const handleDiscountModalCancel = () => {
     setIsDiscountModalVisible(false);
   };
+
+  useEffect(() => {
+    if (payments && payments.length == 1) {
+      setSelectedMethod(payments[0].paymentMethod);
+    }
+  }, [payments]);
 
   useEffect(() => {
     if (data && data.data && data.data.length > 0) {
@@ -261,18 +217,8 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   }
 
   function submitOrder(): void {
-    const customerPaid = (payments ?? []).reduce(
-      (acc, payment) => acc + payment.totalMoney,
-      0
-    );
-
-    if (customerPaid < totalPrice - discount) {
-      message.error(t("orders.notification.tab.checkoutDrawer.error"));
-      return;
-    }
-
     const paymentConvertedPayload: IPaymentRequest[] =
-      convertToPayload(payments);
+      paymentToRequest(payments);
 
     mutateUpdate(
       {
@@ -288,15 +234,15 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         id: order.id,
         successNotification(data, values, resource) {
           return {
-            message: "Thanh toán đơn hàng thành công!",
-            description: "Thành công",
+            message: t("common.checkout.success"),
+            description: t("common.success"),
             type: "success",
           };
         },
         errorNotification: (error: any) => {
           return {
-            message: error.message,
-            description: "Đã xảy ra lỗi",
+            message: t("common.error") + error.message,
+            description: "Oops!..",
             type: "error",
           };
         },
@@ -313,6 +259,29 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       }
     );
   }
+
+  const handleSubmitOrder = () => {
+    if (payments && payments?.length > 1) {
+      show();
+      return;
+    }
+
+    const hasEmptyTransactionCode = payments
+      ?.filter((payment) => payment.paymentMethod.name !== "Cash")
+      ?.some((payment) => !payment.transactionCode);
+
+    if (!hasEmptyTransactionCode) {
+      const change = calculateChange(payments ?? [], totalPrice, discount);
+      if (change < 0) {
+        message.error(t("orders.notification.tab.checkoutDrawer.error"));
+        return;
+      }
+      setPayments(payments);
+      submitOrder();
+    } else {
+      message.error(t("payments.modal.error.transactionCode"));
+    }
+  };
 
   const renderSingleMethod = (methodName: string) => {
     switch (methodName) {
@@ -337,7 +306,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         borderRadius: "0.5rem",
       }}
     >
-      {buttons}
+      {renderButtons(totalPrice, handleSuggestedButtonOnClick)}
     </Row>
   );
 
@@ -346,8 +315,8 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       <Col span={8}>
         <QRCode
           errorLevel="H"
-          value="00020101021138570010A00000072701270006970436011306910004415480208QRIBFTTA53037045802VN63042141"
-          icon="https://cdn.haitrieu.com/wp-content/uploads/2022/02/Icon-Vietcombank.png"
+          value={QRCODE_VALUE}
+          icon={QRCODE_ICON_URL}
           style={{
             maxHeight: "100%",
             maxWidth: "100%",
@@ -356,31 +325,35 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         />
       </Col>
       <Col span={16}>
-        <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" className="w-100">
           <Col span={24}>
             <Select
               showSearch
               optionFilterProp="children"
-              style={{ width: "100%" }}
-              defaultValue="0691000441548"
+              className="w-100"
+              defaultValue={DEFAULT_BANK_ACCOUNT.number}
               disabled
               options={[
                 {
-                  value: "0691000441548",
-                  label: "VCB - 0691000441548 - NGUYEN ANH TUAN",
+                  value: DEFAULT_BANK_ACCOUNT.number,
+                  label: `${DEFAULT_BANK_ACCOUNT.bank} - ${DEFAULT_BANK_ACCOUNT.number} - ${DEFAULT_BANK_ACCOUNT.holder}`,
                 },
               ]}
             />
           </Col>
           <Col span={24}>
-            <Input placeholder="Transaction code" />
+            <Input
+              placeholder={t("payments.fields.transactionCode")}
+              value={transferTransactionCode}
+              onChange={(e) => setTransferTransactionCode(e.target.value)}
+            />
           </Col>
           <Col span={24}>
             <Button
               type="primary"
               size={"large"}
-              style={{ width: "100%" }}
-              // onClick={submitOrder}
+              className="w-100"
+              onClick={() => handleConfirmPayment(transferTransactionCode)}
             >
               {t("actions.payConfirm")}
             </Button>
@@ -394,27 +367,30 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       <Col span={24}>
         <Select
           showSearch
-          placeholder="Select a person"
           optionFilterProp="children"
-          style={{ width: "100%" }}
-          defaultValue="0691000441548"
+          className="w-100"
+          defaultValue={DEFAULT_BANK_ACCOUNT.number}
           disabled
           options={[
             {
-              value: "0691000441548",
-              label: "VCB - 0691000441548 - NGUYEN ANH TUAN",
+              value: DEFAULT_BANK_ACCOUNT.number,
+              label: `${DEFAULT_BANK_ACCOUNT.bank} - ${DEFAULT_BANK_ACCOUNT.number} - ${DEFAULT_BANK_ACCOUNT.holder}`,
             },
           ]}
         />
       </Col>
       <Col span={12}>
-        <Input placeholder="Transaction code" />
+        <Input
+          placeholder={t("payments.fields.transactionCode")}
+          value={cardTransactionCode}
+          onChange={(e) => setCardTransactionCode(e.target.value)}
+        />
       </Col>
       <Col span={12}>
         <Button
           type="primary"
-          style={{ width: "100%" }}
-          // onClick={submitOrder}
+          className="w-100"
+          onClick={() => handleConfirmPayment(cardTransactionCode)}
         >
           {t("actions.payConfirm")}
         </Button>
@@ -434,7 +410,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     return (
       <Flex gap="middle" justify="space-between" align="center">
         <Space size="large" wrap>
-          <Text>Payment methods: </Text>
+          <Text>Phương thức thanh toán: </Text>
         </Space>
         <Text strong style={{ color: token.colorPrimary }}>
           {methodsString}
@@ -445,7 +421,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
 
   const renderMethodGroup = (payments: IPaymentResponse[]) => {
     return (
-      <Space direction="vertical" style={{ width: "100%" }}>
+      <Space direction="vertical" className="w-100">
         <Radio.Group
           name="radiogroup"
           value={selectedMethod}
@@ -458,7 +434,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
               </Radio>
             ))
           ) : (
-            <p>Không có phương thức thanh toán nào khả dụng</p>
+            <p>{t("paymentMethods.noPaymentMethods")}</p>
           )}
         </Radio.Group>
 
@@ -469,36 +445,49 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     );
   };
 
-  function editOrderEmployee(value: string | null): void {
-    mutateUpdate(
-      {
-        resource: "orders",
-        values: {
-          ...order,
-          employee: value,
-          customer: order.customer ? order.customer.id : "",
-          voucher: order.voucher ? order.voucher.id : "",
-          address: order.address ? order.address.id : "",
-        },
-        id: order.id,
-        successNotification: () => {
-          return false;
-        },
-        errorNotification: () => {
-          return false;
-        },
-      },
-      {
-        onError: (error, variables, context) => {
-          message.error(t("orders.notification.employee.edit.error"));
-        },
-        onSuccess: (data, variables, context) => {
-          refetchOrder();
-          message.success(t("orders.notification.employee.edit.success"));
-        },
-      }
+  const renderChange = () => {
+    let changeAmount;
+    const hasPendingPayment = payments?.find(
+      (payment) => payment.paymentStatus === "PENDING"
     );
-  }
+
+    if (!payments || hasPendingPayment) {
+      changeAmount = 0;
+    } else {
+      changeAmount = calculateChange(payments, totalPrice, discount);
+    }
+
+    return (
+      <NumberField
+        options={{
+          currency: "VND",
+          style: "currency",
+        }}
+        value={changeAmount}
+        locale={"vi"}
+      />
+    );
+  };
+
+  const renderTotalPayment = () => {
+    let totalPaid;
+    if (!payments) {
+      totalPaid = 0;
+    } else {
+      totalPaid = calculatePayment(payments, "PENDING");
+    }
+
+    return (
+      <NumberField
+        options={{
+          currency: "VND",
+          style: "currency",
+        }}
+        value={totalPaid}
+        locale={"vi"}
+      />
+    );
+  };
 
   return (
     <Drawer
@@ -513,7 +502,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           type="primary"
           size={"large"}
           style={{ width: "100%", fontWeight: "500" }}
-          onClick={submitOrder}
+          onClick={handleSubmitOrder}
         >
           {t("actions.pay")}
         </Button>
@@ -628,7 +617,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           <Flex gap="middle" justify="space-between" align="center">
             <Space size="large" wrap>
               <Text strong>{t("orders.tab.customerPay")}</Text>
-              <Tooltip title={"Thanh toán nhiều phương thức."}>
+              <Tooltip title={t("payments.titles.multiple")}>
                 <Button
                   size="small"
                   type="text"
@@ -639,63 +628,11 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
                 />
               </Tooltip>
             </Space>
-            <Title level={4}>
-              {payments ? (
-                <NumberField
-                  options={{
-                    currency: "VND",
-                    style: "currency",
-                  }}
-                  value={payments.reduce(
-                    (acc, payment) => acc + payment.totalMoney,
-                    0
-                  )}
-                  locale={"vi"}
-                />
-              ) : (
-                "Đang tải..."
-              )}
-            </Title>
+            <Title level={4}>{renderTotalPayment()}</Title>
           </Flex>
         </Col>
         <Col span={24}>
-          {(() => {
-            const voucherDifference =
-              legitVouchers && legitVouchers.length > 0
-                ? calculateTotalPrice(order) <
-                  legitVouchers[0].voucher.constraint
-                  ? legitVouchers[0].voucher.constraint -
-                    calculateTotalPrice(order)
-                  : 0
-                : 0;
-
-            const shouldDisplayVoucher = voucherDifference > 0;
-
-            if (shouldDisplayVoucher) {
-              return (
-                <DiscountMessage level={5}>
-                  <GiftOutlined /> Mua thêm{" "}
-                  <DiscountMoney>
-                    {new Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                      currencyDisplay: "symbol",
-                    }).format(voucherDifference)}
-                  </DiscountMoney>{" "}
-                  để được giảm tới{" "}
-                  <DiscountMoney>
-                    {new Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                      currencyDisplay: "symbol",
-                    }).format(legitVouchers[0].voucher.value)}
-                  </DiscountMoney>
-                </DiscountMessage>
-              );
-            } else {
-              return null;
-            }
-          })()}
+          <VoucherMessage order={order} />
         </Col>
 
         <Divider />
@@ -710,16 +647,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
             <Space size="large" wrap>
               <Text strong>{t("orders.tab.change")}</Text>
             </Space>
-            <Title level={4}>
-              <NumberField
-                options={{
-                  currency: "VND",
-                  style: "currency",
-                }}
-                value={change}
-                locale={"vi"}
-              />
-            </Title>
+            <Text strong>{renderChange()}</Text>
           </Flex>
         </Col>
       </Row>
@@ -727,12 +655,13 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         open={isPaymentModalVisible}
         handleOk={handlePaymentModalOk}
         handleCancel={handlePaymentModalCancel}
-        paymentMethods={paymentMethods}
-        payments={payments}
-        initialPrice={initialPrice}
-        totalPrice={totalPrice}
-        setPayments={setPayments}
         order={order}
+      />
+      <PaymentComfirmModal
+        order={order}
+        close={close}
+        submitOrder={submitOrder}
+        modalProps={restModalProps}
       />
       <DiscountModal
         open={isDiscountModalVisible}
@@ -743,49 +672,4 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       />
     </Drawer>
   );
-};
-
-const renderItem = (
-  name: string,
-  phoneNumber: string,
-  imageUrl: string,
-  employee: IEmployeeResponse
-) => ({
-  value: name,
-  label: (
-    <Row style={{ display: "flex", alignItems: "center" }}>
-      <Col span={6}>
-        <Avatar size={32} src={imageUrl} style={{ minWidth: "32px" }} />
-      </Col>
-      <Col span={18}>
-        <Flex vertical>
-          <Text>{name}</Text>
-          <Text>{phoneNumber}</Text>
-        </Flex>
-      </Col>
-    </Row>
-  ),
-  employee: employee,
-});
-
-function convertToPayload(
-  payments: IPaymentResponse[] | undefined
-): IPaymentRequest[] {
-  if (!payments) return [];
-  return payments.map((payment) => ({
-    order: payment.order.id,
-    paymentMethod: payment.paymentMethod.id,
-    totalMoney: payment.totalMoney,
-    transactionCode: payment.transactionCode,
-  }));
-}
-
-const calculateTotalPrice = (order: IOrderResponse): number => {
-  if (!order || !order.orderDetails) {
-    return 0;
-  }
-
-  return order.orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
 };

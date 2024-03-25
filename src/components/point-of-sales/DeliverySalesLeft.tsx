@@ -21,6 +21,7 @@ import { ColSpanType, IOrderResponse } from "../../interfaces";
 import { DiscountModal } from "./DiscountModal";
 import { OrderItem } from "./OrderItem";
 import ShoppingCartHeader from "./ShoppingCartHeader";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -57,12 +58,7 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
   };
 
   const orderDetails = order?.orderDetails || [];
-  const totalQuantity = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.quantity;
-  }, 0);
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalQuantity, totalPrice } = useOrderCalculations(orderDetails);
 
   function editOrderNote(value: string): void {
     if (value !== order.note)

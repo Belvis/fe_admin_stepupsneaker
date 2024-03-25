@@ -32,6 +32,8 @@ import {
   calculatePayment,
   calculateChange,
 } from "../../utils/common/calculator";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { POSContext } from "../../contexts/point-of-sales";
 
 const { useToken } = theme;
 const { Text, Title } = Typography;
@@ -45,24 +47,15 @@ export const DeliverySalesRightContent: React.FC<
   const t = useTranslate();
   const { token } = useToken();
 
-  const {
-    payments,
-    form,
-    discount,
-    paymentMethods,
-    isCOD,
-    setPaymentMethods,
-    setPayments,
-    setIsCOD,
-  } = useContext(DeliverySalesContext);
+  const { paymentMethods, payments, setPaymentMethods, setPayments } =
+    useContext(POSContext);
+
+  const { form, discount, isCOD, setIsCOD } = useContext(DeliverySalesContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const orderDetails = order?.orderDetails || [];
-  const initialPrice = orderDetails.length > 0 ? orderDetails[0].price : 0;
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalPrice } = useOrderCalculations(orderDetails);
 
   const { data, isLoading } = useList<IPaymentMethodResponse, HttpError>({
     resource: "payment-methods",
@@ -334,11 +327,6 @@ export const DeliverySalesRightContent: React.FC<
         open={isModalVisible}
         handleOk={handleModalOk}
         handleCancel={handleModalCancel}
-        paymentMethods={paymentMethods}
-        payments={payments}
-        initialPrice={initialPrice}
-        totalPrice={totalPrice}
-        setPayments={setPayments}
         order={order}
       />
     </Row>

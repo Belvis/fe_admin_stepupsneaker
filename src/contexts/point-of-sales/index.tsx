@@ -17,6 +17,8 @@ import { ProductModal } from "../../components/point-of-sales/ProductModal";
 import { TabContent } from "../../components/point-of-sales/TabContent";
 import {
   IOrderResponse,
+  IPaymentMethodResponse,
+  IPaymentResponse,
   IProductResponse,
   QueryObserverResult,
 } from "../../interfaces";
@@ -32,6 +34,14 @@ type POSContextType = {
   setActiveKey: React.Dispatch<React.SetStateAction<string>>;
   refetchOrder: () => Promise<
     QueryObserverResult<GetListResponse<IOrderResponse>, HttpError>
+  >;
+  payments: IPaymentResponse[] | undefined;
+  setPayments: React.Dispatch<
+    React.SetStateAction<IPaymentResponse[] | undefined>
+  >;
+  paymentMethods: IPaymentMethodResponse[] | undefined;
+  setPaymentMethods: React.Dispatch<
+    React.SetStateAction<IPaymentMethodResponse[] | undefined>
   >;
 };
 type Tab = {
@@ -66,6 +76,10 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
   );
   const [items, setItems] = useState<Tab[]>(initialItems);
   const [activeKey, setActiveKey] = useState<string>("1");
+
+  const [payments, setPayments] = useState<IPaymentResponse[]>();
+  const [paymentMethods, setPaymentMethods] =
+    useState<IPaymentMethodResponse[]>();
 
   const {
     show: productShow,
@@ -143,6 +157,10 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
         activeKey,
         setActiveKey,
         refetchOrder,
+        payments,
+        setPayments,
+        paymentMethods,
+        setPaymentMethods,
       }}
     >
       {children}

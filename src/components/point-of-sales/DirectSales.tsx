@@ -4,6 +4,7 @@ import { IOrderResponse } from "../../interfaces";
 import DirectSalesLeft from "./DirectSalesLeft";
 import DirectSalesRight from "./DirectSalesRight";
 import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
 
 type DirectSalesProps = {
   order: IOrderResponse;
@@ -13,9 +14,7 @@ export const DirectSales: React.FC<DirectSalesProps> = ({ order }) => {
   const { setDiscount } = useContext(DirectSalesContext);
 
   const orderDetails = order?.orderDetails || [];
-  const totalPrice = orderDetails.reduce((total, orderDetail) => {
-    return total + orderDetail.totalPrice;
-  }, 0);
+  const { totalPrice } = useOrderCalculations(orderDetails);
 
   useEffect(() => {
     if (order.voucher) {
