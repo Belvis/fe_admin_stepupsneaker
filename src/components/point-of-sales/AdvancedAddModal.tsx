@@ -41,7 +41,13 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
 
-  const { tableProps, searchFormProps, current, pageSize } = useTable<
+  const {
+    tableProps,
+    searchFormProps,
+    current,
+    pageSize,
+    tableQueryResult: { refetch },
+  } = useTable<
     IProductDetailResponse,
     HttpError,
     IProductDetailFilterVariables
@@ -155,6 +161,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
 
   useEffect(() => {
     setSelectedProductDetails([]);
+    refetch();
   }, [modalProps.open]);
 
   const addProductDetails = (
