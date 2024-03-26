@@ -1,18 +1,14 @@
+import { HttpError, useList } from "@refinedev/core";
+import { TablePaginationConfig } from "antd";
 import React, {
   PropsWithChildren,
   createContext,
   useEffect,
   useState,
 } from "react";
-import {
-  IPaymentMethodResponse,
-  IPaymentResponse,
-  IProductResponse,
-} from "../../../interfaces";
-import { TablePaginationConfig } from "antd";
-import { HttpError, useList } from "@refinedev/core";
+import { IProductResponse } from "../../../interfaces";
 
-type FilterType = {
+export type FilterType = {
   brands: string[];
   materials: string[];
   soles: string[];
@@ -20,6 +16,26 @@ type FilterType = {
   tradeMarks: string[];
   colors: string[];
   sizes: string[];
+};
+
+export type SorterType = {
+  field: string;
+  order: "asc" | "desc";
+};
+
+export const blankFilters: FilterType = {
+  brands: [],
+  materials: [],
+  soles: [],
+  styles: [],
+  tradeMarks: [],
+  colors: [],
+  sizes: [],
+};
+
+export const initialSorters: SorterType = {
+  field: "updatedAt",
+  order: "desc",
 };
 
 type DirectSalesContextType = {
@@ -31,7 +47,9 @@ type DirectSalesContextType = {
   handleToggleLayout: () => void;
   filters: FilterType;
   setFilters: React.Dispatch<React.SetStateAction<FilterType>>;
+  sorters: SorterType;
   products: IProductResponse[];
+  setSorters: React.Dispatch<React.SetStateAction<SorterType>>;
   isLoadingProduct: boolean;
 };
 
@@ -46,19 +64,12 @@ export const DirectSalesContextProvider: React.FC<PropsWithChildren> = ({
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
-    pageSize: 5,
+    pageSize: 6,
     total: 0,
   });
 
-  const [filters, setFilters] = useState<FilterType>({
-    brands: [],
-    materials: [],
-    soles: [],
-    styles: [],
-    tradeMarks: [],
-    colors: [],
-    sizes: [],
-  });
+  const [filters, setFilters] = useState<FilterType>(blankFilters);
+  const [sorters, setSorters] = useState<SorterType>(initialSorters);
 
   const {
     data,
@@ -76,6 +87,42 @@ export const DirectSalesContextProvider: React.FC<PropsWithChildren> = ({
         field: "brands",
         operator: "eq",
         value: filters.brands,
+      },
+      {
+        field: "materials",
+        operator: "eq",
+        value: filters.materials,
+      },
+      {
+        field: "soles",
+        operator: "eq",
+        value: filters.soles,
+      },
+      {
+        field: "styles",
+        operator: "eq",
+        value: filters.styles,
+      },
+      {
+        field: "tradeMarks",
+        operator: "eq",
+        value: filters.tradeMarks,
+      },
+      {
+        field: "colors",
+        operator: "eq",
+        value: filters.colors,
+      },
+      {
+        field: "sizes",
+        operator: "eq",
+        value: filters.sizes,
+      },
+    ],
+    sorters: [
+      {
+        field: sorters.field,
+        order: sorters.order,
       },
     ],
     pagination: pagination,
@@ -115,6 +162,8 @@ export const DirectSalesContextProvider: React.FC<PropsWithChildren> = ({
         handleToggleLayout,
         filters,
         setFilters,
+        sorters,
+        setSorters,
         products,
         isLoadingProduct,
       }}

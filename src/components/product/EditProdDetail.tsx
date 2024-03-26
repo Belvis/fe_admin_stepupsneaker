@@ -58,8 +58,6 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
     showWarningConfirmDialog({
       options: {
         accept: () => {
-          console.log("values", values);
-
           const convertedPayload: IProductDetailRequest[] =
             productDetailToRequest([values]);
           onFinish(convertedPayload[0]);

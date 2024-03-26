@@ -1,4 +1,4 @@
-import { Col, Row, Skeleton } from "antd";
+import { Col, Empty, Row, Skeleton } from "antd";
 import React, { useContext } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
 import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
@@ -25,19 +25,25 @@ const DirectSalesRightContent: React.FC<
         span={24}
         style={{
           maxHeight: "250px",
+          overflowX: "hidden",
+          padding: "12px",
         }}
       >
         <Skeleton active loading={isLoadingProduct}>
-          <Row gutter={[16, 24]}>
-            {products.map((product) => (
-              <ProductItem
-                layout={pLayout}
-                key={product.id}
-                product={product}
-                onClickFunction={handleProductClick}
-              />
-            ))}
-          </Row>
+          {products.length > 0 ? (
+            <Row gutter={[16, 24]}>
+              {products.map((product) => (
+                <ProductItem
+                  layout={pLayout}
+                  key={product.id}
+                  product={product}
+                  onClickFunction={handleProductClick}
+                />
+              ))}
+            </Row>
+          ) : (
+            <Empty />
+          )}
         </Skeleton>
       </Col>
     </Row>

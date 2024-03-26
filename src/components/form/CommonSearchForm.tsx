@@ -105,8 +105,6 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
     }
   };
 
-  console.log(fields);
-
   return (
     <Form
       {...formProps}

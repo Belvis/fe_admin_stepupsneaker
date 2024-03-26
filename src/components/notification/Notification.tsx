@@ -205,8 +205,6 @@ export const Notifications: React.FC = () => {
             trigger="click"
             open={moreOpen}
             onOpenChange={(newOpen) => {
-              console.log("more", newOpen);
-
               setMoreOpen(newOpen);
             }}
             overlayStyle={{ width: 250 }}

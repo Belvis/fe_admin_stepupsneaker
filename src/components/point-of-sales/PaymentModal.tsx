@@ -95,7 +95,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   );
 
   const handleFinish = () => {
-    setPayments(thisPayments);
+    setPayments(thisPayments ?? []);
     handleOk();
   };
 

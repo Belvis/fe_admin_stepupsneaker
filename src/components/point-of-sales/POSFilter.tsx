@@ -1,6 +1,11 @@
-import { CloseOutlined, DeleteOutlined, TagsOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  TagsOutlined,
+} from "@ant-design/icons";
 import { useCheckboxGroup } from "@refinedev/antd";
-import { HttpError, useApiUrl, useList, useTranslate } from "@refinedev/core";
+import { HttpError, useList, useTranslate } from "@refinedev/core";
 import {
   Button,
   Checkbox,
@@ -15,7 +20,12 @@ import {
   Tag,
   Typography,
 } from "antd";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import {
+  DirectSalesContext,
+  FilterType,
+  blankFilters,
+} from "../../contexts/point-of-sales/direct-sales";
 import { IColorResponse, IProdAttributeResponse } from "../../interfaces";
 import {
   ColorIcon,
@@ -25,6 +35,8 @@ import {
   StyleIcon,
   TradeMarkIcon,
 } from "../icons";
+import _ from "lodash";
+import { AnimatePresence, motion } from "framer-motion";
 
 const { Title } = Typography;
 
@@ -36,6 +48,17 @@ type POSFilterProps = {
 export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
+
+  const { filters: initialFilters, setFilters } =
+    useContext(DirectSalesContext);
+
+  const [tempFilters, setTempFilters] = useState<FilterType>(blankFilters);
+
+  useEffect(() => {
+    if (initialFilters) {
+      setTempFilters(_.cloneDeep(initialFilters));
+    }
+  }, [initialFilters, open]);
 
   const { checkboxGroupProps: brandCheckboxGroupProps } = useCheckboxGroup({
     resource: "brands",
@@ -100,20 +123,63 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
 
   const sizes = sizeData?.data ?? [];
 
-  const [selectedColor, setSelectedColor] = useState<IColorResponse>();
-  const [selectedSize, setSelectedSize] = useState<IProdAttributeResponse>();
-
   const handleColorChange = (color: IColorResponse, checked: boolean) => {
-    setSelectedColor(checked ? color : undefined);
+    setTempFilters((prevFilters) => {
+      let updatedColors;
+      if (checked) {
+        updatedColors = [...prevFilters.colors, color.id];
+      } else {
+        updatedColors = prevFilters.colors.filter((cId) => cId !== color.id);
+      }
+      return {
+        ...prevFilters,
+        colors: updatedColors,
+      };
+    });
   };
 
   const handleSizeChange = (size: IProdAttributeResponse, checked: boolean) => {
-    setSelectedSize(checked ? size : undefined);
+    setTempFilters((prevFitlers) => {
+      let updatedSizes;
+      if (checked) {
+        updatedSizes = [...prevFitlers.sizes, size.id];
+      } else {
+        updatedSizes = prevFitlers.sizes.filter((sId) => sId !== size.id);
+      }
+
+      return {
+        ...prevFitlers,
+        sizes: updatedSizes,
+      };
+    });
+  };
+
+  const handleCheckboxChange = (checkedValues: string[], property: string) => {
+    setTempFilters((prevFilters) => ({
+      ...prevFilters,
+      [property]: checkedValues,
+    }));
+  };
+
+  const handleOk = () => {
+    setFilters(tempFilters);
+    onClose();
+  };
+
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleDeselectAll = () => {
+    setTempFilters(blankFilters);
+
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 2000);
   };
 
   const items: CollapseProps["items"] = [
     {
-      key: "1",
+      key: "brandFilter",
       label: (
         <span>
           <TagsOutlined /> {t("brands.brands")}
@@ -123,11 +189,15 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
         <Checkbox.Group
           {...brandCheckboxGroupProps}
           style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          onChange={(checkedValues) =>
+            handleCheckboxChange(checkedValues, "brands")
+          }
+          value={tempFilters.brands}
         />
       ),
     },
     {
-      key: "2",
+      key: "colorFilter",
       label: (
         <span>
           <ColorIcon /> {t("colors.colors")}
@@ -140,16 +210,15 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
               {colors.map((color, index) => (
                 <Tag.CheckableTag
                   key={index}
-                  checked={selectedColor === color}
+                  checked={tempFilters.colors.includes(color.id)}
                   style={{
                     width: "30px",
                     height: "30px",
                     borderRadius: "50%",
                     backgroundColor: "#" + color.code,
-                    border:
-                      selectedColor === color
-                        ? "2px solid #fb5231"
-                        : "2px solid transparent",
+                    border: tempFilters.colors.includes(color.id)
+                      ? "2px solid #fb5231"
+                      : "2px solid transparent",
                   }}
                   onChange={(checked) => handleColorChange(color, checked)}
                 />
@@ -160,7 +229,7 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
       ),
     },
     {
-      key: "3",
+      key: "sizeFilter",
       label: (
         <span>
           <SizeIcon /> {t("sizes.sizes")}
@@ -173,12 +242,11 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
               {sizes.map((size, index) => (
                 <Tag.CheckableTag
                   key={index}
-                  checked={selectedSize === size}
+                  checked={tempFilters.sizes.includes(size.id)}
                   style={{
-                    border:
-                      selectedSize === size
-                        ? "1px solid #fb5231"
-                        : "1px solid #000000",
+                    border: tempFilters.sizes.includes(size.id)
+                      ? "1px solid #fb5231"
+                      : "1px solid #000000",
                     borderRadius: "0",
                     padding: "6px 12px",
                   }}
@@ -193,7 +261,7 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
       ),
     },
     {
-      key: "4",
+      key: "materialFilter",
       label: (
         <span>
           <MaterialIcon /> {t("materials.materials")}
@@ -203,11 +271,15 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
         <Checkbox.Group
           {...materialCheckboxGroupProps}
           style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          onChange={(checkedValues) =>
+            handleCheckboxChange(checkedValues, "materials")
+          }
+          value={tempFilters.materials}
         />
       ),
     },
     {
-      key: "5",
+      key: "soleFilter",
       label: (
         <span>
           <SoleIcon /> {t("soles.soles")}
@@ -217,11 +289,15 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
         <Checkbox.Group
           {...soleCheckboxGroupProps}
           style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          onChange={(checkedValues) =>
+            handleCheckboxChange(checkedValues, "soles")
+          }
+          value={tempFilters.soles}
         />
       ),
     },
     {
-      key: "6",
+      key: "styleFilter",
       label: (
         <span>
           <StyleIcon /> {t("styles.styles")}
@@ -231,11 +307,15 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
         <Checkbox.Group
           {...styleCheckboxGroupProps}
           style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          onChange={(checkedValues) =>
+            handleCheckboxChange(checkedValues, "styles")
+          }
+          value={tempFilters.styles}
         />
       ),
     },
     {
-      key: "7",
+      key: "tradeMarkFilter",
       label: (
         <span>
           <TradeMarkIcon /> {t("trade-marks.trade-marks")}
@@ -245,6 +325,10 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
         <Checkbox.Group
           {...tradeMarkCheckboxGroupProps}
           style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          onChange={(checkedValues) =>
+            handleCheckboxChange(checkedValues, "tradeMarks")
+          }
+          value={tempFilters.tradeMarks}
         />
       ),
     },
@@ -260,25 +344,50 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
       closable={false}
       footer={
         <Flex align="center" justify="space-between">
-          <Button type="primary" ghost icon={<DeleteOutlined />}>
-            Xoá chọn tất cả
+          <Button
+            type="primary"
+            ghost
+            icon={
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={isSuccess ? "check" : "delete"}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isSuccess ? <CheckOutlined /> : <DeleteOutlined />}
+                </motion.span>
+              </AnimatePresence>
+            }
+            onClick={handleDeselectAll}
+          >
+            {t("actions.deselectAll")}
           </Button>
           <Space>
-            <Button type="default">Bỏ qua</Button>
-            <Button type="primary">Xong</Button>
+            <Button type="default" onClick={onClose}>
+              {t("actions.skip")}
+            </Button>
+            <Button type="primary" onClick={handleOk}>
+              {t("actions.ok")}
+            </Button>
           </Space>
         </Flex>
       }
     >
       <Row>
         <Col span={20}>
-          <Title level={4}>Lọc theo thuộc tính sản phẩm</Title>
+          <Title level={4}>{t("products.filters.attribute")}</Title>
         </Col>
         <Col span={4} style={{ textAlign: "end" }}>
           <Button type="text" onClick={onClose} icon={<CloseOutlined />} />
         </Col>
         <Col span={24}>
-          <Collapse defaultActiveKey={["2", "3"]} ghost items={items} />
+          <Collapse
+            defaultActiveKey={["colorFilter", "sizeFilter"]}
+            ghost
+            items={items}
+          />
         </Col>
       </Row>
     </Drawer>

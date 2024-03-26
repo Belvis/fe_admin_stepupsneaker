@@ -10,6 +10,7 @@ import { IOrderResponse } from "../../interfaces";
 import CustomerSection from "./CustomerInputSection";
 import { POSFilter } from "./POSFilter";
 import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
+import { POSSorter } from "./POSSorter";
 
 type DirectSalesRightHeaderProps = {
   order: IOrderResponse;
@@ -30,13 +31,28 @@ const DirectSalesRightHeader: React.FC<DirectSalesRightHeaderProps> = ({
     setFilterDrawerOpen(false);
   };
 
+  const [sorterDrawerOpen, setSorterDrawerOpen] = useState<boolean>(false);
+
+  const showSorterDrawer = () => {
+    setSorterDrawerOpen(true);
+  };
+
+  const closeSorterDrawer = () => {
+    setSorterDrawerOpen(false);
+  };
+
   return (
     <Row gutter={[16, 24]}>
       <Col span={18}>
         <CustomerSection order={order} />
       </Col>
       <Col span={2}>
-        <Button shape="circle" type="text" icon={<UnorderedListOutlined />} />
+        <Button
+          shape="circle"
+          type="text"
+          icon={<UnorderedListOutlined />}
+          onClick={showSorterDrawer}
+        />
       </Col>
       <Col span={2}>
         <Button
@@ -61,6 +77,7 @@ const DirectSalesRightHeader: React.FC<DirectSalesRightHeaderProps> = ({
         />
       </Col>
       <POSFilter open={filterDrawerOpen} onClose={closeFilterDrawer} />
+      <POSSorter open={sorterDrawerOpen} onClose={closeSorterDrawer} />
     </Row>
   );
 };

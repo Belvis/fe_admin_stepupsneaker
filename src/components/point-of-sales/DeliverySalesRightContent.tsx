@@ -67,28 +67,34 @@ export const DeliverySalesRightContent: React.FC<
     ],
   });
 
-  useEffect(() => {
-    const defaultPayment = {
-      id: "",
-      order: order,
-      paymentMethod: paymentMethods?.[0] ?? ({} as IPaymentMethodResponse),
-      totalMoney: totalPrice,
-      description: "",
-      createdAt: 0,
-      updatedAt: 0,
-    };
-
-    const newPayment: IPaymentResponse = {
-      ...defaultPayment,
-      transactionCode: isCOD ? "" : "CASH",
-      paymentStatus: isCOD ? "PENDING" : "COMPLETED",
-    };
-
-    setPayments([newPayment]);
-  }, [isCOD]);
+  const [isCODInitialized, setIsCODInitialized] = useState(false);
 
   useEffect(() => {
-    if (data && data.data && data.data.length > 0) {
+    if (isCODInitialized) {
+      const defaultPayment = {
+        id: "",
+        order: order,
+        paymentMethod: paymentMethods?.[0] ?? ({} as IPaymentMethodResponse),
+        totalMoney: totalPrice,
+        description: "",
+        createdAt: 0,
+        updatedAt: 0,
+      };
+
+      const newPayment: IPaymentResponse = {
+        ...defaultPayment,
+        transactionCode: isCOD ? "" : "CASH",
+        paymentStatus: isCOD ? "PENDING" : "COMPLETED",
+      };
+
+      setPayments([newPayment]);
+    } else {
+      setIsCODInitialized(true);
+    }
+  }, [isCODInitialized, isCOD]);
+
+  useEffect(() => {
+    if (data && data.data && data.data.length > 0 && totalPrice > 0) {
       setPaymentMethods(data.data);
       setPayments([
         {

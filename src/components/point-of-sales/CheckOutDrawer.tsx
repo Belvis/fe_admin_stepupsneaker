@@ -179,7 +179,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   }, [payments]);
 
   useEffect(() => {
-    if (data && data.data && data.data.length > 0) {
+    if (data && data.data && data.data.length > 0 && totalPrice > 0) {
       setPaymentMethods(data.data);
       setPayments([
         {
@@ -216,9 +216,10 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     ]);
   }
 
-  function submitOrder(): void {
-    const paymentConvertedPayload: IPaymentRequest[] =
-      paymentToRequest(payments);
+  function submitOrder(paymentsParam?: IPaymentResponse[]): void {
+    const paymentConvertedPayload: IPaymentRequest[] = paymentToRequest(
+      paymentsParam ?? payments
+    );
 
     mutateUpdate(
       {
@@ -267,6 +268,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
 
     if (!hasEmptyTransactionCode) {
       const change = calculateChange(payments ?? [], totalPrice, discount);
+
       if (change < 0) {
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
         return;

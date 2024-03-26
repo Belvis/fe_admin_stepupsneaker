@@ -64,7 +64,6 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
 
   const handleScanSuccess = (result: string) => {
     const qrResult = parseQRCodeResult(result);
-    console.log(qrResult);
     formProps.form?.setFieldsValue({
       fullName: qrResult.fullName,
       gender: qrResult.gender,

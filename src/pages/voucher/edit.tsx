@@ -42,8 +42,6 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
   const [shouldRefetch, setShouldRefetch] = useState(false);
 
   const handleOnFinish = (values: any) => {
-    console.log("values", values);
-
     const data = {
       code: `${values.code}`,
       name: `${values.name}`,

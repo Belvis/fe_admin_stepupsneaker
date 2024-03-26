@@ -82,7 +82,11 @@
     "payConfirm": "Xác nhận thanh toán",
     "proceedPay": "TIẾN HÀNH THANH TOÁN",
     "calculateShipping": "Tính phí vận chuyển",
-    "showAddress": "Hiển thị địa chỉ của người dùng"
+    "showAddress": "Hiển thị địa chỉ của người dùng",
+    "deselectAll": "Xoá chọn tất cả",
+    "skip": "Bỏ qua",
+    "ok": "Đồng ý",
+    "reset": "Trở về mặc định"
   },
   "buttons": {
     "pos": "Bán hàng tại quầy",
@@ -1004,7 +1008,11 @@
       "status": {
         "label": "Trạng thái",
         "placeholder": "Lọc theo trạng thái"
-      }
+      },
+      "attribute": "Lọc theo thuộc tính sản phẩm"
+    },
+    "sorters": {
+      "attribute": "Sắp xếp theo thuộc tính sản phẩm"
     },
     "error": {
       "limitReached": "Rất tiếc, đã đạt đến giới hạn số lượng sản phẩm",

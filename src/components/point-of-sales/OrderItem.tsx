@@ -32,8 +32,6 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
   const t = useTranslate();
   const { token } = useToken();
 
-  console.log(orderDetail);
-
   const { message } = App.useApp();
 
   const { mutate } = useDelete();
@@ -83,8 +81,6 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
       }
 
       if (value !== orderDetail.quantity) {
-        console.log("ranhere");
-
         const payLoad = orderDetailToRequest([orderDetail], activeKey)[0];
         updateQuantity(
           {

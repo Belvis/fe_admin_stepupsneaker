@@ -25,7 +25,7 @@ const { Text } = Typography;
 type PaymentComfirmModalProps = {
   modalProps: ModalProps;
   order: IOrderResponse;
-  submitOrder: () => void;
+  submitOrder: (paymentsParam?: IPaymentResponse[]) => void;
   close: () => void;
 };
 
@@ -65,7 +65,8 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
         return;
       }
-      setPayments(copiedPayments, () => submitOrder());
+      setPayments(copiedPayments);
+      submitOrder(copiedPayments);
       close();
     } else {
       message.error(t("payments.modal.error.transactionCode"));

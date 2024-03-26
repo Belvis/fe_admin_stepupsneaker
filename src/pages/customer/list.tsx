@@ -50,7 +50,6 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpenAddressModal(false);
   };
 

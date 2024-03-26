@@ -77,10 +77,6 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
     const addressList = formProps.form?.getFieldValue("addressList");
     const dateOfBirth = formProps.form?.getFieldValue("dateOfBirth");
 
-    console.log("addressList", addressList);
-    console.log("dateOfBirth", dateOfBirth);
-    console.log("formProps", formProps.initialValues);
-
     if (addressList) {
       const defaultAddress = addressList.find(
         (address: IAddressResponse) => address.isDefault === true

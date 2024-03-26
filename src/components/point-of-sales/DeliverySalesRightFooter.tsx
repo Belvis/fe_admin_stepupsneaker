@@ -5,7 +5,11 @@ import { useContext } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 import { paymentToRequest } from "../../helpers/mapper";
-import { IOrderResponse, IPaymentRequest } from "../../interfaces";
+import {
+  IOrderResponse,
+  IPaymentRequest,
+  IPaymentResponse,
+} from "../../interfaces";
 import { PaymentComfirmModal } from "./PaymentConfirmModal";
 
 type DeliverySalesRightFooterProps = {
@@ -21,12 +25,14 @@ export const DeliverySalesRightFooter: React.FC<
 
   const { form, shippingMoney, discount, isCOD } =
     useContext(DeliverySalesContext);
-  const { refetchOrder, setPayments, payments } = useContext(POSContext);
+  const { refetchOrder, payments } = useContext(POSContext);
 
   const orderDetails = order?.orderDetails || [];
 
-  function submitOrder(): void {
-    const convertedPayload: IPaymentRequest[] = paymentToRequest(payments);
+  function submitOrder(paymentsParam?: IPaymentResponse[]): void {
+    const convertedPayload: IPaymentRequest[] = paymentToRequest(
+      paymentsParam ?? payments
+    );
 
     const submitData = {
       fullName: form.getFieldValue("fullName"),

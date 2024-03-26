@@ -16,7 +16,7 @@ export const TabContent: React.FC<TabContentProps> = ({ order }) => {
 
   const items: TabsProps["items"] = [
     {
-      key: "1",
+      key: "direct",
       label: (
         <Space>
           <ClockCircleOutlined />
@@ -30,7 +30,7 @@ export const TabContent: React.FC<TabContentProps> = ({ order }) => {
       ),
     },
     {
-      key: "2",
+      key: "delivery",
       label: (
         <Space>
           <PhoneFilled />
