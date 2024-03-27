@@ -20,6 +20,7 @@ import { orderDetailToRequest } from "../../helpers/mapper";
 import { POSContext } from "../../contexts/point-of-sales";
 import { useContext } from "react";
 import { getDiscountPrice } from "../../helpers/money";
+import { Variants, motion } from "framer-motion";
 const { useToken } = theme;
 const { Text } = Typography;
 
@@ -73,11 +74,11 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
   const handleQuantityChange = (value: number | null) => {
     if (isNumber(value) && value > 0) {
       if (value > orderDetail.productDetail.quantity) {
-        return message.info(t("products.error.limitReached"));
+        return message.info(t("products.messages.limitReached"));
       }
 
       if (value > 5) {
-        return message.info(t("products.error.purchaseLimit"));
+        return message.info(t("products.messages.purchaseLimit"));
       }
 
       if (value !== orderDetail.quantity) {
@@ -134,85 +135,94 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
       style={{
         background: token.colorPrimaryBg,
         boxShadow: "0 4px 4px rgba(0, 0, 0, 0.1)",
+        overflow: "hidden",
       }}
       className="order-items"
     >
-      <Row align="middle" justify="center">
-        <Col span={1}>
-          <Text>{count + 1}</Text>
-        </Col>
-        <Col span={9}>
-          <Flex gap={15}>
-            <Avatar
-              shape="square"
-              size={64}
-              src={orderDetail.productDetail.image}
-            />
-            <Flex vertical>
-              <Text strong>{product.name}</Text>
-              <Text>
-                {t("products.fields.size")}: {size.name}
-              </Text>
-              <Text>
-                {t("products.fields.color")}: {color.name}
-              </Text>
+      <motion.div
+        layout
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0 }}
+        key={orderDetail.id}
+      >
+        <Row align="middle" justify="center" style={{ overflow: "hidden" }}>
+          <Col span={1}>
+            <Text>{count + 1}</Text>
+          </Col>
+          <Col span={9}>
+            <Flex gap={15}>
+              <Avatar
+                shape="square"
+                size={64}
+                src={orderDetail.productDetail.image}
+              />
+              <Flex vertical>
+                <Text strong>{product.name}</Text>
+                <Text>
+                  {t("products.fields.size")}: {size.name}
+                </Text>
+                <Text>
+                  {t("products.fields.color")}: {color.name}
+                </Text>
+              </Flex>
             </Flex>
-          </Flex>
-        </Col>
-        <Col span={3}>
-          <InputNumber
-            min={1}
-            className="order-tab-quantity text-center"
-            variant="borderless"
-            style={{
-              width: "100%",
-              borderBottom: `1px solid ${token.colorPrimary}`,
-              borderRadius: 0,
-            }}
-            value={quantity}
-            onChange={debounce(
-              (value) => handleQuantityChange(value as number),
-              300
-            )}
-          />
-        </Col>
-        <Col span={4} className="text-end">
-          <Text>
-            <NumberField
-              options={{
-                currency: "VND",
-                style: "currency",
+          </Col>
+          <Col span={3}>
+            <InputNumber
+              min={1}
+              className="order-tab-quantity text-center"
+              variant="borderless"
+              style={{
+                width: "100%",
+                borderBottom: `1px solid ${token.colorPrimary}`,
+                borderRadius: 0,
               }}
-              value={
-                discountedPrice !== null
-                  ? finalDiscountedPrice
-                  : finalProductPrice
-              }
-              locale={"vi"}
+              value={quantity}
+              onChange={debounce(
+                (value) => handleQuantityChange(value as number),
+                300
+              )}
             />
-          </Text>
-        </Col>
-        <Col span={4} className="text-end">
-          <Text>
-            <NumberField
-              options={{
-                currency: "VND",
-                style: "currency",
-              }}
-              value={totalPrice}
-              locale={"vi"}
+          </Col>
+          <Col span={4} className="text-end">
+            <Text>
+              <NumberField
+                options={{
+                  currency: "VND",
+                  style: "currency",
+                }}
+                value={
+                  discountedPrice !== null
+                    ? finalDiscountedPrice
+                    : finalProductPrice
+                }
+                locale={"vi"}
+              />
+            </Text>
+          </Col>
+          <Col span={4} className="text-end">
+            <Text>
+              <NumberField
+                options={{
+                  currency: "VND",
+                  style: "currency",
+                }}
+                value={totalPrice}
+                locale={"vi"}
+              />
+            </Text>
+          </Col>
+          <Col span={3} className="text-end">
+            <Button
+              shape="circle"
+              type="text"
+              onClick={handleDelete}
+              icon={<DeleteOutlined />}
             />
-          </Text>
-        </Col>
-        <Col span={3} className="text-end">
-          <Button
-            shape="circle"
-            type="text"
-            onClick={handleDelete}
-            icon={<DeleteOutlined />}
-          />
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </motion.div>
     </Card>
   );
 };

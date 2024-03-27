@@ -244,11 +244,11 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
     if (!isNumber(value) || value <= 0) return;
 
     if (value > record.productDetail.quantity) {
-      return message.info(t("products.error.limitReached"));
+      return message.info(t("products.messages.limitReached"));
     }
 
     if (value > 5) {
-      return message.info(t("products.error.purchaseLimit"));
+      return message.info(t("products.messages.purchaseLimit"));
     }
 
     if (value !== record.quantity) {

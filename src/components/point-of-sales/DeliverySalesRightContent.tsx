@@ -4,7 +4,7 @@ import {
   CreditCardFilled,
 } from "@ant-design/icons";
 import { NumberField } from "@refinedev/antd";
-import { HttpError, useList, useTranslate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import {
   Button,
   Col,
@@ -18,22 +18,22 @@ import {
   theme,
 } from "antd";
 import { useContext, useEffect, useState } from "react";
+import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
+import { POSContext } from "../../contexts/point-of-sales";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 import { validateEmail, validateFullName } from "../../helpers/validate";
+import useOrderCalculations from "../../hooks/useOrderCalculations";
 import {
   IOrderResponse,
   IPaymentMethodResponse,
   IPaymentResponse,
 } from "../../interfaces";
+import {
+  calculateChange,
+  calculatePayment,
+} from "../../utils/common/calculator";
 import { AddressFormFour } from "../form/AddressFormFour";
 import { PaymentModal } from "./PaymentModal";
-import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
-import {
-  calculatePayment,
-  calculateChange,
-} from "../../utils/common/calculator";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
-import { POSContext } from "../../contexts/point-of-sales";
 
 const { useToken } = theme;
 const { Text, Title } = Typography;
@@ -57,16 +57,6 @@ export const DeliverySalesRightContent: React.FC<
   const orderDetails = order?.orderDetails || [];
   const { totalPrice } = useOrderCalculations(orderDetails);
 
-  const { data, isLoading } = useList<IPaymentMethodResponse, HttpError>({
-    resource: "payment-methods",
-    sorters: [
-      {
-        field: "createdAt",
-        order: "asc",
-      },
-    ],
-  });
-
   const [isCODInitialized, setIsCODInitialized] = useState(false);
 
   useEffect(() => {
@@ -83,7 +73,7 @@ export const DeliverySalesRightContent: React.FC<
 
       const newPayment: IPaymentResponse = {
         ...defaultPayment,
-        transactionCode: isCOD ? "" : "CASH",
+        transactionCode: "",
         paymentStatus: isCOD ? "PENDING" : "COMPLETED",
       };
 
@@ -94,23 +84,22 @@ export const DeliverySalesRightContent: React.FC<
   }, [isCODInitialized, isCOD]);
 
   useEffect(() => {
-    if (data && data.data && data.data.length > 0 && totalPrice > 0) {
-      setPaymentMethods(data.data);
+    if (paymentMethods && totalPrice > 0) {
       setPayments([
         {
           id: "",
           order: order,
-          paymentMethod: data.data[0],
+          paymentMethod: paymentMethods[0],
           transactionCode: "",
           paymentStatus: "COMPLETED",
           totalMoney: totalPrice,
-          description: "",
+          description: "string",
           createdAt: 0,
           updatedAt: 0,
         },
       ]);
     }
-  }, [data]);
+  }, [paymentMethods]);
 
   if (order.customer) {
     const defaultAddress = order?.customer.addressList.find(

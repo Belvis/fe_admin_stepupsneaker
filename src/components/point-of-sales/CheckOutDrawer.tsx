@@ -1,16 +1,11 @@
 import {
+  CheckCircleOutlined,
   CloseOutlined,
   CreditCardFilled,
   PlusSquareFilled,
 } from "@ant-design/icons";
 import { NumberField, useModal } from "@refinedev/antd";
-import {
-  HttpError,
-  useList,
-  useNavigation,
-  useTranslate,
-  useUpdate,
-} from "@refinedev/core";
+import { useNavigation, useTranslate, useUpdate } from "@refinedev/core";
 import {
   App,
   Button,
@@ -30,8 +25,10 @@ import {
   Typography,
   theme,
 } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
+import { AnimatePresence, motion } from "framer-motion";
+import { useReactToPrint } from "react-to-print";
 import {
   DEFAULT_BANK_ACCOUNT,
   QRCODE_ICON_URL,
@@ -44,19 +41,19 @@ import { formatTimestamp } from "../../helpers/timestamp";
 import useOrderCalculations from "../../hooks/useOrderCalculations";
 import {
   IOrderResponse,
-  IPaymentMethodResponse,
   IPaymentRequest,
   IPaymentResponse,
 } from "../../interfaces";
+import { InvoiceTemplate } from "../../template/invoice";
 import {
   calculateChange,
   calculatePayment,
 } from "../../utils/common/calculator";
 import { DiscountModal } from "./DiscountModal";
 import EmployeeSection from "./EmployeeInputSection";
+import { PaymentComfirmModal } from "./PaymentConfirmModal";
 import { PaymentModal, renderButtons } from "./PaymentModal";
 import VoucherMessage from "./VoucherMessage";
-import { PaymentComfirmModal } from "./PaymentConfirmModal";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -84,7 +81,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     paymentMethods,
     payments,
     setPayments,
-    setPaymentMethods,
+    refetchPaymentMethods,
   } = useContext(POSContext);
   const { discount } = useContext(DirectSalesContext);
 
@@ -101,6 +98,21 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     paymentMethods && paymentMethods.length > 0 ? paymentMethods[0] : null
   );
 
+  const [printOrder, setPrintOrder] = useState(null);
+
+  const componentRef = useRef(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  useEffect(() => {
+    if (printOrder !== null) {
+      handlePrint();
+      list("orders");
+    }
+  }, [printOrder]);
+
   const handleSuggestedButtonOnClick = (totalMoney: number) => {
     if (paymentMethods) {
       setPayments([
@@ -108,10 +120,10 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           id: "",
           order: order,
           paymentMethod: paymentMethods[0],
-          transactionCode: "Cash",
+          transactionCode: "",
           paymentStatus: "COMPLETED",
           totalMoney: totalMoney,
-          description: "Cash",
+          description: "",
           createdAt: 0,
           updatedAt: 0,
         },
@@ -119,20 +131,16 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     }
   };
 
-  const { data } = useList<IPaymentMethodResponse, HttpError>({
-    resource: "payment-methods",
-    sorters: [
-      {
-        field: "createdAt",
-        order: "asc",
-      },
-    ],
-  });
-
   const [transferTransactionCode, setTransferTransactionCode] = useState("");
   const [cardTransactionCode, setCardTransactionCode] = useState("");
 
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const handleConfirmPayment = (transactionCode: string) => {
+    if (!transactionCode || transactionCode.trim() === "") {
+      message.error(t("payments.modal.error.transactionCode"));
+      return;
+    }
     if (selectedMethod && payments && payments.length == 1) {
       const updatedPayments = payments.map((payment) => {
         if (payment.paymentMethod === selectedMethod) {
@@ -141,6 +149,11 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         return payment;
       });
       setPayments(updatedPayments);
+
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 2000);
     }
   };
 
@@ -178,15 +191,30 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     }
   }, [payments]);
 
+  const [retryCount, setRetryCount] = useState(0);
+
   useEffect(() => {
-    if (data && data.data && data.data.length > 0 && totalPrice > 0) {
-      setPaymentMethods(data.data);
+    if (!paymentMethods && retryCount < 3) {
+      refetchPaymentMethods();
+      setRetryCount(retryCount + 1);
+    }
+  }, [paymentMethods, retryCount]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRetryCount(0);
+    }, 5000); // 5 giây
+    return () => clearTimeout(timer);
+  }, [retryCount]);
+
+  useEffect(() => {
+    if (paymentMethods && totalPrice > 0) {
       setPayments([
         {
           id: "",
           order: order,
-          paymentMethod: data.data[0],
-          transactionCode: "CASH",
+          paymentMethod: paymentMethods[0],
+          transactionCode: "",
           paymentStatus: "COMPLETED",
           totalMoney: totalPrice,
           description: "string",
@@ -195,7 +223,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         },
       ]);
     }
-  }, [data]);
+  }, [paymentMethods]);
 
   function handleRadioChange(e: RadioChangeEvent): void {
     const paymentMethod = e.target.value;
@@ -206,7 +234,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         id: "",
         order: order,
         paymentMethod: paymentMethod,
-        transactionCode: "CASH",
+        transactionCode: "",
         paymentStatus: "COMPLETED",
         totalMoney: totalPrice,
         description: "string",
@@ -250,7 +278,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         onSuccess: (data, variables, context) => {
           refetchOrder();
           onClose();
-          list("orders");
+          setPrintOrder(data.data.content);
         },
       }
     );
@@ -264,7 +292,9 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
 
     const hasEmptyTransactionCode = payments
       ?.filter((payment) => payment.paymentMethod.name !== "Cash")
-      ?.some((payment) => !payment.transactionCode);
+      ?.some(
+        (payment) => !payment.transactionCode || payment.transactionCode === ""
+      );
 
     if (!hasEmptyTransactionCode) {
       const change = calculateChange(payments ?? [], totalPrice, discount);
@@ -346,9 +376,28 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           </Col>
           <Col span={24}>
             <Button
-              type="primary"
+              type="default"
               size={"large"}
               className="w-100"
+              icon={
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={
+                      isSuccess ? "transfer-motion-success" : "transfer-motion"
+                    }
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {isSuccess ? (
+                      <CheckCircleOutlined style={{ color: "green" }} />
+                    ) : (
+                      <CheckCircleOutlined style={{ visibility: "hidden" }} />
+                    )}
+                  </motion.span>
+                </AnimatePresence>
+              }
               onClick={() => handleConfirmPayment(transferTransactionCode)}
             >
               {t("actions.payConfirm")}
@@ -384,8 +433,25 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       </Col>
       <Col span={12}>
         <Button
-          type="primary"
+          type="default"
           className="w-100"
+          icon={
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={isSuccess ? "card-motion-success" : "card-motion"}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.5 }}
+              >
+                {isSuccess ? (
+                  <CheckCircleOutlined style={{ color: "green" }} />
+                ) : (
+                  <CheckCircleOutlined style={{ visibility: "hidden" }} />
+                )}
+              </motion.span>
+            </AnimatePresence>
+          }
           onClick={() => handleConfirmPayment(cardTransactionCode)}
         >
           {t("actions.payConfirm")}
@@ -406,7 +472,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     return (
       <Flex gap="middle" justify="space-between" align="center">
         <Space size="large" wrap>
-          <Text>Phương thức thanh toán: </Text>
+          <Text>{t("payment-methods.payment-methods")}: </Text>
         </Space>
         <Text strong style={{ color: token.colorPrimary }}>
           {methodsString}
@@ -416,6 +482,11 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   };
 
   const renderMethodGroup = (payments: IPaymentResponse[]) => {
+    const paymentMethodName =
+      payments && payments.length > 0
+        ? payments[0].paymentMethod?.name || "Cash"
+        : "Cash";
+
     return (
       <Space direction="vertical" className="w-100">
         <Radio.Group
@@ -434,9 +505,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
           )}
         </Radio.Group>
 
-        <Col span={24}>
-          {renderSingleMethod(payments[0].paymentMethod.name)}
-        </Col>
+        <Col span={24}>{renderSingleMethod(paymentMethodName)}</Col>
       </Space>
     );
   };
@@ -633,10 +702,8 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
 
         <Divider />
         <Col span={24}>
-          {payments?.length === 1 && renderMethodGroup(payments)}
-          {payments?.length &&
-            payments.length > 1 &&
-            renderMultipleMethods(payments)}
+          {payments && payments.length <= 1 && renderMethodGroup(payments)}
+          {payments && payments.length > 1 && renderMultipleMethods(payments)}
         </Col>
         <Col span={24}>
           <Flex gap="middle" justify="space-between" align="center">
@@ -666,6 +733,11 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         customer={order.customer}
         order={order}
       />
+      <div className="d-none">
+        {printOrder && (
+          <InvoiceTemplate order={printOrder} ref={componentRef} />
+        )}
+      </div>
     </Drawer>
   );
 };

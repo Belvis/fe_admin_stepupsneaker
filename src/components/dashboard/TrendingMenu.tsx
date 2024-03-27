@@ -3,6 +3,7 @@ import { Typography, Avatar, Space, List as AntdList, Badge } from "antd";
 import { Container, AvatarWrapper, AvatarCircle, TextWrapper } from "./styled";
 import { useEffect } from "react";
 import { IProductDetailResponse } from "../../interfaces";
+import { useTranslate } from "@refinedev/core";
 
 const { Text } = Typography;
 
@@ -56,18 +57,19 @@ export const TrendingMenu: React.FC<TrendingMenuProps> = ({ range }) => {
       {...listProps}
       pagination={false}
       renderItem={(item, index) => <MenuItem item={item} index={index} />}
-    ></AntdList>
+    />
   );
 };
-
 const MenuItem: React.FC<{ item: IProductDetailResponse; index: number }> = ({
   item,
   index,
-}) => (
-  <Container key={item.id}>
-    <Space size="large">
-      <AvatarWrapper className="menu-item__avatar">
-        <Badge count={item.saleCount}>
+}) => {
+  const t = useTranslate();
+
+  return (
+    <Container key={item.id}>
+      <Space size="large">
+        <AvatarWrapper className="menu-item__avatar">
           <Avatar
             size={{
               xs: 64,
@@ -79,25 +81,28 @@ const MenuItem: React.FC<{ item: IProductDetailResponse; index: number }> = ({
             }}
             src={item.image}
           />
-        </Badge>
-        <AvatarCircle>
-          <span>#{index + 1}</span>
-        </AvatarCircle>
-      </AvatarWrapper>
+          <AvatarCircle>
+            <span>#{index + 1}</span>
+          </AvatarCircle>
+        </AvatarWrapper>
 
-      <TextWrapper>
-        <Text strong>{item.product.name}</Text>
-        <NumberField
-          strong
-          options={{
-            currency: "VND",
-            style: "currency",
-            notation: "standard",
-          }}
-          locale={"vi"}
-          value={item.price}
-        />
-      </TextWrapper>
-    </Space>
-  </Container>
-);
+        <TextWrapper>
+          <Text strong>{item.product.name}</Text>
+          <NumberField
+            strong
+            options={{
+              currency: "VND",
+              style: "currency",
+              notation: "standard",
+            }}
+            locale={"vi"}
+            value={item.price}
+          />
+          <Text strong style={{ color: "red" }}>
+            {t("dashboard.trendingMenus.sales", { count: item.saleCount })}
+          </Text>
+        </TextWrapper>
+      </Space>
+    </Container>
+  );
+};

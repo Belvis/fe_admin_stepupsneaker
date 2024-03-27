@@ -7,6 +7,7 @@ import {
 import { useTranslate } from "@refinedev/core";
 import {
   List as AntdList,
+  App,
   Col,
   Modal,
   Row,
@@ -31,6 +32,7 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
   setUserSelected,
 }) => {
   const t = useTranslate();
+  const { message } = App.useApp();
 
   const { show, close, modalProps } = useModal();
 
@@ -90,6 +92,10 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
             hideText
             type="default"
             onClick={() => {
+              if (!userSelected || !userSelected.product) {
+                message.info(t("products.messages.selectProductFirst"));
+                return;
+              }
               show();
             }}
           />

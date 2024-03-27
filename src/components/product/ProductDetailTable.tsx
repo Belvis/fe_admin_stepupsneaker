@@ -27,6 +27,7 @@ import {
   IUserSelected,
 } from "../../interfaces";
 import ColumnActions from "../table/ColumnActions";
+import _ from "lodash";
 
 const { Text } = Typography;
 
@@ -395,6 +396,11 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
           icon={<CheckSquareOutlined />}
           loading={isLoading}
           onClick={() => {
+            if (!userSelected || _.isEmpty(userSelected)) {
+              message.info(t("products.messages.invalid"));
+              return;
+            }
+
             showWarningConfirmDialog({
               options: {
                 accept: handleSubmit,

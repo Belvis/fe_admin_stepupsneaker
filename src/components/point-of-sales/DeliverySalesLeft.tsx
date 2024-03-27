@@ -22,6 +22,7 @@ import { DiscountModal } from "./DiscountModal";
 import { OrderItem } from "./OrderItem";
 import ShoppingCartHeader from "./ShoppingCartHeader";
 import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { AnimatePresence, Variants, motion } from "framer-motion";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -168,15 +169,30 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
       <Space
         direction="vertical"
         style={{
-          overflow: "auto",
+          overflowY: "auto",
+          overflowX: "hidden",
           width: "100%",
           maxHeight: "215px",
         }}
       >
         <ShoppingCartHeader />
-        {orderDetails.map((orderItem, index) => (
-          <OrderItem key={orderItem.id} orderDetail={orderItem} count={index} />
-        ))}
+        <AnimatePresence mode="wait">
+          <motion.div
+            layout
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: {
+                delayChildren: 0.4,
+                staggerChildren: 0.1,
+              },
+            }}
+          >
+            {orderDetails.map((orderItem, index) => (
+              <OrderItem orderDetail={orderItem} count={index} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </Space>
       <Card style={{ background: token.colorPrimaryBg }} loading={isLoading}>
         <Row gutter={[16, 24]} style={{ height: "100%" }}>

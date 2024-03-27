@@ -37,7 +37,6 @@ import {
 
 import { PointOfSaleIcon } from "./components/icons/icon-pos";
 
-import { AuthPage } from "./pages/auth";
 import { authProvider } from "./api/authProvider";
 import {
   ColorIcon,
@@ -50,36 +49,38 @@ import {
   StyleIcon,
   TradeMarkIcon,
 } from "./components/icons";
-import { ThemedTitleV2 } from "./layouts/title";
-import { ThemedSiderV2 } from "./layouts/sider";
+import { DashboardContextProvider } from "./contexts/dashboard";
 import { Header } from "./layouts/header";
-import { ProdAttributeList } from "./pages/product";
-import { ColorList } from "./pages/product/color";
-import { RoleList } from "./pages/role";
-import { PaymentList } from "./pages/payment";
-import { PaymentMethodList } from "./pages/payment-method";
-import { EmployeeCreate, EmployeeEdit, EmployeeList } from "./pages/employee";
+import { ThemedSiderV2 } from "./layouts/sider";
+import { ThemedTitleV2 } from "./layouts/title";
+import { AuthPage } from "./pages/auth";
 import {
   CustomerCreate,
   CustomerEdit,
   CustomerList,
   CustomerShow,
 } from "./pages/customer";
-import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
-import {
-  PromotionCreate,
-  PromotionList,
-  PromotionEdit,
-} from "./pages/promotion";
+import { DashboardPage } from "./pages/dashboard";
+import { EmployeeCreate, EmployeeEdit, EmployeeList } from "./pages/employee";
 import { OrderList, OrderShow } from "./pages/order";
+import { PaymentList } from "./pages/payment";
+import { PaymentMethodList } from "./pages/payment-method";
+import { PointOfSales } from "./pages/point-of-sales";
+import { ProdAttributeList } from "./pages/product";
+import { ColorList } from "./pages/product/color";
 import {
   ProductCreate,
   ProductList,
   ProductShow,
 } from "./pages/product/products";
-import { PointOfSales } from "./pages/point-of-sales";
-import { DashboardContextProvider } from "./contexts/dashboard";
-import { DashboardPage } from "./pages/dashboard";
+import {
+  PromotionCreate,
+  PromotionEdit,
+  PromotionList,
+} from "./pages/promotion";
+import { RoleList } from "./pages/role";
+import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
+import { POSContextProvider } from "./contexts/point-of-sales";
 
 const API_BASE_URL = `${window.location.protocol}//${
   window.location.hostname
@@ -457,7 +458,14 @@ function App() {
                     </Route>
                   </Route>
                   <Route path="/point-of-sales">
-                    <Route index element={<PointOfSales />} />
+                    <Route
+                      index
+                      element={
+                        <POSContextProvider>
+                          <PointOfSales />
+                        </POSContextProvider>
+                      }
+                    />
                   </Route>
 
                   <Route path="*" element={<ErrorComponent />} />

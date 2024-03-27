@@ -50,18 +50,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
   const decreaseQty = () => {
     if (qty <= 1) {
-      message.error(t("products.error.minReached"));
+      message.error(t("products.messages.minReached"));
     }
     setQty(qty - 1);
   };
 
   const increaseQty = () => {
     if (qty >= 5) {
-      message.error(t("products.error.purchaseLimit"));
+      message.error(t("products.messages.purchaseLimit"));
     }
 
     if (qty >= productStock) {
-      message.error(t("products.error.limitReached"));
+      message.error(t("products.messages.limitReached"));
     }
     setQty(qty + 1);
   };

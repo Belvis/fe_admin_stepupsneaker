@@ -678,7 +678,8 @@
       "title": "Đơn đơn hàng gần đây"
     },
     "trendingMenus": {
-      "title": "Xu hướng"
+      "title": "Xu hướng",
+      "sales": "{{count}} đã bán"
     },
     "overviewTab": {
       "overview": {
@@ -1014,10 +1015,12 @@
     "sorters": {
       "attribute": "Sắp xếp theo thuộc tính sản phẩm"
     },
-    "error": {
+    "messages": {
       "limitReached": "Rất tiếc, đã đạt đến giới hạn số lượng sản phẩm",
       "purchaseLimit": "Bạn chỉ có thể mua tối đa 5 sản phẩm",
-      "minReached": "Đã đạt số lượng nhỏ nhất"
+      "minReached": "Đã đạt số lượng nhỏ nhất",
+      "selectProductFirst": "Vui lòng chọn sản phẩm trước",
+      "invalid": "Sản phẩm không hợp lệ"
     }
   },
   "productDetails": {
@@ -1228,5 +1231,21 @@
       "edit": "Chỉnh sửa hình ảnh"
     },
     "validation": "phải là {{size}}x{{size}} px"
+  },
+  "invoices": {
+    "title": "Hoá đơn",
+    "store": "Cửa hàng {APP_TITLE}",
+    "recipient": "Người nhận",
+    "retailCustomer": "Khách lẻ",
+    "noAddress": "Khách hàng chưa có địa chỉ",
+    "fields": {
+      "description": "Mô tả",
+      "unitPrice": "Đơn giá",
+      "quantity": "Số lượng",
+      "reduceMoney": "Tiền được giảm",
+      "totalPrice": "Thành tiền",
+      "total": "Tổng cộng",
+      "totalMoney": "Tổng số tiền"
+    }
   }
 }

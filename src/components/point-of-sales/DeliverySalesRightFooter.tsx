@@ -1,7 +1,7 @@
 import { useModal } from "@refinedev/antd";
 import { useNavigation, useTranslate, useUpdate } from "@refinedev/core";
 import { Button, Col, Row } from "antd";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 import { paymentToRequest } from "../../helpers/mapper";
@@ -11,6 +11,8 @@ import {
   IPaymentResponse,
 } from "../../interfaces";
 import { PaymentComfirmModal } from "./PaymentConfirmModal";
+import { InvoiceTemplate } from "../../template/invoice";
+import { useReactToPrint } from "react-to-print";
 
 type DeliverySalesRightFooterProps = {
   order: IOrderResponse;
@@ -22,6 +24,21 @@ export const DeliverySalesRightFooter: React.FC<
   const t = useTranslate();
   const { mutate: mutateUpdate } = useUpdate();
   const { list } = useNavigation();
+
+  const [printOrder, setPrintOrder] = useState(null);
+
+  const componentRef = useRef(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  useEffect(() => {
+    if (printOrder !== null) {
+      handlePrint();
+      list("orders");
+    }
+  }, [printOrder]);
 
   const { form, shippingMoney, discount, isCOD } =
     useContext(DeliverySalesContext);
@@ -78,7 +95,7 @@ export const DeliverySalesRightFooter: React.FC<
         },
         onSuccess: (data, variables, context) => {
           refetchOrder();
-          list("orders");
+          setPrintOrder(data.data.content);
         },
       }
     );
@@ -124,6 +141,11 @@ export const DeliverySalesRightFooter: React.FC<
           modalProps={restModalProps}
         />
       </Col>
+      <div className="d-none">
+        {printOrder && (
+          <InvoiceTemplate order={printOrder} ref={componentRef} />
+        )}
+      </div>
     </Row>
   );
 };

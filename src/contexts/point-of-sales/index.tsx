@@ -35,6 +35,9 @@ type POSContextType = {
   refetchOrder: () => Promise<
     QueryObserverResult<GetListResponse<IOrderResponse>, HttpError>
   >;
+  refetchPaymentMethods: () => Promise<
+    QueryObserverResult<GetListResponse<IPaymentMethodResponse>, HttpError>
+  >;
   payments: IPaymentResponse[] | undefined;
   setPayments: React.Dispatch<React.SetStateAction<IPaymentResponse[]>>;
   paymentMethods: IPaymentMethodResponse[] | undefined;
@@ -77,11 +80,31 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
 
   const [payments, setPayments] = useState<IPaymentResponse[]>([]);
 
-  useEffect(() => {
-    console.log("payments", payments);
-  }, [payments]);
   const [paymentMethods, setPaymentMethods] =
     useState<IPaymentMethodResponse[]>();
+
+  const { data: paymentMethodsData, refetch: refetchPaymentMethods } = useList<
+    IPaymentMethodResponse,
+    HttpError
+  >({
+    resource: "payment-methods",
+    sorters: [
+      {
+        field: "createdAt",
+        order: "asc",
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (
+      paymentMethodsData &&
+      paymentMethodsData.data &&
+      paymentMethodsData.data.length > 0
+    ) {
+      setPaymentMethods(paymentMethodsData.data);
+    }
+  }, [paymentMethodsData]);
 
   const {
     show: productShow,
@@ -158,6 +181,7 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
         activeKey,
         setActiveKey,
         refetchOrder,
+        refetchPaymentMethods,
         payments,
         setPayments,
         paymentMethods,

@@ -1,3 +1,11 @@
+// App properties
+export const APP_TITLE: string = "Stepsneaker";
+export const STORE_ADDRESS = {
+  city: "Hà Nội",
+  province: "Nam Từ Liêm",
+  district: "Phố Trịnh Văn Bô",
+  line: "Số 13 FPT Polytechnic",
+};
 export const FREE_SHIPPING_THRESHOLD: number = 5000000;
 export const CONTACT_PHONE_NUMBER: string = "0987654321";
 export const QRCODE_VALUE: string =
