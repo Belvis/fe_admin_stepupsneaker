@@ -75,6 +75,11 @@ export const OrderTimelineTwo: React.FC<OrderTimelineTwoProps> = ({}) => {
       case "CANCELED":
       case "EXPIRED":
       case "RETURNED":
+        return {
+          indicatorColor: "purple",
+          backgroundColor: "#f9f0ff",
+          text: "returned",
+        };
       case "EXCHANGED":
         return {
           indicatorColor: "red",

@@ -671,6 +671,7 @@
         "on the way": "Đơn hàng đang trên đường tới",
         "delivered": "Đơn hàng được giao",
         "cancelled": "Đơn hàng bị hủy",
+        "returned": "Đơn hàng bị trả lại",
         "undefined": "Unknown",
         "null": "Unknown"
       }
@@ -1130,6 +1131,7 @@
         "label": "NV Phụ trách",
         "placeholder": "Không chọn"
       },
+      "returnProducts": "Sản phẩm hoàn trả",
       "phoneNumber": "Số điện thoại",
       "amountToBePaid": "Số tiền cần trả",
       "createdAt": "Tạo lúc",

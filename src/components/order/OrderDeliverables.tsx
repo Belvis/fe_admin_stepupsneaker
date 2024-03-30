@@ -1,6 +1,6 @@
 import { NumberField } from "@refinedev/antd";
 import { useTranslate } from "@refinedev/core";
-import { Avatar, Table, Typography, theme } from "antd";
+import { Avatar, Badge, Table, Typography, theme } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IOrderDetailResponse, IOrderResponse } from "../../interfaces";
 import { Product, ProductFooter, ProductText } from "./style";
@@ -38,15 +38,33 @@ export const OrderDeliverables: React.FC<OrderDeliverablesProps> = ({
       render: (_, record) => {
         return (
           <Product>
-            <Avatar
-              size={{
-                md: 60,
-                lg: 108,
-                xl: 108,
-                xxl: 108,
-              }}
-              src={record.productDetail.image || "URL_OF_DEFAULT_IMAGE"}
-            />
+            {record.status === "RETURNED" ? (
+              <Badge.Ribbon
+                text={t("return-forms.fields.returnProducts")}
+                color="purple"
+                placement="start"
+              >
+                <Avatar
+                  size={{
+                    md: 60,
+                    lg: 108,
+                    xl: 108,
+                    xxl: 108,
+                  }}
+                  src={record.productDetail.image || "URL_OF_DEFAULT_IMAGE"}
+                />
+              </Badge.Ribbon>
+            ) : (
+              <Avatar
+                size={{
+                  md: 60,
+                  lg: 108,
+                  xl: 108,
+                  xxl: 108,
+                }}
+                src={record.productDetail.image || "URL_OF_DEFAULT_IMAGE"}
+              />
+            )}
             <ProductText>
               <Text style={{ fontSize: 22, fontWeight: 800 }}>
                 {record.productDetail.product.name}
@@ -107,6 +125,7 @@ export const OrderDeliverables: React.FC<OrderDeliverablesProps> = ({
   ];
   return (
     <Table
+      className="strike-able"
       pagination={false}
       dataSource={record?.orderDetails}
       loading={isLoading}
@@ -127,12 +146,7 @@ export const OrderDeliverables: React.FC<OrderDeliverablesProps> = ({
         </ProductFooter>
       )}
       onRow={(record, index) => ({
-        style: {
-          textDecorationLine:
-            record.status === "RETURNED" ? "line-through" : "default",
-          textDecorationStyle: "solid",
-          textDecorationColor: token.colorPrimary,
-        },
+        className: record.status === "RETURNED" ? "strikethrough" : undefined,
       })}
     />
   );

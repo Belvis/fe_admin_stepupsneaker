@@ -143,7 +143,9 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         key: "actions",
         width: "10%",
         align: "center",
-        render: (_, record) => <ColumnActions record={record} />,
+        render: (_, record) => (
+          <ColumnActions hideDelete hideEdit record={record} />
+        ),
       },
     ],
     [t, sorters, current, pageSize, tableProps]

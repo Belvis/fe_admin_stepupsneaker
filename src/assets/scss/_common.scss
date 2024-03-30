@@ -53,6 +53,21 @@
   }
 }
 
+.strikethrough::after {
+  content: '';
+  position: absolute;
+  top: 50%; 
+  left: 0;
+  width: 100%;
+  height: 2px; 
+  background: red; 
+  z-index: 1;
+}
+
+.strikethrough {
+  position: relative;
+}
+
 .mt-100 {
   margin-top: 100px;
 }

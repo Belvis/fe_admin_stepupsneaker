@@ -5,6 +5,7 @@ import {
   FileProtectOutlined,
   LoadingOutlined,
   QuestionOutlined,
+  StopOutlined,
 } from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
 import { Card, Grid, Skeleton, Steps, Tooltip } from "antd";
@@ -34,6 +35,7 @@ export const OrderSteps: React.FC<OrderStepsProps> = ({ record, callBack }) => {
   const notFinishedCurrentStep = (event: IEvent, index: number) =>
     event.status !== "CANCELED" &&
     event.status !== "COMPLETED" &&
+    event.status !== "RETURNED" &&
     event.loading;
 
   const stepStatus = (event: IEvent, index: number) => {
@@ -168,6 +170,8 @@ const getIconByStatus = (status: OrderStatus) => {
       return <CarOutlined />;
     case "COMPLETED":
       return <FileProtectOutlined />;
+    case "RETURNED":
+      return <StopOutlined />;
     default:
       return null;
   }

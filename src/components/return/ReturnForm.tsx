@@ -7,6 +7,7 @@ import {
 import {
   Button,
   Col,
+  Divider,
   Form,
   Input,
   InputNumber,
@@ -14,6 +15,7 @@ import {
   Select,
   Table,
   Typography,
+  theme,
 } from "antd";
 
 import { ColumnsType } from "antd/es/table";
@@ -41,11 +43,13 @@ import {
 } from "../../interfaces";
 import _ from "lodash";
 import { ReturnInspectionStatus } from "./ReturnInspectionStatus";
+import { ColorModeContext } from "../../contexts/color-mode";
 
 const { Title, Text } = Typography;
 
 export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
+  const { mode } = useContext(ColorModeContext);
 
   const {
     formProps,
@@ -290,6 +294,7 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
         onFinish={handleOnFinish}
       >
         <div className="return-form mb-3">
+          <Divider />
           <Title level={5}>{t("return-forms.titles.form")}</Title>
 
           <Row gutter={24}>
@@ -456,6 +461,7 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
           </Row>
         </div>
         <div className="return-details mb-3">
+          <Divider />
           <Row gutter={24}>
             <Col span={12}>
               <Title level={5} className="mb-3">
@@ -480,7 +486,11 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
               formProps.form?.setFieldValue("amountToBePaid", totalMoney);
               return (
                 <>
-                  <Table.Summary.Row>
+                  <Table.Summary.Row
+                    style={{
+                      backgroundColor: mode == "light" ? "#fafafa" : undefined,
+                    }}
+                  >
                     <Table.Summary.Cell index={0} className="text-center">
                       <Text className="fw-bold">Tổng cộng</Text>
                     </Table.Summary.Cell>
@@ -502,6 +512,7 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
                         locale={"vi"}
                       />
                     </Table.Summary.Cell>
+                    <Table.Summary.Cell index={5}></Table.Summary.Cell>
                     <Table.Summary.Cell index={5}></Table.Summary.Cell>
                   </Table.Summary.Row>
                 </>
