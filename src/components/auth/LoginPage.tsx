@@ -22,7 +22,7 @@ import {
   FormProps,
   theme,
 } from "antd";
-import { useLogin, useTranslate, useRouterContext } from "@refinedev/core";
+import { useLogin, useTranslate } from "@refinedev/core";
 
 import {
   bodyStyles,
@@ -41,8 +41,6 @@ type LoginProps = LoginPageProps<LayoutProps, CardProps, FormProps>;
 
 export const LoginPage: React.FC<LoginProps> = ({
   providers,
-  registerLink,
-  forgotPasswordLink,
   rememberMe,
   contentProps,
   wrapperProps,
@@ -53,11 +51,6 @@ export const LoginPage: React.FC<LoginProps> = ({
   const { token } = useToken();
   const [form] = Form.useForm<LoginFormTypes>();
   const translate = useTranslate();
-  const routerType = useRouterType();
-  const Link = useLink();
-  const { Link: LegacyLink } = useRouterContext();
-
-  const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
 
   const authProvider = useActiveAuthProvider();
   const { mutate: login, isLoading } = useLogin<LoginFormTypes>({
@@ -208,21 +201,6 @@ export const LoginPage: React.FC<LoginProps> = ({
               </Checkbox>
             </Form.Item>
           )}
-          {forgotPasswordLink ?? (
-            <ActiveLink
-              style={{
-                color: token.colorPrimaryTextHover,
-                fontSize: "12px",
-                marginLeft: "auto",
-              }}
-              to="/forgot-password"
-            >
-              {translate(
-                "pages.login.buttons.forgotPassword",
-                "Forgot password?"
-              )}
-            </ActiveLink>
-          )}
         </div>
         <Form.Item>
           <Button
@@ -236,25 +214,6 @@ export const LoginPage: React.FC<LoginProps> = ({
           </Button>
         </Form.Item>
       </Form>
-      <div style={{ marginTop: 8 }}>
-        {registerLink ?? (
-          <Text style={{ fontSize: 12 }}>
-            {translate(
-              "pages.login.buttons.noAccount",
-              "Don’t have an account?"
-            )}{" "}
-            <ActiveLink
-              to="/register"
-              style={{
-                fontWeight: "bold",
-                color: token.colorPrimaryTextHover,
-              }}
-            >
-              {translate("pages.login.signup", "Sign up")}
-            </ActiveLink>
-          </Text>
-        )}
-      </div>
     </Card>
   );
 

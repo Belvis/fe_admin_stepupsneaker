@@ -18,6 +18,8 @@ import {
   IWardResponse,
 } from "../../interfaces";
 import { AddressModal } from "../address/AddressModal";
+import { FieldLabel } from "./FieldLabel";
+import { LENGTH_DESCRIPTION } from "../../constants/common";
 
 const { Text } = Typography;
 
@@ -25,6 +27,7 @@ interface AddressFormThreeProps {
   form: FormInstance;
   setShippingMoney: React.Dispatch<React.SetStateAction<number>>;
   order: IOrderResponse;
+  hideChooseAddress?: boolean;
 }
 
 const GHN_API_BASE_URL = import.meta.env.VITE_GHN_API_BASE_URL;
@@ -40,6 +43,7 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
   form,
   setShippingMoney,
   order,
+  hideChooseAddress = false,
 }) => {
   const t = useTranslate();
   const { mutate: calculateFeeMutate, isLoading: isLoadingFee } =
@@ -215,18 +219,22 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
       phoneNumber: order.phoneNumber,
     });
   };
+
   return (
     <Fragment>
       <Form.Item
         label={
           <Space size="large">
             <Text>{"Tỉnh/Thành phố"}</Text>
-            <Button type="default" onClick={showAddress}>
-              Hoặc chọn địa chỉ của bạn tại đây
-            </Button>
+            {!hideChooseAddress && (
+              <Button type="default" onClick={showAddress}>
+                Hoặc chọn địa chỉ của bạn tại đây
+              </Button>
+            )}
           </Space>
         }
         name="provinceId"
+        required
         rules={[
           {
             validator: (_, value) => validateCommon(_, value, t, "provinceId"),
@@ -249,6 +257,7 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
       <Form.Item
         label={"Quận/huyện"}
         name="districtId"
+        required
         rules={[
           {
             validator: (_, value) => validateCommon(_, value, t, "districtId"),
@@ -271,6 +280,7 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
       <Form.Item
         label={"Phường/xã"}
         name="wardCode"
+        required
         rules={[
           {
             validator: (_, value) => validateCommon(_, value, t, "wardCode"),
@@ -291,15 +301,22 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
         />
       </Form.Item>
       <Form.Item
-        label="Chi tiết địa chỉ"
+        label={
+          <FieldLabel
+            fieldName={t("customers.fields.more")}
+            maxLength={LENGTH_DESCRIPTION}
+            t={t}
+          />
+        }
         name="line"
+        required
         rules={[
           {
             validator: (_, value) => validateCommon(_, value, t, "line"),
           },
         ]}
       >
-        <Input />
+        <Input maxLength={LENGTH_DESCRIPTION} showCount />
       </Form.Item>
       <Form.Item name="provinceName" hidden>
         <Input />
@@ -310,14 +327,16 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
       <Form.Item name="wardName" hidden>
         <Input />
       </Form.Item>
-      <AddressModal
-        customer={order.customer}
-        setAddresses={setAddresses}
-        open={restAddressModalProps.open ?? false}
-        handleOk={closeAddress}
-        handleCancel={closeAddress}
-        order={order}
-      />
+      {!hideChooseAddress && (
+        <AddressModal
+          customer={order.customer}
+          setAddresses={setAddresses}
+          open={restAddressModalProps.open ?? false}
+          handleOk={closeAddress}
+          handleCancel={closeAddress}
+          order={order}
+        />
+      )}
     </Fragment>
   );
 };

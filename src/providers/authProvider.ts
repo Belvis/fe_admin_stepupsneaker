@@ -19,8 +19,8 @@ import { AuthBindings } from "@refinedev/core";
 import { notification } from "antd";
 import { AxiosInstance } from "axios";
 import { axiosInstance } from "../utils/data-provider/axios";
+import { TOKEN_KEY } from "../helpers/token";
 
-export const TOKEN_KEY = "suns-auth-token";
 const httpClient: AxiosInstance = axiosInstance;
 
 export const authProvider = (url: string): AuthBindings => ({

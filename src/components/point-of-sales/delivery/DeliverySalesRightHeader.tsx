@@ -1,8 +1,8 @@
 import { Col, Row, Space, Typography } from "antd";
-import { formatTimestamp } from "../../helpers/timestamp";
-import { IOrderResponse } from "../../interfaces";
-import CustomerSection from "./CustomerInputSection";
-import EmployeeSection from "./EmployeeInputSection";
+import { formatTimestamp } from "../../../helpers/timestamp";
+import { IOrderResponse } from "../../../interfaces";
+import CustomerSection from "../CustomerInputSection";
+import EmployeeSection from "../EmployeeInputSection";
 
 const { Text } = Typography;
 

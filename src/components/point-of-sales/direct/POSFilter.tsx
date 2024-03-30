@@ -25,8 +25,8 @@ import {
   DirectSalesContext,
   FilterType,
   blankFilters,
-} from "../../contexts/point-of-sales/direct-sales";
-import { IColorResponse, IProdAttributeResponse } from "../../interfaces";
+} from "../../../contexts/point-of-sales/direct-sales";
+import { IColorResponse, IProdAttributeResponse } from "../../../interfaces";
 import {
   ColorIcon,
   MaterialIcon,
@@ -34,7 +34,7 @@ import {
   SoleIcon,
   StyleIcon,
   TradeMarkIcon,
-} from "../icons";
+} from "../../icons";
 import _ from "lodash";
 import { AnimatePresence, motion } from "framer-motion";
 

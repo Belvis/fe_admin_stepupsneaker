@@ -2,8 +2,8 @@ import { ClockCircleOutlined, PhoneFilled } from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
 import { Space, Spin, Tabs, TabsProps } from "antd";
 import { IOrderResponse } from "../../interfaces";
-import { DeliverySales } from "./DeliverySales";
-import { DirectSales } from "./DirectSales";
+import { DeliverySales } from "./delivery/DeliverySales";
+import { DirectSales } from "./direct/DirectSales";
 import { DeliverySalesContextProvider } from "../../contexts/point-of-sales/delivery-sales";
 import { DirectSalesContextProvider } from "../../contexts/point-of-sales/direct-sales";
 

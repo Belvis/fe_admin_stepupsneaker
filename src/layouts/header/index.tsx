@@ -22,6 +22,11 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { Notifications } from "../../components/notification/Notification";
+import {
+  decodeToken,
+  getRoleFromDecodedToken,
+  getToken,
+} from "../../helpers/token";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -35,6 +40,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const locale = useGetLocale();
   const changeLanguage = useSetLocale();
   const { data } = useGetIdentity<any>();
+
+  const userToken = getToken();
+  const decodedToken = decodeToken(userToken);
+  const role = getRoleFromDecodedToken(decodedToken);
 
   const { mode, setMode } = useContext(ColorModeContext);
 
@@ -74,7 +83,11 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   return (
     <AntdLayout.Header style={headerStyles}>
-      <Space>
+      <Space size="middle">
+        <Text className="text-start">
+          {t("common.access.title")}:{" "}
+          <span className="fw-bold">{t(`common.access.role.${role}`)}</span>
+        </Text>
         <Switch
           checkedChildren="🌛"
           unCheckedChildren="🔆"

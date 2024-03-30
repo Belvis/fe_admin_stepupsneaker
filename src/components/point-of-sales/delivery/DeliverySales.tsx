@@ -1,11 +1,11 @@
 import { Row } from "antd";
 
-import { IOrderResponse } from "../../interfaces";
+import { IOrderResponse } from "../../../interfaces";
 import { DeliverySalesLeft } from "./DeliverySalesLeft";
 import { DeliverySalesRight } from "./DeliverySalesRight";
 import { useContext, useEffect } from "react";
-import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { DeliverySalesContext } from "../../../contexts/point-of-sales/delivery-sales";
+import useOrderCalculations from "../../../hooks/useOrderCalculations";
 
 type DeliverySalesProps = {
   order: IOrderResponse;

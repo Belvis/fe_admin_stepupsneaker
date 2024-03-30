@@ -1,6 +1,6 @@
 import { Card, Col, Space, TablePaginationConfig, theme } from "antd";
 import React, { useState } from "react";
-import { ColSpanType, IOrderResponse } from "../../interfaces";
+import { ColSpanType, IOrderResponse } from "../../../interfaces";
 import DirectSalesRightContent from "./DirectSalesRightContent";
 import DirectSalesRightFooter from "./DirectSalesRightFooter";
 import DirectSalesRightHeader from "./DirectSalesRightHeader";

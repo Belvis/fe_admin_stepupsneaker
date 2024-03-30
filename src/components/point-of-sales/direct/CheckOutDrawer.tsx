@@ -33,27 +33,27 @@ import {
   DEFAULT_BANK_ACCOUNT,
   QRCODE_ICON_URL,
   QRCODE_VALUE,
-} from "../../constants/common";
-import { POSContext } from "../../contexts/point-of-sales";
-import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
-import { paymentToRequest } from "../../helpers/mapper";
-import { formatTimestamp } from "../../helpers/timestamp";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
+} from "../../../constants/common";
+import { POSContext } from "../../../contexts/point-of-sales";
+import { DirectSalesContext } from "../../../contexts/point-of-sales/direct-sales";
+import { paymentToRequest } from "../../../helpers/mapper";
+import { formatTimestamp } from "../../../helpers/timestamp";
+import useOrderCalculations from "../../../hooks/useOrderCalculations";
 import {
   IOrderResponse,
   IPaymentRequest,
   IPaymentResponse,
-} from "../../interfaces";
-import { InvoiceTemplate } from "../../template/invoice";
+} from "../../../interfaces";
+import { InvoiceTemplate } from "../../../template/invoice";
 import {
   calculateChange,
   calculatePayment,
-} from "../../utils/common/calculator";
-import { DiscountModal } from "./DiscountModal";
-import EmployeeSection from "./EmployeeInputSection";
-import { PaymentComfirmModal } from "./PaymentConfirmModal";
-import { PaymentModal, renderButtons } from "./PaymentModal";
-import VoucherMessage from "./VoucherMessage";
+} from "../../../utils/common/calculator";
+import { DiscountModal } from "../DiscountModal";
+import EmployeeSection from "../EmployeeInputSection";
+import { PaymentComfirmModal } from "../PaymentConfirmModal";
+import { PaymentModal, renderButtons } from "../PaymentModal";
+import VoucherMessage from "../VoucherMessage";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;

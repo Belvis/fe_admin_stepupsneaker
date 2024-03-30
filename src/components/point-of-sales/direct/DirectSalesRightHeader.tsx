@@ -6,10 +6,10 @@ import {
 } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
 import React, { useContext, useState } from "react";
-import { IOrderResponse } from "../../interfaces";
-import CustomerSection from "./CustomerInputSection";
+import { IOrderResponse } from "../../../interfaces";
+import CustomerSection from "../CustomerInputSection";
 import { POSFilter } from "./POSFilter";
-import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
+import { DirectSalesContext } from "../../../contexts/point-of-sales/direct-sales";
 import { POSSorter } from "./POSSorter";
 
 type DirectSalesRightHeaderProps = {

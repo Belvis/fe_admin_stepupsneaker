@@ -15,13 +15,13 @@ import {
 } from "antd";
 import { debounce } from "lodash";
 import { useContext, useState } from "react";
-import { POSContext } from "../../contexts/point-of-sales";
-import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
-import { ColSpanType, IOrderResponse } from "../../interfaces";
-import { DiscountModal } from "./DiscountModal";
-import { OrderItem } from "./OrderItem";
-import ShoppingCartHeader from "./ShoppingCartHeader";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { POSContext } from "../../../contexts/point-of-sales";
+import { DeliverySalesContext } from "../../../contexts/point-of-sales/delivery-sales";
+import { ColSpanType, IOrderResponse } from "../../../interfaces";
+import { DiscountModal } from "../DiscountModal";
+import { OrderItem } from "../OrderItem";
+import ShoppingCartHeader from "../ShoppingCartHeader";
+import useOrderCalculations from "../../../hooks/useOrderCalculations";
 import { AnimatePresence, Variants, motion } from "framer-motion";
 
 const { Text, Title } = Typography;

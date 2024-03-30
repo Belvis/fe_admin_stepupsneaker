@@ -119,7 +119,8 @@
     "addAndGo": "Thêm và hoàn tất",
     "go": "Hoàn tất",
     "addAndContinue": "Xác nhận và tiếp tục",
-    "forceConfirm": "Chủ động xác nhận"
+    "forceConfirm": "Chủ động xác nhận",
+    "inspect": "Kiểm tra"
   },
   "loading": "Đang tải",
   "tags": {
@@ -731,7 +732,7 @@
   "orders": {
     "orders": "Đơn Hàng",
     "titles": {
-      "list": "Đơn Hàng",
+      "list": "Danh sách đơn Hàng",
       "show": "Chi tiết Đơn Hàng"
     },
     "fields": {
@@ -1105,6 +1106,113 @@
       "rating": "Xếp hạng"
     }
   },
+  "return-forms": {
+    "return-forms": "Trả hàng",
+    "titles": {
+      "list": "Trả hàng",
+      "create": "Tạo phiếu trả hàng",
+      "form": "Thông tin chung",
+      "return-details": "Thông tin hàng hoá trả lại",
+      "return-address": "Thông tin địa chỉ",
+      "steps": {
+        "selectOrder": "Chọn đơn hoàn trả",
+        "selectProduct": "Chọn sản phẩm hoàn trả",
+        "fillInformation": "Điền thông tin hoàn trả"
+      }
+    },
+    "fields": {
+      "code": "Mã trả hàng",
+      "customer": {
+        "label": "Khách hàng",
+        "placeholder": "Không chọn"
+      },
+      "employee": {
+        "label": "NV Phụ trách",
+        "placeholder": "Không chọn"
+      },
+      "phoneNumber": "Số điện thoại",
+      "amountToBePaid": "Số tiền cần trả",
+      "createdAt": "Tạo lúc",
+      "createdBy": "Tạo bởi",
+      "paymentInfo": {
+        "label": "Thông tin thanh toán",
+        "placeholder": "VCB XXXBANK XXXXXXXXXXXXXXXXX"
+      },
+      "type": {
+        "label": "Hình thức",
+        "placeholder": "Chọn hình thức hoàn trả",
+        "OFFLINE": "Tại quầy",
+        "ONLINE": "Trực tuyến"
+      },
+      "paymentType": {
+        "label": "Phương thức hoàn trả",
+        "placeholder": "Chọn phương thức hoàn trả",
+        "tooltip": "Phương thức hoàn trả là phương thức thanh toán cho khách khi thực hiện hoàn trả",
+        "Cash": "Tiền mặt",
+        "Transfer": "Chuyển khoản"
+      },
+      "deliveryStatus": {
+        "label": "Trạng thái giao hàng",
+        "placeholder": "Chọn trạng thái giao hàng hoàn trả",
+        "tooltip": "Trạng thái giao hàng hoàn trả là trạng thái xử lý của đơn hàng trong phiếu trả hàng. Ví dụ: khi tạo phiếu trả hàng tại quầy thì trạng thái sẽ là \"Đã Nhận\", còn khi khách hàng tạo phiếu online thì trạng thái sẽ là \"Chờ giải quyết\"",
+        "PENDING": "Chờ giải quyết",
+        "RETURNING": "Đang hoàn trả",
+        "RECEIVED": "Đã nhận"
+      },
+      "refundStatus": {
+        "label": "Trạng thái hoàn tiền",
+        "placeholder": "Chọn trạng thái hoàn tiền",
+        "PENDING": "Chờ giải quyết",
+        "COMPLETED": "Hoàn thành"
+      }
+    },
+    "message": {
+      "emptySelected": "Vui lòng chọn sản phẩm hoàn trả",
+      "invalidReturnQuantity": "Số lượng hoàn trả không được phép lớn hơn số lượng ban đầu",
+      "emptyReturnQuantity": "Vui lòng nhập số lượng hoàn trả"
+    }
+  },
+  "return-form-details": {
+    "return-form-details": "Thông tin hàng hoá trả lại",
+    "fields": {
+      "orderCode": "Mã hoá đơn",
+      "quantity": "Số lượng",
+      "name": "Tên",
+      "returnQuantity": "Số lượng hoàn trả",
+      "unitPrice": "Đơn giá",
+      "totalPrice": "Thành tiền",
+      "reason": {
+        "label": "Lý do trả hàng",
+        "placeholder": "Nhập lý do trả hàng cho sản phẩm"
+      },
+      "feedback": {
+        "label": "Phản hồi",
+        "placeholder": "Nhập phản hồi của khách đối với sản phẩm"
+      },
+      "evidence": {
+        "label": "Hình ảnh thực tế",
+        "tooltip": "Hình ảnh thực tế hiện trạng sản phẩm hoàn trả"
+      },
+      "resellable": {
+        "label": "Có thể bán lại",
+        "YES": "Có",
+        "NO": "Không"
+      },
+      "returnInspectionStatus": {
+        "label": "Trạng thái kiểm tra",
+        "placeholder": "Chọn trạng thái kiểm tra",
+        "tooltip": "Trạng thái kiểm tra là trạng thái đánh giá xem hàng hoá có được trả lại hay không.",
+        "PASSED": "Đồng ý",
+        "FAILED": "Từ chối",
+        "PENDING": "Chưa giải quyết"
+      },
+      "returnInspectionReason": {
+        "label": "Lý do kiểm tra trả hàng",
+        "placeholder": "Nhập lý do kiểm tra trả hàng",
+        "tooltip": "Lý do kiểm tra trả hàng là nguyên nhân được chỉ ra cho quyết định trả hàng."
+      }
+    }
+  },
   "errors": {
     "required": {
       "field": "'{{ field }}' không được để trống",
@@ -1202,13 +1310,26 @@
       "length": "Chiều dài không được để trống",
       "weight": "Cân nặng không được để trống",
       "height": "Chiều cao không được để trống",
-      "weightUnit": "Đơn vị không được để trống"
+      "weightUnit": "Đơn vị không được để trống",
+      "amountToBePaid": "Số tiền cần trả không được để trống",
+      "returnType": "Hình thức không được để trống",
+      "deliveryStatus": "Trạng thái giao hàng không được để trống",
+      "paymentType": "Phương thức hoàn trả không được để trống",
+      "refundStatus": "Trạng thái hoàn tiền không được để trống",
+      "paymentInfo": "Thông tin thanh toán không được để trống"
     },
     "vouchers": {
       "exceed": "Giá trị không thể quá {{length}} phần trăm"
     }
   },
   "common": {
+    "access": {
+      "title": "Quyền truy cập",
+      "role": {
+        "ROLE_ADMIN": "Quản trị",
+        "ROLE_STAFF": "Nhân viên"
+      }
+    },
     "maxLength": "Tối đa {{length}} ký tự",
     "rowSelection": "{{count}} mục đã được chọn",
     "copied": "Đã copy vào bộ nhớ đệm",
@@ -1222,6 +1343,11 @@
     "error": "Đã có lỗi xảy ra: "
   },
   "image": {
+    "upload": "Tải lên",
+    "dragger": {
+      "text": "Nhấp hoặc kéo tệp vào khu vực này để tải lên",
+      "hint": "Hỗ trợ tải lên một hoặc nhiều tệp. Nghiêm cấm tải lên dữ liệu của công ty hoặc các tệp bị cấm khác."
+    },
     "error": {
       "invalid": "Bạn chỉ có thể đăng tải file JPG/PNG!",
       "exceed": "Ảnh phải nhỏ hơn 2MB!"

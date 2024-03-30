@@ -1,5 +1,5 @@
 import { Card, Col, Space, theme } from "antd";
-import { IOrderResponse } from "../../interfaces";
+import { IOrderResponse } from "../../../interfaces";
 import { DeliverySalesRightContent } from "./DeliverySalesRightContent";
 import { DeliverySalesRightFooter } from "./DeliverySalesRightFooter";
 import { DeliverySalesRightHeader } from "./DeliverySalesRightHeader";

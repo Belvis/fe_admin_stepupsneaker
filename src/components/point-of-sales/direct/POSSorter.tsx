@@ -19,7 +19,7 @@ import {
   DirectSalesContext,
   SorterType,
   initialSorters,
-} from "../../contexts/point-of-sales/direct-sales";
+} from "../../../contexts/point-of-sales/direct-sales";
 import {
   CheckOutlined,
   CloseOutlined,

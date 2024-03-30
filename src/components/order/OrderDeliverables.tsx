@@ -1,6 +1,6 @@
 import { NumberField } from "@refinedev/antd";
 import { useTranslate } from "@refinedev/core";
-import { Avatar, Table, Typography } from "antd";
+import { Avatar, Table, Typography, theme } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IOrderDetailResponse, IOrderResponse } from "../../interfaces";
 import { Product, ProductFooter, ProductText } from "./style";
@@ -11,12 +11,14 @@ type OrderDeliverablesProps = {
 };
 
 const { Text } = Typography;
+const { useToken } = theme;
 
 export const OrderDeliverables: React.FC<OrderDeliverablesProps> = ({
   record,
   isLoading,
 }) => {
   const t = useTranslate();
+  const { token } = useToken();
 
   const columns: ColumnsType<IOrderDetailResponse> = [
     {
@@ -124,6 +126,14 @@ export const OrderDeliverables: React.FC<OrderDeliverablesProps> = ({
           />
         </ProductFooter>
       )}
+      onRow={(record, index) => ({
+        style: {
+          textDecorationLine:
+            record.status === "RETURNED" ? "line-through" : "default",
+          textDecorationStyle: "solid",
+          textDecorationColor: token.colorPrimary,
+        },
+      })}
     />
   );
 };

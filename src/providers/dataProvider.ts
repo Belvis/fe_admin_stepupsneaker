@@ -18,7 +18,6 @@
  */
 
 import { AxiosInstance } from "axios";
-import { stringify } from "query-string";
 import {
   CreateManyParams,
   CreateManyResponse,
@@ -41,6 +40,7 @@ import {
 import { axiosInstance } from "../utils/data-provider/axios";
 import { generateFilter } from "../utils/data-provider/generateFilter";
 import { generateSort } from "../utils/data-provider/generateSort";
+import { stringify } from "@refinedev/simple-rest";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";

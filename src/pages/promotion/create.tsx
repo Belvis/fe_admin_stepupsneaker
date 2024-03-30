@@ -1,50 +1,29 @@
+import { Create, SaveButton, useStepsForm } from "@refinedev/antd";
+import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
 import {
-  Create,
-  Edit,
-  SaveButton,
-  getValueFromEvent,
-  useForm,
-  useStepsForm,
-} from "@refinedev/antd";
-import {
-  IResourceComponentsProps,
-  getDefaultFilter,
-  useTranslate,
-} from "@refinedev/core";
-import {
-  Avatar,
   Button,
-  Card,
   Col,
   DatePicker,
-  Flex,
   Form,
   Input,
   InputNumber,
   Row,
-  Select,
-  Space,
   Steps,
-  Tag,
   Typography,
-  Upload,
 } from "antd";
 
-import { SearchOutlined, UndoOutlined } from "@ant-design/icons";
-import Table, { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import { debounce } from "lodash";
-import { showWarningConfirmDialog } from "../../helpers/confirm";
-import { IPromotionResponse } from "../../interfaces";
-import ImageUpload from "../../components/form/ImageUpload";
 import { FieldLabel } from "../../components/form/FieldLabel";
+import ImageUpload from "../../components/form/ImageUpload";
+import PromotionRelation from "../../components/promotion/PromotionRelation";
 import {
   LENGTH_CODE,
   LENGTH_NAME,
   LIMIT_VOUCHER_VALUE,
 } from "../../constants/common";
+import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { validateCommon } from "../../helpers/validate";
-import PromotionRelation from "../../components/promotion/PromotionRelation";
+import { IPromotionResponse } from "../../interfaces";
 
 const { Text, Title } = Typography;
 const { RangePicker } = DatePicker;

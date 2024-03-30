@@ -20,11 +20,11 @@ import {
 import { NumberField } from "@refinedev/antd";
 import { Fragment, useEffect, useState } from "react";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
-import { initializeProductClient } from "../../helpers/mapper";
-import { IProductData, IProductResponse } from "../../interfaces";
-import { SaleIcon } from "../icons/icon-sale";
-import { Quantity } from "./styled";
-import { getDiscountPrice } from "../../helpers/money";
+import { initializeProductClient } from "../../../helpers/mapper";
+import { IProductData, IProductResponse } from "../../../interfaces";
+import { SaleIcon } from "../../icons/icon-sale";
+import { Quantity } from "../styled";
+import { getDiscountPrice } from "../../../helpers/money";
 const { Text, Title, Paragraph } = Typography;
 
 type ProductModalProps = {

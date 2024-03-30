@@ -4,6 +4,7 @@
 
 import { HttpError } from "@refinedev/core";
 import axios from "axios";
+import { TOKEN_KEY } from "../../helpers/token";
 
 const axiosInstance = axios.create();
 
@@ -13,7 +14,7 @@ axiosInstance.defaults.headers.common["Content-Type"] = "application/json";
 // Intercept request để thêm token và ngôn ngữ vào header
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem("suns-auth-token");
+    const token = localStorage.getItem(TOKEN_KEY);
     if (config?.headers) {
       // Thêm token vào header Authorization nếu tồn tại
       if (token) {

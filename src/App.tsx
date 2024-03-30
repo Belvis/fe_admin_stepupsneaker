@@ -18,7 +18,7 @@ import { App as AntdApp } from "antd";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { dataProvider } from "./api/dataProvider";
+import { dataProvider } from "./providers/dataProvider";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 
 import {
@@ -37,7 +37,7 @@ import {
 
 import { PointOfSaleIcon } from "./components/icons/icon-pos";
 
-import { authProvider } from "./api/authProvider";
+import { authProvider } from "./providers/authProvider";
 import {
   ColorIcon,
   DiscountOrderIcon,
@@ -81,6 +81,11 @@ import {
 import { RoleList } from "./pages/role";
 import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
 import { POSContextProvider } from "./contexts/point-of-sales";
+import { ReturnIcon } from "./components/icons/icon-return";
+import { ReturnList } from "./pages/return/list";
+import { accessControlProvider } from "./providers/accessControlProvider";
+import { ReturnCreate } from "./pages/return/create";
+import { ReturnFormContextProvider } from "./contexts/return";
 
 const API_BASE_URL = `${window.location.protocol}//${
   window.location.hostname
@@ -146,6 +151,7 @@ function App() {
             <Refine
               dataProvider={dataProvider(API_BASE_URL)}
               authProvider={authProvider(AUTH_API_URL)}
+              accessControlProvider={accessControlProvider}
               notificationProvider={useNotificationProvider}
               i18nProvider={i18nProvider}
               routerProvider={routerBindings}
@@ -164,6 +170,16 @@ function App() {
                   meta: {
                     label: t("pos.pos"),
                     icon: <PointOfSaleIcon />,
+                  },
+                },
+                {
+                  name: "return-forms",
+                  list: "/return-forms",
+                  create: "/return-forms/create",
+                  edit: "/return-forms/edit/:id",
+                  show: "/return-forms/show/:id",
+                  meta: {
+                    icon: <ReturnIcon />,
                   },
                 },
                 {
@@ -457,6 +473,19 @@ function App() {
                       <Route index element={<PaymentMethodList />} />
                     </Route>
                   </Route>
+                  <Route path="/return-forms">
+                    <Route index element={<ReturnList />} />
+                    <Route
+                      path="create"
+                      element={
+                        <ReturnFormContextProvider>
+                          <ReturnCreate />
+                        </ReturnFormContextProvider>
+                      }
+                    />
+                    {/* <Route path="edit/:id" element={<CustomerEdit />} /> */}
+                    {/* <Route path="show/:id" element={<CustomerShow />} /> */}
+                  </Route>
                   <Route path="/point-of-sales">
                     <Route
                       index
@@ -492,28 +521,6 @@ function App() {
                         }}
                       />
                     }
-                  />
-                  <Route
-                    path="/register"
-                    element={
-                      <AuthPage
-                        type="register"
-                        formProps={{
-                          initialValues: {
-                            email: "tuannaph29788@fpt.edu.vn",
-                            password: "123",
-                          },
-                        }}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/forgot-password"
-                    element={<AuthPage type="forgotPassword" />}
-                  />
-                  <Route
-                    path="/update-password"
-                    element={<AuthPage type="updatePassword" />}
                   />
                 </Route>
               </Routes>

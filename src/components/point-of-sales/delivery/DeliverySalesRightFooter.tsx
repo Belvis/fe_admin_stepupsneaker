@@ -2,16 +2,16 @@ import { useModal } from "@refinedev/antd";
 import { useNavigation, useTranslate, useUpdate } from "@refinedev/core";
 import { Button, Col, Row } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { POSContext } from "../../contexts/point-of-sales";
-import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
-import { paymentToRequest } from "../../helpers/mapper";
+import { POSContext } from "../../../contexts/point-of-sales";
+import { DeliverySalesContext } from "../../../contexts/point-of-sales/delivery-sales";
+import { paymentToRequest } from "../../../helpers/mapper";
 import {
   IOrderResponse,
   IPaymentRequest,
   IPaymentResponse,
-} from "../../interfaces";
-import { PaymentComfirmModal } from "./PaymentConfirmModal";
-import { InvoiceTemplate } from "../../template/invoice";
+} from "../../../interfaces";
+import { PaymentComfirmModal } from "../PaymentConfirmModal";
+import { InvoiceTemplate } from "../../../template/invoice";
 import { useReactToPrint } from "react-to-print";
 
 type DeliverySalesRightFooterProps = {

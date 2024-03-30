@@ -110,3 +110,39 @@ export const getOrderStatusOptions = (t: TranslateFunction) => [
     value: "EXCHANGED",
   },
 ];
+
+export const getDeliveryStatusOptions = (t: TranslateFunction) => [
+  {
+    label: t("return-forms.fields.deliveryStatus.PENDING"),
+    value: "PENDING",
+  },
+  {
+    label: t("return-forms.fields.deliveryStatus.RETURNING"),
+    value: "RETURNING",
+  },
+  {
+    label: t("return-forms.fields.deliveryStatus.RECEIVED"),
+    value: "RECEIVED",
+  },
+];
+
+export const getRefundStatusOptions = (t: TranslateFunction) => [
+  {
+    label: t("return-forms.fields.refundStatus.PENDING"),
+    value: "PENDING",
+  },
+  {
+    label: t("return-forms.fields.refundStatus.COMPLETED"),
+    value: "COMPLETED",
+  },
+];
+export const getInspectionStatusOptions = (t: TranslateFunction) => [
+  {
+    label: t("return-form-details.fields.returnInspectionStatus.PASSED"),
+    value: "PASSED",
+  },
+  {
+    label: t("return-form-details.fields.returnInspectionStatus.FAILED"),
+    value: "FAILED",
+  },
+];

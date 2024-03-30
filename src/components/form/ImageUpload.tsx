@@ -5,10 +5,12 @@ import {
   Avatar,
   Form,
   FormProps,
+  Input,
   Space,
   Spin,
   Typography,
   Upload,
+  Image,
 } from "antd";
 import {
   RcFile,
@@ -16,17 +18,29 @@ import {
   UploadFile,
   UploadProps,
 } from "antd/es/upload/interface";
-import React, { useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { getBase64Image } from "../../helpers/image";
 import { styles } from "./style";
+import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
+import { LabelTooltipType } from "antd/es/form/FormItemLabel";
 
 const { Text } = Typography;
 
 interface IImageUploadProps {
   formProps: FormProps;
+  label?: ReactNode;
+  tooltip?: LabelTooltipType;
+  required?: boolean;
+  raw?: boolean;
 }
 
-const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
+const ImageUpload: React.FC<IImageUploadProps> = ({
+  formProps,
+  label,
+  tooltip,
+  required = false,
+  raw = false,
+}) => {
   const t = useTranslate();
   const { message } = App.useApp();
   const [loadingImage, setLoadingImage] = useState(false);
@@ -42,7 +56,20 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
     if (info.file.status === "done") {
       getBase64Image(info.file.originFileObj as RcFile, (url) => {
         setLoadingImage(false);
-        formProps.form?.setFieldsValue({ image: url });
+        formProps.form?.setFieldValue("image", url);
+
+        let newFileList = [...info.fileList];
+
+        newFileList = newFileList.slice(-2);
+
+        newFileList = newFileList.map((file) => {
+          if (file.response) {
+            file.url = file.response.url;
+          }
+          return file;
+        });
+
+        formProps.form?.setFieldValue("fileList", newFileList);
       });
     }
   };
@@ -65,7 +92,10 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
         name="image"
         valuePropName="file"
         getValueFromEvent={getValueFromEvent}
-        noStyle
+        label={label}
+        tooltip={tooltip}
+        noStyle={!label}
+        required={required}
       >
         <Upload.Dragger
           name="file"
@@ -80,26 +110,49 @@ const ImageUpload: React.FC<IImageUploadProps> = ({ formProps }) => {
             }
           }}
           maxCount={1}
-          style={styles.imageUpload}
+          style={!raw ? styles.imageUpload : undefined}
         >
-          <Space direction="vertical" size={2}>
-            {imageUrl ? (
-              <Avatar style={styles.avatar} src={imageUrl} alt="User avatar" />
-            ) : (
-              <Avatar
-                style={styles.avatar}
-                src="/images/user-default-img.png"
-                alt="Default avatar"
-              />
-            )}
-            <Text style={styles.imageDescription}>
-              {t(`image.description.${imageUrl ? "edit" : "add"}`)}
-            </Text>
-            <Text style={styles.imageValidation}>
-              {t("image.validation", { size: 1080 })}
-            </Text>
-          </Space>
+          {raw ? (
+            <div>
+              {imageUrl ? (
+                <Image width={200} src={imageUrl} preview={false} />
+              ) : (
+                <>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">{t("image.dragger.text")}</p>
+                  <p className="ant-upload-hint">{t("image.dragger.hint")}</p>
+                </>
+              )}
+            </div>
+          ) : (
+            <Space direction="vertical" size={2}>
+              {imageUrl ? (
+                <Avatar
+                  style={styles.avatar}
+                  src={imageUrl}
+                  alt="User avatar"
+                />
+              ) : (
+                <Avatar
+                  style={styles.avatar}
+                  src="/images/user-default-img.png"
+                  alt="Default avatar"
+                />
+              )}
+              <Text style={styles.imageDescription}>
+                {t(`image.description.${imageUrl ? "edit" : "add"}`)}
+              </Text>
+              <Text style={styles.imageValidation}>
+                {t("image.validation", { size: 1080 })}
+              </Text>
+            </Space>
+          )}
         </Upload.Dragger>
+      </Form.Item>
+      <Form.Item name="fileList" hidden>
+        <Upload />
       </Form.Item>
     </Spin>
   );

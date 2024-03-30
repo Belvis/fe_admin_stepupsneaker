@@ -1,9 +1,9 @@
 import { Col, Empty, Row, Skeleton } from "antd";
 import React, { useContext } from "react";
-import { POSContext } from "../../contexts/point-of-sales";
-import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
-import { IProductResponse } from "../../interfaces";
-import { ProductItem } from "./ProductItem";
+import { POSContext } from "../../../contexts/point-of-sales";
+import { DirectSalesContext } from "../../../contexts/point-of-sales/direct-sales";
+import { IProductResponse } from "../../../interfaces";
+import { ProductItem } from "../ProductItem";
 
 type DirectSalesRightContentProps = {};
 

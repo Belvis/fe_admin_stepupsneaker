@@ -10,15 +10,15 @@ import {
   Spin,
   App,
 } from "antd";
-import ShoppingCartHeader from "./ShoppingCartHeader";
-import { ColSpanType, IOrderResponse } from "../../interfaces";
-import { OrderItem } from "./OrderItem";
+import ShoppingCartHeader from "../ShoppingCartHeader";
+import { ColSpanType, IOrderResponse } from "../../../interfaces";
+import { OrderItem } from "../OrderItem";
 import { debounce } from "lodash";
 import { useTranslate, useUpdate } from "@refinedev/core";
 import { NumberField } from "@refinedev/antd";
-import { POSContext } from "../../contexts/point-of-sales";
-import { directSalesLeftStyle, shoppingCartContainerStyle } from "./style";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { POSContext } from "../../../contexts/point-of-sales";
+import { directSalesLeftStyle, shoppingCartContainerStyle } from "../style";
+import useOrderCalculations from "../../../hooks/useOrderCalculations";
 
 const { Text } = Typography;
 const { useToken } = theme;

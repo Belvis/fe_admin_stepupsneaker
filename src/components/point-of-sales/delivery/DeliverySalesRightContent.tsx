@@ -18,22 +18,22 @@ import {
   theme,
 } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
-import { POSContext } from "../../contexts/point-of-sales";
-import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
-import { validateEmail, validateFullName } from "../../helpers/validate";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { LENGTH_EMAIL, LENGTH_NAME } from "../../../constants/common";
+import { POSContext } from "../../../contexts/point-of-sales";
+import { DeliverySalesContext } from "../../../contexts/point-of-sales/delivery-sales";
+import { validateEmail, validateFullName } from "../../../helpers/validate";
+import useOrderCalculations from "../../../hooks/useOrderCalculations";
 import {
   IOrderResponse,
   IPaymentMethodResponse,
   IPaymentResponse,
-} from "../../interfaces";
+} from "../../../interfaces";
 import {
   calculateChange,
   calculatePayment,
-} from "../../utils/common/calculator";
-import { AddressFormFour } from "../form/AddressFormFour";
-import { PaymentModal } from "./PaymentModal";
+} from "../../../utils/common/calculator";
+import { AddressFormFour } from "../../form/AddressFormFour";
+import { PaymentModal } from "../PaymentModal";
 
 const { useToken } = theme;
 const { Text, Title } = Typography;

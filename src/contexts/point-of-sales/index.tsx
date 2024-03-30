@@ -13,7 +13,7 @@ import React, {
   useState,
 } from "react";
 import { AppIcon } from "../../components/app-icon";
-import { ProductModal } from "../../components/point-of-sales/ProductModal";
+import { ProductModal } from "../../components/point-of-sales/delivery/ProductModal";
 import { TabContent } from "../../components/point-of-sales/TabContent";
 import {
   IOrderResponse,

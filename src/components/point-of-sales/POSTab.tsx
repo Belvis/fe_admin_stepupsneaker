@@ -14,7 +14,7 @@ import {
 import { App, AutoComplete, Button, Input, Space, Spin, Tabs } from "antd";
 import { debounce } from "lodash";
 import { useContext, useEffect, useState } from "react";
-import { dataProvider } from "../../api/dataProvider";
+import { dataProvider } from "../../providers/dataProvider";
 import { POSContext, initialItems } from "../../contexts/point-of-sales";
 import { IOption, IProductResponse } from "../../interfaces";
 import { renderItemProduct } from "../product/shared";

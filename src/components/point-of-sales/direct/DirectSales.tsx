@@ -1,10 +1,10 @@
 import { Row } from "antd";
 import React, { useContext, useEffect } from "react";
-import { IOrderResponse } from "../../interfaces";
+import { IOrderResponse } from "../../../interfaces";
 import DirectSalesLeft from "./DirectSalesLeft";
 import DirectSalesRight from "./DirectSalesRight";
-import { DirectSalesContext } from "../../contexts/point-of-sales/direct-sales";
-import useOrderCalculations from "../../hooks/useOrderCalculations";
+import { DirectSalesContext } from "../../../contexts/point-of-sales/direct-sales";
+import useOrderCalculations from "../../../hooks/useOrderCalculations";
 
 type DirectSalesProps = {
   order: IOrderResponse;

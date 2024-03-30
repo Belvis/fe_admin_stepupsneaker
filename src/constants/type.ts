@@ -10,3 +10,25 @@ export const getOrderTypeOptions = (t: TranslateFunction) => [
     value: "ONLINE",
   },
 ];
+
+export const getReturnTypeOptions = (t: TranslateFunction) => [
+  {
+    label: t("return-forms.fields.type.OFFLINE"),
+    value: "OFFLINE",
+  },
+  {
+    label: t("return-forms.fields.type.ONLINE"),
+    value: "ONLINE",
+  },
+];
+
+export const getReturnPaymentTypeOptions = (t: TranslateFunction) => [
+  {
+    label: t("return-forms.fields.paymentType.Cash"),
+    value: "Cash",
+  },
+  {
+    label: t("return-forms.fields.paymentType.Transfer"),
+    value: "Transfer",
+  },
+];
