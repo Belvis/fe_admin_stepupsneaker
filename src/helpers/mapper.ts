@@ -12,6 +12,7 @@ import {
   IProductDetailResponse,
   IProductResponse,
   IPromotionProductDetailResponse,
+  IReturnFormDetailRequest,
   ISizeClient,
   IVariation,
 } from "../interfaces";
@@ -250,4 +251,23 @@ export const initializeProductClient = (product: IProductResponse) => {
     initialSelectedSize,
     initialProductStock,
   };
+};
+
+export const returnFormDetailsToPayloadFormat = (
+  returnFormDetails: IReturnFormDetailRequest[] | undefined
+): any[] => {
+  if (!returnFormDetails) return [];
+
+  return returnFormDetails.map((detail) => {
+    return {
+      orderDetail: detail.orderDetail,
+      quantity: detail.returnQuantity,
+      reason: detail.reason,
+      feedback: detail.feedback,
+      resellable: detail.resellable,
+      returnInspectionStatus: detail.returnInspectionStatus,
+      returnInspectionReason: detail.returnInspectionReason,
+      image: detail.evidence,
+    };
+  });
 };

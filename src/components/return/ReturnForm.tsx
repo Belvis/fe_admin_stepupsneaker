@@ -1,106 +1,72 @@
-import { NumberField, useModal } from "@refinedev/antd";
-import {
-  IResourceComponentsProps,
-  useGetIdentity,
-  useTranslate,
-} from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import {
   Button,
   Col,
   Divider,
   Form,
+  FormProps,
   Input,
   InputNumber,
   Row,
   Select,
   Table,
   Typography,
-  theme,
 } from "antd";
-
-import { ColumnsType } from "antd/es/table";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { AddressFormThree } from "../../components/form/AddressFormThree";
-import { ReturnInspectionModal } from "../../components/return/ReturnInspectionModal";
+import { validateCommon, validatePhoneNumber } from "../../helpers/validate";
 import { LENGTH_DESCRIPTION, LENGTH_PHONE } from "../../constants/common";
-import {
-  getDeliveryStatusOptions,
-  getRefundStatusOptions,
-} from "../../constants/status";
 import {
   getReturnPaymentTypeOptions,
   getReturnTypeOptions,
 } from "../../constants/type";
-import { ReturnFormContext } from "../../contexts/return";
-import { showWarningConfirmDialog } from "../../helpers/confirm";
-import { validateCommon, validatePhoneNumber } from "../../helpers/validate";
 import {
-  IEmployeeResponse,
-  IOrderResponse,
+  getDeliveryStatusOptions,
+  getRefundStatusOptions,
+} from "../../constants/status";
+import { NumberField, useModal } from "@refinedev/antd";
+import { AddressFormThree } from "../form/AddressFormThree";
+import { ReturnInspectionModal } from "./ReturnInspectionModal";
+import {
   IReturnFormDetailRequest,
   PaymentType,
   ReturnType,
 } from "../../interfaces";
-import _ from "lodash";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { ColumnsType } from "antd/es/table";
 import { ReturnInspectionStatus } from "./ReturnInspectionStatus";
 import { ColorModeContext } from "../../contexts/color-mode";
 
 const { Title, Text } = Typography;
+type ReturnFormProps = {
+  formProps: FormProps<{}>;
+  handleOnFinish: (values: any) => void;
+  returnFormDetails: IReturnFormDetailRequest[];
+  setReturnFormDetails: Dispatch<
+    SetStateAction<IReturnFormDetailRequest[] | undefined>
+  >;
+};
 
-export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
+export const ReturnForm: React.FC<ReturnFormProps> = ({
+  formProps,
+  handleOnFinish,
+  returnFormDetails,
+  setReturnFormDetails,
+}) => {
   const t = useTranslate();
   const { mode } = useContext(ColorModeContext);
 
-  const {
-    formProps,
-    onFinish,
-    selectedOrder,
-    returnFormDetails,
-    setReturnFormDetails,
-  } = useContext(ReturnFormContext);
-
-  const { data } = useGetIdentity<IEmployeeResponse>();
-
   const type: ReturnType = Form.useWatch("type", formProps.form);
   const paymentType: PaymentType = Form.useWatch("paymentType", formProps.form);
-  const defaultAddress = selectedOrder?.customer?.addressList.find(
-    (address) => address.isDefault
-  );
 
-  useEffect(() => {
-    const calculateTotalMoney = () => {
-      if (!returnFormDetails) {
-        return 0;
-      }
-
-      let calculatedTotalMoney = 0;
-
-      returnFormDetails.forEach(({ returnQuantity, unitPrice }) => {
-        calculatedTotalMoney += returnQuantity * unitPrice;
-      });
-
-      return calculatedTotalMoney;
-    };
-
-    const totalMoney = formProps.form?.getFieldValue("amountToBePaid");
-    const newTotalMoney = calculateTotalMoney();
-
-    if (newTotalMoney !== totalMoney) {
-      formProps.form?.setFieldValue("amountToBePaid", newTotalMoney);
-    }
-  }, [returnFormDetails]);
-
-  useEffect(() => {
-    if (defaultAddress) {
-      formProps.form?.setFieldsValue({
-        phoneNumber: defaultAddress.phoneNumber,
-        provinceId: Number(defaultAddress.provinceId),
-        districtId: Number(defaultAddress.districtId),
-        wardCode: defaultAddress.wardCode,
-        more: defaultAddress.more,
-      });
-    }
-  }, [defaultAddress]);
+  const [shippingMoney, setShippingMoney] = useState<number>(0);
+  const [inspectionReturnDetail, setInspectionReturnDetail] =
+    useState<IReturnFormDetailRequest>();
 
   useEffect(() => {
     if (type) {
@@ -118,68 +84,11 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
     }
   }, [type]);
 
-  useEffect(() => {
-    if (selectedOrder) {
-      const customer =
-        selectedOrder?.fullName ??
-        selectedOrder?.customer?.fullName ??
-        t("invoices.retailCustomer");
-
-      formProps.form?.setFieldsValue({
-        customer,
-        code: selectedOrder.code,
-      });
-    }
-  }, [selectedOrder]);
-
-  useEffect(() => {
-    if (data) {
-      formProps.form?.setFieldsValue({
-        employee: data.fullName,
-      });
-    }
-  }, [data]);
-  const [shippingMoney, setShippingMoney] = useState<number>(0);
-  const [inspectionReturnDetail, setInspectionReturnDetail] =
-    useState<IReturnFormDetailRequest>();
-
   const {
     show: inspectionShow,
     close: inspectionClose,
     modalProps: inspectionModalProps,
   } = useModal();
-
-  const handleOnFinish = (values: any) => {
-    const returnFormDetailsPayload = convertToPayloadFormat(returnFormDetails);
-
-    const submitData = {
-      address: {
-        phoneNumber: formProps.form?.getFieldValue("phoneNumber"),
-        districtId: formProps.form?.getFieldValue("districtId"),
-        districtName: formProps.form?.getFieldValue("districtName"),
-        provinceId: formProps.form?.getFieldValue("provinceId"),
-        provinceName: formProps.form?.getFieldValue("provinceName"),
-        wardCode: formProps.form?.getFieldValue("wardCode"),
-        wardName: formProps.form?.getFieldValue("wardName"),
-        more: formProps.form?.getFieldValue("line"),
-      },
-      order: selectedOrder?.id,
-      paymentType: formProps.form?.getFieldValue("paymentType"),
-      paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
-      type: formProps.form?.getFieldValue("type"),
-      amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),
-      returnFormDetails: returnFormDetailsPayload,
-    };
-    showWarningConfirmDialog({
-      options: {
-        accept: () => {
-          onFinish(submitData);
-        },
-        reject: () => {},
-      },
-      t: t,
-    });
-  };
 
   const columns = useMemo<ColumnsType<IReturnFormDetailRequest>>(
     () => [
@@ -251,8 +160,6 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
         dataIndex: "returnInspectionStatus",
         align: "center",
         render: (_, record) => {
-          console.log("record", record);
-
           const status = Object.values(record).some(
             (value) => value === "" || value === undefined
           )
@@ -528,7 +435,6 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
             <AddressFormThree
               form={formProps.form}
               setShippingMoney={setShippingMoney}
-              order={selectedOrder ?? ({} as IOrderResponse)}
               hideChooseAddress
             />
           </div>
@@ -544,21 +450,4 @@ export const ReturnForm: React.FC<IResourceComponentsProps> = () => {
       )}
     </>
   );
-};
-
-const convertToPayloadFormat = (
-  returnFormDetails: IReturnFormDetailRequest[] | undefined
-): any[] => {
-  if (!returnFormDetails) return [];
-
-  return returnFormDetails.map((detail) => {
-    return {
-      orderDetail: detail.orderDetail,
-      quantity: detail.returnQuantity, // Lưu ý sử dụng returnQuantity thay vì quantity
-      reason: detail.reason,
-      feedback: detail.feedback,
-      resellable: detail.resellable, // Lưu ý chuyển đổi tên thuộc tính
-      image: detail.evidence, // Sử dụng evidence thay vì image
-    };
-  });
 };

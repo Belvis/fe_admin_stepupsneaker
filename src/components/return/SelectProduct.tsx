@@ -1,5 +1,5 @@
 import { NumberField } from "@refinedev/antd";
-import { useTranslate } from "@refinedev/core";
+import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
 import {
   App,
   Button,
@@ -19,10 +19,7 @@ import { CaretRightOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
-type ReturnOrderDetailsSelectProps = {};
-export const ReturnOrderDetailsSelect: React.FC<
-  ReturnOrderDetailsSelectProps
-> = () => {
+export const SelectProduct: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { message } = App.useApp();
 
@@ -215,7 +212,7 @@ export const ReturnOrderDetailsSelect: React.FC<
       <Col span={24}>
         <Table
           pagination={false}
-          rowKey="id"
+          rowKey="name"
           columns={returnDetailsColumn}
           dataSource={returnDetails}
           rowSelection={rowSelection}

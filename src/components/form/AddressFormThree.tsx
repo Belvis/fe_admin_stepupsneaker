@@ -26,7 +26,7 @@ const { Text } = Typography;
 interface AddressFormThreeProps {
   form: FormInstance;
   setShippingMoney: React.Dispatch<React.SetStateAction<number>>;
-  order: IOrderResponse;
+  order?: IOrderResponse;
   hideChooseAddress?: boolean;
 }
 
@@ -327,7 +327,7 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
       <Form.Item name="wardName" hidden>
         <Input />
       </Form.Item>
-      {!hideChooseAddress && (
+      {!hideChooseAddress && order && (
         <AddressModal
           customer={order.customer}
           setAddresses={setAddresses}

@@ -1170,6 +1170,7 @@
     },
     "message": {
       "emptySelected": "Vui lòng chọn sản phẩm hoàn trả",
+      "emptyReturnDetails": "Vui lòng kiểm tra sản phẩm hoàn trả trước",
       "invalidReturnQuantity": "Số lượng hoàn trả không được phép lớn hơn số lượng ban đầu",
       "emptyReturnQuantity": "Vui lòng nhập số lượng hoàn trả"
     }

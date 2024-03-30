@@ -3,9 +3,9 @@ import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
 import { Button, Steps } from "antd";
 
 import { useContext } from "react";
-import { ReturnForm } from "../../components/return/ReturnForm";
-import { ReturnOrderDetailsSelect } from "../../components/return/ReturnOrderDetailsSelect";
-import { ReturnOrderSelect } from "../../components/return/ReturnOrderSelect";
+import { ReturnInformation } from "../../components/return/ReturnInformation";
+import { SelectProduct } from "../../components/return/SelectProduct";
+import { SelectOrder } from "../../components/return/SelectOrder";
 import { ReturnFormContext } from "../../contexts/return";
 
 export const ReturnCreate: React.FC<IResourceComponentsProps> = () => {
@@ -17,15 +17,15 @@ export const ReturnCreate: React.FC<IResourceComponentsProps> = () => {
   const steps = [
     {
       title: t("return-forms.titles.steps.selectOrder"),
-      content: <ReturnOrderSelect />,
+      content: <SelectOrder />,
     },
     {
       title: t("return-forms.titles.steps.selectProduct"),
-      content: <ReturnOrderDetailsSelect />,
+      content: <SelectProduct />,
     },
     {
       title: t("return-forms.titles.steps.fillInformation"),
-      content: <ReturnForm />,
+      content: <ReturnInformation />,
     },
   ];
 

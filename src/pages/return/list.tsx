@@ -1,29 +1,29 @@
 import {
-  CrudFilters,
-  HttpError,
-  IResourceComponentsProps,
-  useTranslate,
-} from "@refinedev/core";
-import { Card, Col, Row, Typography, Table } from "antd";
-import {
-  IReturnFormFilterVariables,
-  IReturnFormResponse,
-} from "../../interfaces";
-import {
   List,
   NumberField,
   getDefaultSortOrder,
   useTable,
 } from "@refinedev/antd";
-import { useMemo } from "react";
+import {
+  CrudFilters,
+  HttpError,
+  IResourceComponentsProps,
+  useTranslate,
+} from "@refinedev/core";
+import { Card, Col, Row, Table, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { calculateIndex } from "../../utils/common/calculator";
-import ColumnActions from "../../components/table/ColumnActions";
+import { useMemo } from "react";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
-import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { ReturnDeliveryStatus } from "../../components/return/ReturnDeliveryStatus";
 import { ReturnRefundStatus } from "../../components/return/ReturnRefundStatus";
-import { OrderType } from "../../components/order/OrderType";
+import ColumnActions from "../../components/table/ColumnActions";
+import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
+import {
+  ICustomerResponse,
+  IReturnFormFilterVariables,
+  IReturnFormResponse,
+} from "../../interfaces";
+import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
 
@@ -65,7 +65,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
           calculateIndex(sorters, current, pageSize, tableProps, index),
       },
       {
-        title: "Mã trả hàng",
+        title: t("return-forms.fields.code"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("createdAt", sorters),
         key: "code",
@@ -74,18 +74,22 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         align: "center",
       },
       {
-        title: "Khách hàng",
+        title: t("return-forms.fields.customer.label"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("customer", sorters),
         key: "customer",
         dataIndex: ["order", "customer"],
         align: "center",
-        render: (value) => {
-          return <Text>{value ? value : t("orders.tab.retailCustomer")}</Text>;
+        render: (value: ICustomerResponse) => {
+          return (
+            <Text>
+              {value ? value.fullName : t("orders.tab.retailCustomer")}
+            </Text>
+          );
         },
       },
       {
-        title: "Trạng thái giao hàng",
+        title: t("return-forms.fields.deliveryStatus.label"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("returnDeliveryStatus", sorters),
         key: "returnDeliveryStatus",
@@ -96,7 +100,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        title: "Trạng thái hoàn tiền",
+        title: t("return-forms.fields.refundStatus.label"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("refundStatus", sorters),
         key: "refundStatus",
@@ -107,7 +111,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        title: "Loại trả hàng",
+        title: t("return-forms.fields.type.label"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("paymentType", sorters),
         key: "paymentType",
@@ -118,7 +122,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        title: "Số tiền phải trả",
+        title: t("return-forms.fields.amountToBePaid"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("amountToBePaid", sorters),
         key: "amountToBePaid",

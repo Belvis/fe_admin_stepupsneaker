@@ -86,6 +86,7 @@ import { ReturnList } from "./pages/return/list";
 import { accessControlProvider } from "./providers/accessControlProvider";
 import { ReturnCreate } from "./pages/return/create";
 import { ReturnFormContextProvider } from "./contexts/return";
+import { ReturnShow } from "./pages/return/show";
 
 const API_BASE_URL = `${window.location.protocol}//${
   window.location.hostname
@@ -483,8 +484,7 @@ function App() {
                         </ReturnFormContextProvider>
                       }
                     />
-                    {/* <Route path="edit/:id" element={<CustomerEdit />} /> */}
-                    {/* <Route path="show/:id" element={<CustomerShow />} /> */}
+                    <Route path="show/:id" element={<ReturnShow />} />
                   </Route>
                   <Route path="/point-of-sales">
                     <Route

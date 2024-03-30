@@ -29,7 +29,7 @@ import { parseQRCodeResult } from "../../helpers/qrCode";
 import { QRScannerModal } from "../qr-scanner/QRScannerModal";
 
 const { Text } = Typography;
-export const ReturnOrderSelect: React.FC<IResourceComponentsProps> = () => {
+export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
 
   const { next, setSelectedOrder } = useContext(ReturnFormContext);
