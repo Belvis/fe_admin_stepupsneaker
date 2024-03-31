@@ -30,6 +30,22 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   const [selectedOrder, setSelectedOrder] = useState<IOrderResponse>();
   const [returnForm, setReturnForm] = useState<IReturnFormResponse>();
 
+  const defaultAddress = selectedOrder?.customer?.addressList.find(
+    (address) => address.isDefault
+  );
+
+  useEffect(() => {
+    if (defaultAddress) {
+      formProps.form?.setFieldsValue({
+        phoneNumber: defaultAddress.phoneNumber,
+        provinceId: Number(defaultAddress.provinceId),
+        districtId: Number(defaultAddress.districtId),
+        wardCode: defaultAddress.wardCode,
+        more: defaultAddress.more,
+      });
+    }
+  }, [defaultAddress]);
+
   useEffect(() => {
     if (selectedOrder) {
       const customer =
@@ -93,7 +109,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       order: selectedOrder?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
       refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      deliveryStatus: formProps.form?.getFieldValue("deliveryStatus"),
+      returnDeliveryStatus: formProps.form?.getFieldValue("deliveryStatus"),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
       type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),

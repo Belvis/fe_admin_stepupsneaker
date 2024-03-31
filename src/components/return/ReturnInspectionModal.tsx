@@ -10,13 +10,18 @@ import {
   Select,
 } from "antd";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { IReturnFormDetailRequest, ReturnType } from "../../interfaces";
+import {
+  IReturnFormDetailRequest,
+  InspectionStatus,
+  ReturnType,
+} from "../../interfaces";
 import { useTranslate } from "@refinedev/core";
 import { useForm } from "@refinedev/antd";
 import { validateCommon } from "../../helpers/validate";
 import { LENGTH_DESCRIPTION } from "../../constants/common";
 import { getInspectionStatusOptions } from "../../constants/status";
 import ImageUpload from "../form/ImageUpload";
+import { error } from "console";
 
 type ReturnInspectionModalProps = {
   modalProps: ModalProps;
@@ -41,6 +46,15 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
   const breakpoint = Grid.useBreakpoint();
 
   const { formProps, formLoading } = useForm<IReturnFormDetailRequest>();
+
+  const returnInspectionStatus: InspectionStatus = Form.useWatch(
+    "returnInspectionStatus"
+  );
+
+  // useEffect(() => {
+  //   if (returnInspectionStatus == "FAILED") {
+  //   }
+  // }, [returnInspectionStatus]);
 
   useEffect(() => {
     if (returnDetail) {
@@ -77,8 +91,6 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
       reason &&
       feedback !== undefined &&
       evidence !== undefined &&
-      returnInspectionStatus &&
-      returnInspectionReason &&
       resellable !== undefined
     ) {
       setReturnFormDetails((prevState) => {
@@ -115,7 +127,9 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
         <Button
           type="primary"
           loading={formLoading}
-          onClick={() => formProps.form?.submit()}
+          onClick={() => {
+            formProps.form?.submit();
+          }}
         >
           {t("buttons.save")}
         </Button>
@@ -225,8 +239,13 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           hidden={type == "ONLINE" && action === "create"}
           rules={[
             {
-              validator: (_, value) =>
-                validateCommon(_, value, t, "returnInspectionStatus"),
+              validator: (_, value) => {
+                if (type == "ONLINE" && action === "create") {
+                  return Promise.resolve();
+                } else {
+                  return validateCommon(_, value, t, "returnInspectionStatus");
+                }
+              },
             },
           ]}
         >
@@ -244,8 +263,13 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           hidden={type == "ONLINE" && action === "create"}
           rules={[
             {
-              validator: (_, value) =>
-                validateCommon(_, value, t, "returnInspectionReason"),
+              validator: (_, value) => {
+                if (type == "ONLINE" && action === "create") {
+                  return Promise.resolve();
+                } else {
+                  return validateCommon(_, value, t, "returnInspectionReason");
+                }
+              },
             },
           ]}
         >
@@ -265,8 +289,13 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           hidden={type == "ONLINE" && action === "create"}
           rules={[
             {
-              validator: (_, value) =>
-                validateCommon(_, value, t, "resellable"),
+              validator: (_, value) => {
+                if (type == "ONLINE" && action === "create") {
+                  return Promise.resolve();
+                } else {
+                  return validateCommon(_, value, t, "resellable");
+                }
+              },
             },
           ]}
         >
@@ -283,7 +312,7 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           formProps={formProps}
           label={t("return-form-details.fields.evidence.label")}
           tooltip={t("return-form-details.fields.evidence.tooltip")}
-          required={!(type === "ONLINE" && action === "create")}
+          required={false}
           hidden={type == "ONLINE" && action === "create"}
           raw
         />

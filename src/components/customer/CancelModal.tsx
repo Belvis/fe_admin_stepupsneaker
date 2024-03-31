@@ -76,14 +76,14 @@ const CancelReasonModal: React.FC<CancelReasonModalProps> = ({
               successNotification: (data, values, resource) => {
                 return {
                   message: t("common.update.success"),
-                  description: "Thành công",
+                  description: t("common.success"),
                   type: "success",
                 };
               },
               errorNotification(error) {
                 return {
                   message: t("common.error") + error?.message,
-                  description: "Đã xảy ra lỗi",
+                  description: "Oops!..",
                   type: "success",
                 };
               },

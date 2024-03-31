@@ -72,6 +72,11 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
     useState<IReturnFormDetailRequest>();
 
   useEffect(() => {
+    if (shippingMoney) {
+      formProps.form?.setFieldValue("shippingMoney", shippingMoney);
+    }
+  }, [shippingMoney]);
+  useEffect(() => {
     if (type) {
       if (type === "OFFLINE") {
         formProps.form?.setFieldsValue({

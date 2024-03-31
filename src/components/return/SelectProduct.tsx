@@ -171,7 +171,9 @@ export const SelectProduct: React.FC<IResourceComponentsProps> = () => {
 
     const hasZeroReturnQuantity = returnDetails
       .filter((detail) => {
-        return selectedRows.some((row) => row.name === detail.name);
+        return selectedRows.some(
+          (row) => row.orderDetail === detail.orderDetail
+        );
       })
       .some((row) => {
         return row.returnQuantity === 0;

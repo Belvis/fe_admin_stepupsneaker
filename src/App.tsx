@@ -18,8 +18,8 @@ import { App as AntdApp } from "antd";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { dataProvider } from "./providers/dataProvider";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import { dataProvider } from "./providers/dataProvider";
 
 import {
   ApartmentOutlined,
@@ -35,10 +35,10 @@ import {
   WalletOutlined,
 } from "@ant-design/icons";
 
-import { PointOfSaleIcon } from "./components/icons/icon-pos";
 import { MdOutlineAssignmentReturn } from "react-icons/md";
+import { PointOfSaleIcon } from "./components/icons/icon-pos";
+import { MdOutlineReviews } from "react-icons/md";
 
-import { authProvider } from "./providers/authProvider";
 import {
   ColorIcon,
   DiscountOrderIcon,
@@ -51,6 +51,8 @@ import {
   TradeMarkIcon,
 } from "./components/icons";
 import { DashboardContextProvider } from "./contexts/dashboard";
+import { POSContextProvider } from "./contexts/point-of-sales";
+import { ReturnFormContextProvider } from "./contexts/return";
 import { Header } from "./layouts/header";
 import { ThemedSiderV2 } from "./layouts/sider";
 import { ThemedTitleV2 } from "./layouts/title";
@@ -79,15 +81,14 @@ import {
   PromotionEdit,
   PromotionList,
 } from "./pages/promotion";
+import { ReturnCreate } from "./pages/return/create";
+import { ReturnList } from "./pages/return/list";
+import { ReturnShow } from "./pages/return/show";
 import { RoleList } from "./pages/role";
 import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
-import { POSContextProvider } from "./contexts/point-of-sales";
-import { ReturnIcon } from "./components/icons/icon-return";
-import { ReturnList } from "./pages/return/list";
 import { accessControlProvider } from "./providers/accessControlProvider";
-import { ReturnCreate } from "./pages/return/create";
-import { ReturnFormContextProvider } from "./contexts/return";
-import { ReturnShow } from "./pages/return/show";
+import { authProvider } from "./providers/authProvider";
+import { ReviewList } from "./pages/review/list";
 
 const API_BASE_URL = `${window.location.protocol}//${
   window.location.hostname
@@ -317,6 +318,16 @@ function App() {
                   },
                 },
                 {
+                  name: "product/reviews",
+                  list: "/reviews",
+                  create: "/reviews/create",
+                  edit: "/reviews/edit/:id",
+                  show: "/reviews/show/:id",
+                  meta: {
+                    icon: <MdOutlineReviews />,
+                  },
+                },
+                {
                   name: "customers",
                   list: "/customers",
                   create: "/customers/create",
@@ -463,6 +474,11 @@ function App() {
                     <Route index element={<EmployeeList />} />
                     <Route path="create" element={<EmployeeCreate />} />
                     <Route path="edit/:id" element={<EmployeeEdit />} />
+                  </Route>
+                  <Route path="/reviews">
+                    <Route index element={<ReviewList />} />
+                    {/* <Route path="create" element={<EmployeeCreate />} /> */}
+                    {/* <Route path="edit/:id" element={<EmployeeEdit />} /> */}
                   </Route>
                   <Route path="/roles">
                     <Route index element={<RoleList />} />

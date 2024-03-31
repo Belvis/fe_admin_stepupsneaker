@@ -10,6 +10,7 @@ export type QueryObserverResult<TData = unknown, TError = unknown> =
   | QueryObserverLoadingErrorResult<TData, TError>
   | QueryObserverLoadingResult<TData, TError>;
 export type ColSpanType = number | string;
+export type ReviewStatus = "WAITING" | "ACCEPTED" | "REJECTED";
 export type ProductStatus = "ACTIVE" | "IN_ACTIVE";
 export type PaymentStatus = "PENDING" | "COMPLETED";
 export type VoucherStatus =
@@ -462,6 +463,15 @@ export interface IReturnFormHistoryResponse {
   note: string;
   createdAt: number;
   createdBy: string;
+}
+export interface IReviewResponse {
+  id: string;
+  customer: ICustomerResponse;
+  productDetail: IProductDetailResponse;
+  comment: string;
+  rating: int;
+  urlImage: string;
+  status: ReviewStatus;
 }
 /* End Response */
 

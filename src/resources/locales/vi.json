@@ -1163,7 +1163,8 @@
         "tooltip": "Trạng thái giao hàng hoàn trả là trạng thái xử lý của đơn hàng trong phiếu trả hàng. Ví dụ: khi tạo phiếu trả hàng tại quầy thì trạng thái sẽ là \"Đã Nhận\", còn khi khách hàng tạo phiếu online thì trạng thái sẽ là \"Chờ giải quyết\"",
         "PENDING": "Chờ giải quyết",
         "RETURNING": "Đang hoàn trả",
-        "RECEIVED": "Đã nhận"
+        "RECEIVED": "Đã nhận",
+        "COMPLETED": "Hoàn thành"
       },
       "refundStatus": {
         "label": "Trạng thái hoàn tiền",
@@ -1218,6 +1219,38 @@
         "label": "Lý do kiểm tra trả hàng",
         "placeholder": "Nhập lý do kiểm tra trả hàng",
         "tooltip": "Lý do kiểm tra trả hàng là nguyên nhân được chỉ ra cho quyết định trả hàng."
+      }
+    }
+  },
+  "product/reviews": {
+    "product/reviews": "Đánh giá từ khách hàng",
+    "titles": {
+      "list": "Đánh giá từ khách hàng",
+      "create": "Tạo đánh giá",
+      "edit": "Chỉnh sửa đánh giá",
+      "show": "Chi tiết đánh giá"
+    },
+    "filters": {
+      "title": "Bộ lọc",
+      "search": {
+        "label": "Tên",
+        "placeholder": "Tìm kiếm theo từ khoá"
+      },
+      "status": {
+        "label": "Trạng thái",
+        "placeholder": "Tìm kiếm theo trạng thái"
+      }
+    },
+    "fields": {
+      "customer": "Khách hàng",
+      "rating": "Đánh giá",
+      "comment": "Nội dung",
+      "urlImage": "Đính kèm",
+      "status": {
+        "label": "Trạng thái",
+        "WAITING": "Chờ xét duyệt",
+        "ACCEPTED": "Đồng ý",
+        "REJECTED": "Từ chối"
       }
     }
   },
@@ -1324,7 +1357,14 @@
       "deliveryStatus": "Trạng thái giao hàng không được để trống",
       "paymentType": "Phương thức hoàn trả không được để trống",
       "refundStatus": "Trạng thái hoàn tiền không được để trống",
-      "paymentInfo": "Thông tin thanh toán không được để trống"
+      "paymentInfo": "Thông tin thanh toán không được để trống",
+      "reason": "Lý do trả hàng không được để trống",
+      "feedback": "Phản hồi không được để trống",
+      "returnQuantity": "Số lượng hoàn trả không được để trống",
+      "unitPrice": "Đơn giá không được để trống",
+      "returnInspectionStatus": "Trạng thái kiểm tra không được để trống",
+      "returnInspectionReason": "Lý do kiểm tra trả hàng không được để trống",
+      "resellable": "Vui lòng quyết định xem sản phẩm còn bán lại được hay không"
     },
     "vouchers": {
       "exceed": "Giá trị không thể quá {{length}} phần trăm"
