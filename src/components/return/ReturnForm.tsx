@@ -9,6 +9,7 @@ import {
   InputNumber,
   Row,
   Select,
+  Space,
   Table,
   Typography,
 } from "antd";
@@ -42,6 +43,8 @@ import { ColumnsType } from "antd/es/table";
 import { ReturnInspectionStatus } from "./ReturnInspectionStatus";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { LuInspect } from "react-icons/lu";
+import { MdOutlineRepartition } from "react-icons/md";
+import { ReturnAPartModal } from "./ReturnAPartModal";
 
 const { Title, Text } = Typography;
 type ReturnFormProps = {
@@ -96,6 +99,12 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
     show: inspectionShow,
     close: inspectionClose,
     modalProps: inspectionModalProps,
+  } = useModal();
+
+  const {
+    show: returnAPartShow,
+    close: returnAPartClose,
+    modalProps: returnAPartModalProps,
   } = useModal();
 
   const columns = useMemo<ColumnsType<IReturnFormDetailRequest>>(
@@ -184,15 +193,27 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
         width: "10%",
         align: "center",
         render: (_, record) => (
-          <Button
-            icon={<LuInspect />}
-            onClick={() => {
-              setInspectionReturnDetail(record);
-              inspectionShow();
-            }}
-          >
-            {t("buttons.inspect")}
-          </Button>
+          <Space>
+            <Button
+              icon={<MdOutlineRepartition />}
+              onClick={() => {
+                setInspectionReturnDetail(record);
+                returnAPartShow();
+              }}
+              hidden={action == "create"}
+            >
+              {t("buttons.returnAPart")}
+            </Button>
+            <Button
+              icon={<LuInspect />}
+              onClick={() => {
+                setInspectionReturnDetail(record);
+                inspectionShow();
+              }}
+            >
+              {t("buttons.inspect")}
+            </Button>
+          </Space>
         ),
       },
     ],
@@ -484,6 +505,18 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
           />
         </>
       )}
+      {returnAPartModalProps.open &&
+        inspectionReturnDetail &&
+        action === "edit" && (
+          <>
+            <ReturnAPartModal
+              modalProps={returnAPartModalProps}
+              close={returnAPartClose}
+              returnDetail={inspectionReturnDetail}
+              setReturnFormDetails={setReturnFormDetails}
+            />
+          </>
+        )}
     </>
   );
 };

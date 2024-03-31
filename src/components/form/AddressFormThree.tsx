@@ -248,10 +248,13 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
           loading={isLoadingProvince}
           onChange={handleProvinceChange}
           filterOption={filterOption}
-          options={provinces.map((province) => ({
-            label: province.ProvinceName,
-            value: province.ProvinceID,
-          }))}
+          options={
+            provinces &&
+            provinces.map((province) => ({
+              label: province.ProvinceName,
+              value: province.ProvinceID,
+            }))
+          }
         />
       </Form.Item>
       <Form.Item
@@ -271,10 +274,13 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
           loading={isLoadingDistrict}
           onChange={handleDistrictChange}
           filterOption={filterOption}
-          options={districts.map((district) => ({
-            label: district.DistrictName,
-            value: district.DistrictID,
-          }))}
+          options={
+            districts &&
+            districts.map((district) => ({
+              label: district.DistrictName,
+              value: district.DistrictID,
+            }))
+          }
         />
       </Form.Item>
       <Form.Item
@@ -294,10 +300,13 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
           loading={isLoadingWard}
           onChange={handleWardChange}
           filterOption={filterOption}
-          options={wards.map((ward) => ({
-            label: ward.WardName,
-            value: ward.WardCode,
-          }))}
+          options={
+            wards &&
+            wards.map((ward) => ({
+              label: ward.WardName,
+              value: ward.WardCode,
+            }))
+          }
         />
       </Form.Item>
       <Form.Item

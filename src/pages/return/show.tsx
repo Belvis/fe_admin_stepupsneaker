@@ -41,7 +41,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
         provinceId: Number(defaultAddress.provinceId),
         districtId: Number(defaultAddress.districtId),
         wardCode: defaultAddress.wardCode,
-        more: defaultAddress.more,
+        line: defaultAddress.more,
       });
     }
   }, [defaultAddress]);
@@ -130,6 +130,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     <>
       <Show
         canEdit={false}
+        isLoading={formLoading}
         footerButtonProps={{
           style: {
             width: "100%",

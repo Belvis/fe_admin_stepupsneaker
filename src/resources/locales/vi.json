@@ -121,7 +121,8 @@
     "addAndContinue": "Xác nhận và tiếp tục",
     "forceConfirm": "Chủ động xác nhận",
     "inspect": "Kiểm tra",
-    "choose": "Chọn"
+    "choose": "Chọn",
+    "returnAPart": "Trả một phần"
   },
   "loading": "Đang tải",
   "tags": {

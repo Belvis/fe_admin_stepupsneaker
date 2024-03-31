@@ -124,6 +124,10 @@ export const getDeliveryStatusOptions = (t: TranslateFunction) => [
     label: t("return-forms.fields.deliveryStatus.RECEIVED"),
     value: "RECEIVED",
   },
+  {
+    label: t("return-forms.fields.deliveryStatus.COMPLETED"),
+    value: "COMPLETED",
+  },
 ];
 
 export const getRefundStatusOptions = (t: TranslateFunction) => [

@@ -51,11 +51,6 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
     "returnInspectionStatus"
   );
 
-  // useEffect(() => {
-  //   if (returnInspectionStatus == "FAILED") {
-  //   }
-  // }, [returnInspectionStatus]);
-
   useEffect(() => {
     if (returnDetail) {
       formProps.form?.setFieldsValue({
@@ -96,7 +91,7 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
       setReturnFormDetails((prevState) => {
         if (prevState) {
           return prevState.map((detail) => {
-            if (detail.name === returnDetail.name) {
+            if (detail.orderDetail === returnDetail.orderDetail) {
               return {
                 ...detail,
                 returnQuantity: returnQuantity,
@@ -163,6 +158,8 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
                 }
 
                 if (value > returnDetail.quantity) {
+                  console.log("returnDetail.quantity", returnDetail.quantity);
+
                   return Promise.reject(
                     new Error(t("return-forms.message.invalidReturnQuantity"))
                   );
@@ -285,12 +282,21 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
         <Form.Item
           label={t("return-form-details.fields.resellable.label")}
           name="resellable"
-          required={!(type === "ONLINE" && action === "create")}
-          hidden={type == "ONLINE" && action === "create"}
+          required={
+            !(type === "ONLINE" && action === "create") ||
+            returnInspectionStatus === "FAILED"
+          }
+          hidden={
+            (type == "ONLINE" && action === "create") ||
+            returnInspectionStatus === "FAILED"
+          }
           rules={[
             {
               validator: (_, value) => {
-                if (type == "ONLINE" && action === "create") {
+                if (
+                  (type == "ONLINE" && action === "create") ||
+                  returnInspectionStatus === "FAILED"
+                ) {
                   return Promise.resolve();
                 } else {
                   return validateCommon(_, value, t, "resellable");
