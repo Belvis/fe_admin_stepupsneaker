@@ -23,7 +23,7 @@ export const AddressCustomersPie: React.FC = () => {
   const config = useMemo(() => {
     const addressCounts: Record<string, number> = {};
 
-    data?.data.data.forEach((customer) => {
+    data?.data?.data?.forEach((customer) => {
       const defaultAddress = customer.addressList.find(
         (address) => address.isDefault
       );

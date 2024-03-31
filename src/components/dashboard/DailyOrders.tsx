@@ -41,7 +41,7 @@ export const DailyOrders: React.FC = () => {
 
   const config = useMemo(() => {
     const config: ColumnConfig = {
-      data: data?.data.data || [],
+      data: data?.data?.data || [],
       loading: isLoading,
       padding: 0,
       xField: "date",
@@ -88,10 +88,10 @@ export const DailyOrders: React.FC = () => {
       <TitleArea>
         <Title level={3}>{t("dashboard.dailyOrders.title")}</Title>
         <HeaderNumbers>
-          <Text strong>{data?.data.total ?? 0} </Text>
+          <Text strong>{data?.data?.total ?? 0} </Text>
 
           <div>
-            <Text strong>{data?.data.trend ?? 0}%</Text>
+            <Text strong>{data?.data?.trend ?? 0}%</Text>
             {(data?.data?.trend ?? 0) > 0 ? <IncreaseIcon /> : <DecreaseIcon />}
           </div>
         </HeaderNumbers>

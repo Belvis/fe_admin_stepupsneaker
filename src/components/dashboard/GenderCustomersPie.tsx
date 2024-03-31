@@ -23,7 +23,7 @@ export const GenderCustomersPie: React.FC = () => {
   const config = useMemo(() => {
     const genderCounts: Record<string, number> = {};
 
-    data?.data.data.forEach((customer) => {
+    data?.data?.data?.forEach((customer) => {
       const gender = t(`customers.fields.gender.options.${customer.gender}`);
       genderCounts[gender] = (genderCounts[gender] || 0) + 1;
     });

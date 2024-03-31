@@ -33,7 +33,7 @@ export const ReturnAPartModal: React.FC<ReturnAPartModalProps> = ({
       const newReturnDetail: IReturnFormDetailRequest = {
         ...returnDetail,
         returnQuantity: returnQuantity,
-        orderDetail: returnDetail.orderDetail + "-splited-" + returnQuantity,
+        id: returnDetail.id + "-splited-" + returnQuantity,
       };
 
       console.log("newReturnDetail", newReturnDetail);

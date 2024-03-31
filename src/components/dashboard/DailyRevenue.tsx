@@ -48,7 +48,7 @@ export const DailyRevenue: React.FC = () => {
 
   const config = useMemo(() => {
     const config: LineConfig = {
-      data: data?.data.data || [],
+      data: data?.data?.data || [],
       loading: isLoading,
       padding: "auto",
       xField: "date",
@@ -98,10 +98,10 @@ export const DailyRevenue: React.FC = () => {
                 notation: "compact",
               }}
               locale="vi"
-              value={data?.data.total ?? 0}
+              value={data?.data?.total ?? 0}
             />
             <div style={{ marginLeft: "1rem" }}>
-              <Text strong>{data?.data.trend ?? 0}%</Text>
+              <Text strong>{data?.data?.trend ?? 0}%</Text>
               {(data?.data?.trend ?? 0) > 0 ? (
                 <IncreaseIcon />
               ) : (

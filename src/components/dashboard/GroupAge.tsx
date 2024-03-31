@@ -39,7 +39,7 @@ export const GroupAge: React.FC = () => {
   const config = useMemo(() => {
     const ageCounts: Record<string, number> = {};
 
-    data?.data.data.forEach((customer) => {
+    data?.data?.data?.forEach((customer) => {
       const birthYear = new Date(customer.dateOfBirth).getFullYear();
       const currentYear = new Date().getFullYear();
       const age = currentYear - birthYear;

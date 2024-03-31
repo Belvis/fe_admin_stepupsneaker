@@ -537,6 +537,7 @@ export interface IReturnFormRequest {
   refundStatus: RefundStatus;
 }
 export interface IReturnFormDetailRequest {
+  id?: string;
   orderCode: string;
   orderDetail: string;
   quantity: number;

@@ -40,7 +40,11 @@ export const OrderSteps: React.FC<OrderStepsProps> = ({ record, callBack }) => {
 
   const stepStatus = (event: IEvent, index: number) => {
     if (!event.date) return "wait";
-    if (event.status === "CANCELED") return "error";
+    if (
+      event.status === "CANCELED" ||
+      (event.status === "RETURNED" && index === events.length - 1)
+    )
+      return "error";
     if (notFinishedCurrentStep(event, index)) return "process";
     return "finish";
   };

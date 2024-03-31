@@ -261,6 +261,7 @@ export const returnFormDetailsToPayloadFormat = (
 
   return returnFormDetails.map((detail) => {
     return {
+      id: detail.id,
       orderDetail: detail.orderDetail,
       quantity: detail.returnQuantity,
       reason: detail.reason,
@@ -278,6 +279,7 @@ export const returnFormDetailResponseToRequest = (
   orderCode: string
 ): IReturnFormDetailRequest => {
   return {
+    id: responseDetail.id,
     orderCode: orderCode,
     orderDetail: responseDetail.orderDetail.id,
     quantity: responseDetail.orderDetail.quantity,

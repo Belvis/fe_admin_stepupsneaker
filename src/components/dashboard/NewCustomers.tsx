@@ -41,7 +41,7 @@ export const NewCustomers: React.FC = () => {
 
   const config = useMemo(() => {
     const config: ColumnConfig = {
-      data: data?.data.data || [],
+      data: data?.data?.data || [],
       loading: isLoading,
       padding: 0,
       xField: "date",
@@ -93,9 +93,9 @@ export const NewCustomers: React.FC = () => {
         <Header>
           <Title level={3}>{t("dashboard.newCustomers.title")}</Title>
           <HeaderNumbers>
-            <Text strong>{data?.data.total ?? 0}</Text>
+            <Text strong>{data?.data?.total ?? 0}</Text>
             <div>
-              <Text strong>{data?.data.trend ?? 0}%</Text>
+              <Text strong>{data?.data?.trend ?? 0}%</Text>
               {(data?.data?.trend ?? 0) > 0 ? (
                 <IncreaseIcon />
               ) : (
