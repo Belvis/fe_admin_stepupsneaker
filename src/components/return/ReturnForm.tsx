@@ -80,7 +80,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
     }
   }, [shippingMoney]);
   useEffect(() => {
-    if (type) {
+    if (type && action === "create") {
       if (type === "OFFLINE") {
         formProps.form?.setFieldsValue({
           returnDeliveryStatus: "RECEIVED",
