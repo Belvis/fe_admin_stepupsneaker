@@ -8,6 +8,7 @@ import {
   CrudFilters,
   HttpError,
   IResourceComponentsProps,
+  useApiUrl,
   useTranslate,
 } from "@refinedev/core";
 import { Button, Card, Col, Row, Table, Typography } from "antd";
@@ -27,10 +28,13 @@ import { ReturnFormContext } from "../../contexts/return";
 import { QrcodeOutlined } from "@ant-design/icons";
 import { parseQRCodeResult } from "../../helpers/qrCode";
 import { QRScannerModal } from "../qr-scanner/QRScannerModal";
+import { dataProvider } from "../../providers/dataProvider";
 
 const { Text } = Typography;
 export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
+  const API_URL = useApiUrl();
+  const { getOne } = dataProvider(API_URL);
 
   const { next, setSelectedOrder } = useContext(ReturnFormContext);
 
@@ -204,7 +208,7 @@ export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
               next();
             }}
           >
-            Chọn
+            {t("buttons.choose")}
           </Button>
         ),
       },
@@ -218,20 +222,18 @@ export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
     modalProps: scanModalProps,
   } = useModal();
 
-  const handleScanSuccess = (result: string) => {
-    const qrResult = parseQRCodeResult(result);
-    // formProps.form?.setFieldsValue({
-    //   fullName: qrResult.fullName,
-    //   gender: qrResult.gender,
-    //   dateOfBirth: dayjs(new Date(qrResult.dob)),
-    //   more: qrResult.address,
-    // });
+  const handleScanSuccess = async (result: string) => {
+    const { data } = await getOne({ resource: "orders", id: result });
+    if (data) {
+      setSelectedOrder(data as IOrderResponse);
+      next();
+    }
   };
 
   return (
     <Row gutter={[8, 12]}>
       <Col span={24} className="d-flex justify-content-between">
-        <Text className="h6">{t("orders.titles.list")}</Text>
+        <Text className="h6 m-0">{t("orders.titles.list")}</Text>
         <Button
           icon={<QrcodeOutlined />}
           type="default"

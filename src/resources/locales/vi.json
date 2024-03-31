@@ -120,7 +120,8 @@
     "go": "Hoàn tất",
     "addAndContinue": "Xác nhận và tiếp tục",
     "forceConfirm": "Chủ động xác nhận",
-    "inspect": "Kiểm tra"
+    "inspect": "Kiểm tra",
+    "choose": "Chọn"
   },
   "loading": "Đang tải",
   "tags": {
@@ -1112,6 +1113,7 @@
     "titles": {
       "list": "Trả hàng",
       "create": "Tạo phiếu trả hàng",
+      "show": "Chi tiết phiếu trả hàng",
       "form": "Thông tin chung",
       "return-details": "Thông tin hàng hoá trả lại",
       "return-address": "Thông tin địa chỉ",
@@ -1123,6 +1125,7 @@
     },
     "fields": {
       "code": "Mã trả hàng",
+      "orderCode": "Mã đơn hàng",
       "customer": {
         "label": "Khách hàng",
         "placeholder": "Không chọn"
@@ -1131,6 +1134,7 @@
         "label": "NV Phụ trách",
         "placeholder": "Không chọn"
       },
+      "shippingMoney": "Phí vận chuyển ước tính",
       "returnProducts": "Sản phẩm hoàn trả",
       "phoneNumber": "Số điện thoại",
       "amountToBePaid": "Số tiền cần trả",
@@ -1207,7 +1211,8 @@
         "tooltip": "Trạng thái kiểm tra là trạng thái đánh giá xem hàng hoá có được trả lại hay không.",
         "PASSED": "Đồng ý",
         "FAILED": "Từ chối",
-        "PENDING": "Chưa giải quyết"
+        "PENDING": "Chưa giải quyết",
+        "null": "Chưa giải quyết"
       },
       "returnInspectionReason": {
         "label": "Lý do kiểm tra trả hàng",

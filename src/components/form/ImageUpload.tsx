@@ -31,6 +31,7 @@ interface IImageUploadProps {
   label?: ReactNode;
   tooltip?: LabelTooltipType;
   required?: boolean;
+  hidden?: boolean;
   raw?: boolean;
 }
 
@@ -39,6 +40,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
   label,
   tooltip,
   required = false,
+  hidden = false,
   raw = false,
 }) => {
   const t = useTranslate();
@@ -96,6 +98,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
         tooltip={tooltip}
         noStyle={!label}
         required={required}
+        hidden={hidden}
       >
         <Upload.Dragger
           name="file"

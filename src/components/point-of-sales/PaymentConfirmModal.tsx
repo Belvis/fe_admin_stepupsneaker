@@ -173,7 +173,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       />
       <Table
         title={() => (
-          <Text strong className="h6">
+          <Text strong className="h6 m-0">
             Khách thanh toán
           </Text>
         )}

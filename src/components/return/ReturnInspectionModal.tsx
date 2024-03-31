@@ -10,7 +10,7 @@ import {
   Select,
 } from "antd";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { IReturnFormDetailRequest } from "../../interfaces";
+import { IReturnFormDetailRequest, ReturnType } from "../../interfaces";
 import { useTranslate } from "@refinedev/core";
 import { useForm } from "@refinedev/antd";
 import { validateCommon } from "../../helpers/validate";
@@ -20,6 +20,8 @@ import ImageUpload from "../form/ImageUpload";
 
 type ReturnInspectionModalProps = {
   modalProps: ModalProps;
+  action: "create" | "edit";
+  type: ReturnType;
   close: () => void;
   returnDetail: IReturnFormDetailRequest;
   setReturnFormDetails: Dispatch<
@@ -29,9 +31,11 @@ type ReturnInspectionModalProps = {
 
 export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
   modalProps,
+  action,
   returnDetail,
   close,
   setReturnFormDetails,
+  type,
 }) => {
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
@@ -217,7 +221,8 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
         <Form.Item
           label={t("return-form-details.fields.returnInspectionStatus.label")}
           name="returnInspectionStatus"
-          required
+          required={!(type === "ONLINE" && action === "create")}
+          hidden={type == "ONLINE" && action === "create"}
           rules={[
             {
               validator: (_, value) =>
@@ -235,7 +240,8 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
         <Form.Item
           label={t("return-form-details.fields.returnInspectionReason.label")}
           name="returnInspectionReason"
-          required
+          required={!(type === "ONLINE" && action === "create")}
+          hidden={type == "ONLINE" && action === "create"}
           rules={[
             {
               validator: (_, value) =>
@@ -255,7 +261,8 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
         <Form.Item
           label={t("return-form-details.fields.resellable.label")}
           name="resellable"
-          required
+          required={!(type === "ONLINE" && action === "create")}
+          hidden={type == "ONLINE" && action === "create"}
           rules={[
             {
               validator: (_, value) =>
@@ -276,7 +283,8 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           formProps={formProps}
           label={t("return-form-details.fields.evidence.label")}
           tooltip={t("return-form-details.fields.evidence.tooltip")}
-          required
+          required={!(type === "ONLINE" && action === "create")}
+          hidden={type == "ONLINE" && action === "create"}
           raw
         />
       </Form>

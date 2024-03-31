@@ -3,17 +3,18 @@ import {
   useGetIdentity,
   useTranslate,
 } from "@refinedev/core";
-import { message } from "antd";
 
+import { App, Form } from "antd";
 import { useContext, useEffect } from "react";
 import { ReturnFormContext } from "../../contexts/return";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
-import { IEmployeeResponse, IReturnFormDetailRequest } from "../../interfaces";
-import { ReturnForm } from "./ReturnForm";
 import { returnFormDetailsToPayloadFormat } from "../../helpers/mapper";
+import { IEmployeeResponse, ReturnType } from "../../interfaces";
+import { ReturnForm } from "./ReturnForm";
 
 export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
+  const { message } = App.useApp();
 
   const {
     formProps,
@@ -23,6 +24,7 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
     setReturnFormDetails,
   } = useContext(ReturnFormContext);
 
+  const type: ReturnType = Form.useWatch("type", formProps.form);
   const { data } = useGetIdentity<IEmployeeResponse>();
 
   const defaultAddress = selectedOrder?.customer?.addressList.find(
@@ -72,7 +74,9 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
         t("invoices.retailCustomer");
 
       formProps.form?.setFieldsValue({
-        customer,
+        customer: {
+          name: customer,
+        },
         code: selectedOrder.code,
       });
     }
@@ -81,7 +85,9 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
   useEffect(() => {
     if (data) {
       formProps.form?.setFieldsValue({
-        employee: data.fullName,
+        employee: {
+          fullName: data.fullName,
+        },
       });
     }
   }, [data]);
@@ -93,7 +99,7 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
       )
     );
 
-    if (!isValid) {
+    if (!isValid && type === "OFFLINE") {
       message.warning(t("return-forms.message.emptyReturnDetails"));
       return;
     }
@@ -115,7 +121,7 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
       order: selectedOrder?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
       refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      deliveryStatus: formProps.form?.getFieldValue("deliveryStatus"),
+      returnDeliveryStatus: formProps.form?.getFieldValue("deliveryStatus"),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
       type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),
@@ -136,6 +142,7 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
     <>
       {returnFormDetails && (
         <ReturnForm
+          action="create"
           formProps={formProps}
           handleOnFinish={handleOnFinish}
           returnFormDetails={returnFormDetails}

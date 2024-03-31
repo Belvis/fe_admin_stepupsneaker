@@ -41,9 +41,11 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { ReturnInspectionStatus } from "./ReturnInspectionStatus";
 import { ColorModeContext } from "../../contexts/color-mode";
+import { LuInspect } from "react-icons/lu";
 
 const { Title, Text } = Typography;
 type ReturnFormProps = {
+  action: "create" | "edit";
   formProps: FormProps<{}>;
   handleOnFinish: (values: any) => void;
   returnFormDetails: IReturnFormDetailRequest[];
@@ -57,6 +59,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
   handleOnFinish,
   returnFormDetails,
   setReturnFormDetails,
+  action,
 }) => {
   const t = useTranslate();
   const { mode } = useContext(ColorModeContext);
@@ -177,6 +180,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
         align: "center",
         render: (_, record) => (
           <Button
+            icon={<LuInspect />}
             onClick={() => {
               setInspectionReturnDetail(record);
               inspectionShow();
@@ -206,7 +210,10 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
 
           <Row gutter={24}>
             <Col span={12}>
-              <Form.Item label={t("return-forms.fields.code")} name="code">
+              <Form.Item
+                label={t("return-forms.fields.orderCode")}
+                name={["order", "code"]}
+              >
                 <Input
                   placeholder={t("return-forms.fields.employee.placeholder")}
                   disabled
@@ -214,7 +221,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
               </Form.Item>
               <Form.Item
                 label={t("return-forms.fields.employee.label")}
-                name="employee"
+                name={["employee", "fullName"]}
               >
                 <Input
                   placeholder={t("return-forms.fields.employee.placeholder")}
@@ -223,7 +230,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
               </Form.Item>
               <Form.Item
                 label={t("return-forms.fields.customer.label")}
-                name="customer"
+                name={["customer", "name"]}
               >
                 <Input
                   placeholder={t("return-forms.fields.customer.placeholder")}
@@ -283,6 +290,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 ]}
               >
                 <Select
+                  disabled={action !== "create"}
                   placeholder={t("return-forms.fields.type.placeholder")}
                   options={getReturnTypeOptions(t)}
                 />
@@ -300,7 +308,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 ]}
               >
                 <Select
-                  disabled={type === "OFFLINE"}
+                  disabled={action !== "edit"}
                   placeholder={t(
                     "return-forms.fields.deliveryStatus.placeholder"
                   )}
@@ -335,7 +343,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 ]}
               >
                 <Select
-                  disabled
+                  disabled={action !== "edit"}
                   placeholder={t(
                     "return-forms.fields.refundStatus.placeholder"
                   )}
@@ -437,16 +445,39 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
               setShippingMoney={setShippingMoney}
               hideChooseAddress
             />
+            <Form.Item
+              name="shippingMoney"
+              label={t("return-forms.fields.shippingMoney")}
+            >
+              <InputNumber
+                className="w-100"
+                disabled
+                formatter={(value) =>
+                  `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value: string | undefined) => {
+                  const parsedValue = parseInt(
+                    value!.replace(/₫\s?|(,*)/g, ""),
+                    10
+                  );
+                  return isNaN(parsedValue) ? 0 : parsedValue;
+                }}
+              />
+            </Form.Item>
           </div>
         )}
       </Form>
       {inspectionModalProps.open && inspectionReturnDetail && (
-        <ReturnInspectionModal
-          modalProps={inspectionModalProps}
-          close={inspectionClose}
-          returnDetail={inspectionReturnDetail}
-          setReturnFormDetails={setReturnFormDetails}
-        />
+        <>
+          <ReturnInspectionModal
+            action={action}
+            type={type}
+            modalProps={inspectionModalProps}
+            close={inspectionClose}
+            returnDetail={inspectionReturnDetail}
+            setReturnFormDetails={setReturnFormDetails}
+          />
+        </>
       )}
     </>
   );

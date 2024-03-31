@@ -57,7 +57,7 @@ export const ProdAttributeSelect: React.FC<ProdAttributeSelectProps> = ({
     <Col span={12}>
       <Row gutter={[16, 0]} align="middle">
         <Col span={4}>
-          <Text className="h6 text-truncate" strong>
+          <Text className="h6 m-0 text-truncate" strong>
             {t(`userSelect.product.${attributeName}`)}
           </Text>
         </Col>

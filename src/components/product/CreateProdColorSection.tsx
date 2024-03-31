@@ -121,7 +121,7 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
         <Modal
           title={
             <Space size="large">
-              <Text className="h6">{t("sizes.titles.choose")}</Text>
+              <Text className="h6 m-0">{t("sizes.titles.choose")}</Text>
               <CreateButton
                 type="default"
                 onClick={() => {

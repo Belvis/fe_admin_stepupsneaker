@@ -36,6 +36,7 @@ import {
 } from "@ant-design/icons";
 
 import { PointOfSaleIcon } from "./components/icons/icon-pos";
+import { MdOutlineAssignmentReturn } from "react-icons/md";
 
 import { authProvider } from "./providers/authProvider";
 import {
@@ -180,7 +181,7 @@ function App() {
                   edit: "/return-forms/edit/:id",
                   show: "/return-forms/show/:id",
                   meta: {
-                    icon: <ReturnIcon />,
+                    icon: <MdOutlineAssignmentReturn />,
                   },
                 },
                 {

@@ -19,6 +19,7 @@ export const ReturnInspectionStatus: React.FC<OrderStatusProps> = ({
     case "PASSED":
       color = "green";
       break;
+    case null:
     case "PENDING":
       color = "orange";
       break;

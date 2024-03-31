@@ -43,7 +43,7 @@ export type ReturnType = "ONLINE" | "OFFLINE";
 export type PaymentType = "Cash" | "Transfer";
 export type RefundStatus = "PENDING" | "COMPLETED";
 export type InspectionStatus = "PASSED" | "FAILED" | undefined;
-export type DeliveryStatus = "PENDING" | "RETURNING" | "RECEIVED" | "COMPLETED";
+export type DeliveryStatus = "PENDING" | "RETURNING" | "RECEIVED";
 /* End Types */
 
 /* Start Intefaces */
@@ -64,6 +64,12 @@ export interface ISalesChart {
 export interface IEvent {
   date: number | undefined;
   status: OrderStatus;
+  loading?: boolean;
+  note?: string;
+}
+export interface IReturnEvent {
+  date: number | undefined;
+  status: DeliveryStatus;
   loading?: boolean;
   note?: string;
 }
@@ -435,6 +441,7 @@ export interface IReturnFormResponse {
   refundStatus: RefundStatus;
   createdBy: string;
   createdAt: number;
+  returnFormHistories: IReturnFormHistoryResponse[];
 }
 export interface IReturnFormDetailResponse {
   id: string;
@@ -444,7 +451,7 @@ export interface IReturnFormDetailResponse {
   feedback: string;
   returnInspectionStatus: InspectionStatus;
   returnInspectionReason: string;
-  evidence: number;
+  urlImage: string;
   resellable: boolean;
   createdAt?: number;
 }
