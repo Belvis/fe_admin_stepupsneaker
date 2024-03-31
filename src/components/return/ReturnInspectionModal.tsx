@@ -158,8 +158,6 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
                 }
 
                 if (value > returnDetail.quantity) {
-                  console.log("returnDetail.quantity", returnDetail.quantity);
-
                   return Promise.reject(
                     new Error(t("return-forms.message.invalidReturnQuantity"))
                   );

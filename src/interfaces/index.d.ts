@@ -44,7 +44,7 @@ export type ReturnType = "ONLINE" | "OFFLINE";
 export type PaymentType = "Cash" | "Transfer";
 export type RefundStatus = "PENDING" | "COMPLETED";
 export type InspectionStatus = "PASSED" | "FAILED" | undefined;
-export type DeliveryStatus = "PENDING" | "RETURNING" | "RECEIVED";
+export type DeliveryStatus = "PENDING" | "RETURNING" | "RECEIVED" | "COMPLETED";
 /* End Types */
 
 /* Start Intefaces */

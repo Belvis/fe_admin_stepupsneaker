@@ -73,7 +73,9 @@ export const ReturnSteps: React.FC<ReturnStepsProps> = ({
               <Steps.Step
                 status={stepStatus(event, index)}
                 key={index}
-                title={t(`return-forms.fields.deliveryStatus.${event.status}`)}
+                title={t(
+                  `return-forms.fields.returnDeliveryStatus.${event.status}`
+                )}
                 icon={
                   notFinishedCurrentStep(event, index) ? (
                     <LoadingOutlined />

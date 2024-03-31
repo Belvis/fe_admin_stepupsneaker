@@ -83,12 +83,12 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
     if (type) {
       if (type === "OFFLINE") {
         formProps.form?.setFieldsValue({
-          deliveryStatus: "RECEIVED",
+          returnDeliveryStatus: "RECEIVED",
           refundStatus: "COMPLETED",
         });
       } else {
         formProps.form?.setFieldsValue({
-          deliveryStatus: "PENDING",
+          returnDeliveryStatus: "PENDING",
           refundStatus: "PENDING",
         });
       }
@@ -322,21 +322,21 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 />
               </Form.Item>
               <Form.Item
-                label={t("return-forms.fields.deliveryStatus.label")}
-                tooltip={t("return-forms.fields.deliveryStatus.tooltip")}
-                name="deliveryStatus"
+                label={t("return-forms.fields.returnDeliveryStatus.label")}
+                tooltip={t("return-forms.fields.returnDeliveryStatus.tooltip")}
+                name="returnDeliveryStatus"
                 required
                 rules={[
                   {
                     validator: (_, value) =>
-                      validateCommon(_, value, t, "deliveryStatus"),
+                      validateCommon(_, value, t, "returnDeliveryStatus"),
                   },
                 ]}
               >
                 <Select
                   disabled={action !== "edit"}
                   placeholder={t(
-                    "return-forms.fields.deliveryStatus.placeholder"
+                    "return-forms.fields.returnDeliveryStatus.placeholder"
                   )}
                   options={getDeliveryStatusOptions(t)}
                 />

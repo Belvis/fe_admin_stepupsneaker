@@ -113,19 +113,19 @@ export const getOrderStatusOptions = (t: TranslateFunction) => [
 
 export const getDeliveryStatusOptions = (t: TranslateFunction) => [
   {
-    label: t("return-forms.fields.deliveryStatus.PENDING"),
+    label: t("return-forms.fields.returnDeliveryStatus.PENDING"),
     value: "PENDING",
   },
   {
-    label: t("return-forms.fields.deliveryStatus.RETURNING"),
+    label: t("return-forms.fields.returnDeliveryStatus.RETURNING"),
     value: "RETURNING",
   },
   {
-    label: t("return-forms.fields.deliveryStatus.RECEIVED"),
+    label: t("return-forms.fields.returnDeliveryStatus.RECEIVED"),
     value: "RECEIVED",
   },
   {
-    label: t("return-forms.fields.deliveryStatus.COMPLETED"),
+    label: t("return-forms.fields.returnDeliveryStatus.COMPLETED"),
     value: "COMPLETED",
   },
 ];

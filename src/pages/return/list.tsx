@@ -89,7 +89,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        title: t("return-forms.fields.deliveryStatus.label"),
+        title: t("return-forms.fields.returnDeliveryStatus.label"),
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("returnDeliveryStatus", sorters),
         key: "returnDeliveryStatus",

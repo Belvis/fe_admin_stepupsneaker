@@ -1158,7 +1158,7 @@
         "Cash": "Tiền mặt",
         "Transfer": "Chuyển khoản"
       },
-      "deliveryStatus": {
+      "returnDeliveryStatus": {
         "label": "Trạng thái giao hàng",
         "placeholder": "Chọn trạng thái giao hàng hoàn trả",
         "tooltip": "Trạng thái giao hàng hoàn trả là trạng thái xử lý của đơn hàng trong phiếu trả hàng. Ví dụ: khi tạo phiếu trả hàng tại quầy thì trạng thái sẽ là \"Đã Nhận\", còn khi khách hàng tạo phiếu online thì trạng thái sẽ là \"Chờ giải quyết\"",
@@ -1355,7 +1355,7 @@
       "weightUnit": "Đơn vị không được để trống",
       "amountToBePaid": "Số tiền cần trả không được để trống",
       "returnType": "Hình thức không được để trống",
-      "deliveryStatus": "Trạng thái giao hàng không được để trống",
+      "returnDeliveryStatus": "Trạng thái giao hàng không được để trống",
       "paymentType": "Phương thức hoàn trả không được để trống",
       "refundStatus": "Trạng thái hoàn tiền không được để trống",
       "paymentInfo": "Thông tin thanh toán không được để trống",

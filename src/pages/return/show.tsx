@@ -109,7 +109,9 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       order: selectedOrder?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
       refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      returnDeliveryStatus: formProps.form?.getFieldValue("deliveryStatus"),
+      returnDeliveryStatus: formProps.form?.getFieldValue(
+        "returnDeliveryStatus"
+      ),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
       type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),

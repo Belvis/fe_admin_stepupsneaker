@@ -28,6 +28,8 @@ export const ReturnDeliveryStatus: React.FC<ReturnDeliveryStatusProps> = ({
   }
 
   return (
-    <Tag color={color}>{t(`return-forms.fields.deliveryStatus.${status}`)}</Tag>
+    <Tag color={color}>
+      {t(`return-forms.fields.returnDeliveryStatus.${status}`)}
+    </Tag>
   );
 };
