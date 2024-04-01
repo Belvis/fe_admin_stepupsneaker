@@ -18,7 +18,7 @@ const UpdateStatusModal: React.FC<UpdateStatusModalProps> = ({
   restModalProps,
   returnForm,
   status,
-  callBack,
+  // callBack,
   close,
 }) => {
   const t = useTranslate();
@@ -63,7 +63,7 @@ const UpdateStatusModal: React.FC<UpdateStatusModalProps> = ({
             {
               onError: (error, variables, context) => {},
               onSuccess: (data, variables, context) => {
-                callBack();
+                // callBack();
                 close();
                 setValue("");
               },
