@@ -48,7 +48,8 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
   const { formProps, formLoading } = useForm<IReturnFormDetailRequest>();
 
   const returnInspectionStatus: InspectionStatus = Form.useWatch(
-    "returnInspectionStatus"
+    "returnInspectionStatus",
+    formProps.form
   );
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import {
   IResourceComponentsProps,
   useParsed,
   useTranslate,
+  useUpdate,
 } from "@refinedev/core";
 import { App, Button } from "antd";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import {
   returnFormDetailsToPayloadFormat,
 } from "../../helpers/mapper";
 import {
+  DeliveryStatus,
   IOrderResponse,
   IReturnFormDetailRequest,
   IReturnFormDetailResponse,
@@ -20,6 +22,10 @@ import {
 } from "../../interfaces";
 import { ReturnSteps } from "../../components/return/ReturnSteps";
 import { ReturnHistoryTimeLine } from "../../components/return/ReturnHistoryTimeLine";
+import { TbStatusChange } from "react-icons/tb";
+import { AiOutlineFileDone } from "react-icons/ai";
+import UpdateStatusModal from "../../components/return/UpdateStatusModal";
+import { MdHistoryEdu } from "react-icons/md";
 
 export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -31,10 +37,19 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       action: "edit",
     });
 
+  const {
+    show: showReason,
+    close: closeReason,
+    modalProps: { visible: vi2, ...restPropsReason },
+  } = useModal();
+
   const [returnFormDetails, setReturnFormDetails] =
     useState<IReturnFormDetailRequest[]>();
+
   const [selectedOrder, setSelectedOrder] = useState<IOrderResponse>();
   const [returnForm, setReturnForm] = useState<IReturnFormResponse>();
+
+  const [status, setStatus] = useState<DeliveryStatus>("PENDING");
 
   const defaultAddress = selectedOrder?.customer?.addressList.find(
     (address) => address.isDefault
@@ -155,8 +170,31 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
         headerButtons={({ defaultButtons }) => (
           <>
             {defaultButtons}
-            <Button type="primary" onClick={show}>
+            <Button icon={<MdHistoryEdu />} type="primary" onClick={show}>
               Xem lịch sử
+            </Button>
+            <Button
+              icon={<TbStatusChange />}
+              type="primary"
+              onClick={() => {
+                const status = getNextStatus(
+                  returnForm?.returnDeliveryStatus ?? "PENDING"
+                );
+                setStatus(status ?? "PENDING");
+                showReason();
+              }}
+            >
+              Cập nhật trạng thái
+            </Button>
+            <Button
+              icon={<AiOutlineFileDone />}
+              type="primary"
+              onClick={() => {
+                setStatus("COMPLETED");
+                showReason();
+              }}
+            >
+              Xác nhận hoàn thành
             </Button>
           </>
         )}
@@ -182,6 +220,43 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       {restProps.open && (
         <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />
       )}
+
+      <UpdateStatusModal
+        restModalProps={restPropsReason}
+        close={closeReason}
+        returnForm={returnForm ?? ({} as IReturnFormResponse)}
+        callBack={null}
+        status={status}
+      />
     </>
   );
+};
+
+const getNextStatus = (
+  currentStatus: DeliveryStatus
+): DeliveryStatus | null => {
+  const statusList: DeliveryStatus[] = [
+    "PENDING",
+    "RETURNING",
+    "RECEIVED",
+    "COMPLETED",
+  ];
+  const currentIndex = statusList.indexOf(currentStatus);
+
+  if (currentIndex !== -1) {
+    let nextIndex = currentIndex + 1;
+
+    // Check if current status is COMPLETED
+    if (currentStatus === "COMPLETED") {
+      // If current status is COMPLETED, return to PENDING (statusList[0])
+      return statusList[0];
+    }
+
+    // Otherwise, proceed normally
+    if (nextIndex < statusList.length) {
+      return statusList[nextIndex];
+    }
+  }
+
+  return null;
 };

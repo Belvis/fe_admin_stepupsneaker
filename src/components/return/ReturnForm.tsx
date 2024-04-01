@@ -79,11 +79,12 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
       formProps.form?.setFieldValue("shippingMoney", shippingMoney);
     }
   }, [shippingMoney]);
+
   useEffect(() => {
     if (type && action === "create") {
       if (type === "OFFLINE") {
         formProps.form?.setFieldsValue({
-          returnDeliveryStatus: "RECEIVED",
+          returnDeliveryStatus: "COMPLETED",
           refundStatus: "COMPLETED",
         });
       } else {
@@ -334,7 +335,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 ]}
               >
                 <Select
-                  disabled={action !== "edit"}
+                  disabled
                   placeholder={t(
                     "return-forms.fields.returnDeliveryStatus.placeholder"
                   )}
@@ -369,7 +370,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 ]}
               >
                 <Select
-                  disabled={action !== "edit"}
+                  disabled
                   placeholder={t(
                     "return-forms.fields.refundStatus.placeholder"
                   )}

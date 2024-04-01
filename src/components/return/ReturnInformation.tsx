@@ -5,11 +5,15 @@ import {
 } from "@refinedev/core";
 
 import { App, Form } from "antd";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReturnFormContext } from "../../contexts/return";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { returnFormDetailsToPayloadFormat } from "../../helpers/mapper";
-import { IEmployeeResponse, ReturnType } from "../../interfaces";
+import {
+  IAddressResponse,
+  IEmployeeResponse,
+  ReturnType,
+} from "../../interfaces";
 import { ReturnForm } from "./ReturnForm";
 
 export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
@@ -26,10 +30,17 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
 
   const type: ReturnType = Form.useWatch("type", formProps.form);
   const { data } = useGetIdentity<IEmployeeResponse>();
+  const [defaultAddress, setDefaultAddress] = useState<IAddressResponse>();
 
-  const defaultAddress = selectedOrder?.customer?.addressList.find(
-    (address) => address.isDefault
-  );
+  useEffect(() => {
+    if (selectedOrder) {
+      const defaultAddress = selectedOrder?.customer?.addressList.find(
+        (address) => address.isDefault
+      );
+
+      setDefaultAddress(defaultAddress);
+    }
+  }, [selectedOrder]);
 
   useEffect(() => {
     const calculateTotalMoney = () => {

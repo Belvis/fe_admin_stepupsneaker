@@ -35,7 +35,7 @@ import {
   WalletOutlined,
 } from "@ant-design/icons";
 
-import { MdOutlineAssignmentReturn } from "react-icons/md";
+import { MdOutlineAssignmentReturn, MdSecurity } from "react-icons/md";
 import { PointOfSaleIcon } from "./components/icons/icon-pos";
 import { MdOutlineReviews } from "react-icons/md";
 
@@ -354,7 +354,7 @@ function App() {
                   edit: "/roles/edit/:id",
                   show: "/roles/show/:id",
                   meta: {
-                    icon: <SafetyOutlined />,
+                    icon: <MdSecurity />,
                   },
                 },
                 {
