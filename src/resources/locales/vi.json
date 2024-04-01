@@ -1131,6 +1131,7 @@
         "label": "Khách hàng",
         "placeholder": "Không chọn"
       },
+      "description": "Mô tả",
       "employee": {
         "label": "NV Phụ trách",
         "placeholder": "Không chọn"
@@ -1183,10 +1184,10 @@
     "timeline": {
       "title": "Mốc thời gian",
       "status": {
-        "pending": "Đang chờ giải quyết",
-        "on the way": "Đơn hàng đang trên đường tới",
-        "received": "Đơn hàng đã được giao",
-        "completed": "Đơn hàng hoàn tất",
+        "pending": "Phiếu giảm giá đang chờ giải quyết",
+        "on the way": "Phiếu giảm giá đang trên đường tới",
+        "received": "Phiếu giảm giá đã được giao",
+        "completed": "Phiếu giảm giá hoàn tất",
         "undefined": "Unknown",
         "null": "Unknown"
       }

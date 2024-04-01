@@ -179,6 +179,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             <Button
               icon={<TbStatusChange />}
               type="primary"
+              disabled={returnForm?.returnDeliveryStatus === "COMPLETED"}
               onClick={() => {
                 const status = getNextStatus(
                   returnForm?.returnDeliveryStatus ?? "PENDING"
@@ -191,6 +192,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             </Button>
             <Button
               icon={<AiOutlineFileDone />}
+              disabled={returnForm?.returnDeliveryStatus === "COMPLETED"}
               type="primary"
               onClick={() => {
                 setStatus("COMPLETED");
@@ -224,13 +226,15 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
         <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />
       )}
 
-      <UpdateStatusModal
-        restModalProps={restPropsReason}
-        close={closeReason}
-        returnForm={returnForm ?? ({} as IReturnFormResponse)}
-        callBack={refetch}
-        status={status}
-      />
+      {restPropsReason.open && (
+        <UpdateStatusModal
+          restModalProps={restPropsReason}
+          close={closeReason}
+          returnForm={returnForm ?? ({} as IReturnFormResponse)}
+          callBack={refetch}
+          status={status}
+        />
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { BaseKey, useNavigation, useTranslate } from "@refinedev/core";
+import { BaseKey, useTranslate } from "@refinedev/core";
 import {
   List as AntdList,
   ConfigProvider,
@@ -10,7 +10,9 @@ import {
 import dayjs from "dayjs";
 
 import { useSimpleList } from "@refinedev/antd";
-import React from "react";
+import { Card, Grid, Modal } from "antd";
+import React, { useEffect } from "react";
+import { DeliveryStatus, IReturnFormHistoryResponse } from "../../interfaces";
 import {
   CreatedAt,
   Number,
@@ -18,9 +20,6 @@ import {
   TimelineContent,
   TimelineItem,
 } from "./styled";
-import { Card, Grid, Modal } from "antd";
-import { useEffect, useState } from "react";
-import { DeliveryStatus, IReturnFormHistoryResponse } from "../../interfaces";
 
 const { Text } = Typography;
 
@@ -54,8 +53,12 @@ export const ReturnHistoryTimeLine: React.FC<ReturnHistoryTimeLineProps> = ({
     syncWithLocation: false,
   });
 
-  const histories = queryResult.data?.data;
+  const histories: IReturnFormHistoryResponse[] = queryResult.data
+    ?.data as IReturnFormHistoryResponse[];
 
+  useEffect(() => {
+    console.log("histories", histories);
+  }, [histories]);
   const getStatusColor = (
     status: DeliveryStatus
   ):
@@ -114,7 +117,7 @@ export const ReturnHistoryTimeLine: React.FC<ReturnHistoryTimeLineProps> = ({
               {histories &&
                 histories.length > 0 &&
                 histories.map(
-                  ({ id, actionStatus, createdAt, orderId, orderCode }) => {
+                  ({ id, actionStatus, createdAt, createdBy, note }) => {
                     return (
                       <TimelineItem
                         key={id}
@@ -143,11 +146,11 @@ export const ReturnHistoryTimeLine: React.FC<ReturnHistoryTimeLineProps> = ({
                               }`
                             )}
                           </Text>
-                          <Number
-                            // onClick={() => navigateShow("orders", orderId)}
-                            strong
-                          >
-                            #{orderCode.toUpperCase()}
+                          <Text>
+                            {t("return-forms.fields.description")}: {note}
+                          </Text>
+                          <Number strong style={{ cursor: "default" }}>
+                            {t("return-forms.fields.createdBy")}: {createdBy}
                           </Number>
                         </TimelineContent>
                       </TimelineItem>
