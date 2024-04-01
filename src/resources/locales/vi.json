@@ -1179,6 +1179,17 @@
       "emptyReturnDetails": "Vui lòng kiểm tra sản phẩm hoàn trả trước",
       "invalidReturnQuantity": "Số lượng hoàn trả không được phép lớn hơn số lượng ban đầu",
       "emptyReturnQuantity": "Vui lòng nhập số lượng hoàn trả"
+    },
+    "timeline": {
+      "title": "Mốc thời gian",
+      "status": {
+        "pending": "Đang chờ giải quyết",
+        "on the way": "Đơn hàng đang trên đường tới",
+        "received": "Đơn hàng đã được giao",
+        "completed": "Đơn hàng hoàn tất",
+        "undefined": "Unknown",
+        "null": "Unknown"
+      }
     }
   },
   "return-form-details": {

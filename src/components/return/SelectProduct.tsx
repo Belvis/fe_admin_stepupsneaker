@@ -184,7 +184,7 @@ export const SelectProduct: React.FC<IResourceComponentsProps> = () => {
     }
 
     const returnFormDetails = returnDetails.filter((detail) => {
-      return selectedRows.some((row) => row.name === detail.name);
+      return selectedRows.some((row) => row.orderDetail === detail.orderDetail);
     });
 
     setReturnFormDetails(returnFormDetails);

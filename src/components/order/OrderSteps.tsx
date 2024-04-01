@@ -17,6 +17,7 @@ import {
   IOrderResponse,
   OrderStatus,
 } from "../../interfaces";
+import { MdPendingActions } from "react-icons/md";
 
 const { useBreakpoint } = Grid;
 
@@ -60,7 +61,13 @@ export const OrderSteps: React.FC<OrderStepsProps> = ({ record, callBack }) => {
   }, [record]);
 
   return (
-    <Card>
+    <Card
+      styles={{
+        body: {
+          padding: 0,
+        },
+      }}
+    >
       <div
         className="card-container"
         style={{
@@ -87,6 +94,10 @@ export const OrderSteps: React.FC<OrderStepsProps> = ({ record, callBack }) => {
                     getIconByStatus(event.status)
                   )
                 }
+                style={{
+                  minWidth: "300px",
+                  padding: "24px",
+                }}
                 description={event.note && event.note}
                 subTitle={
                   <Tooltip
@@ -176,6 +187,8 @@ const getIconByStatus = (status: OrderStatus) => {
       return <FileProtectOutlined />;
     case "RETURNED":
       return <StopOutlined />;
+    case "PENDING":
+      return <MdPendingActions />;
     default:
       return null;
   }

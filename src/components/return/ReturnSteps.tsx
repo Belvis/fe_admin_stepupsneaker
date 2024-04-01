@@ -52,7 +52,14 @@ export const ReturnSteps: React.FC<ReturnStepsProps> = ({
   }, [record]);
 
   return (
-    <Card bordered={false}>
+    <Card
+      bordered={false}
+      styles={{
+        body: {
+          padding: 0,
+        },
+      }}
+    >
       <div
         className="card-container"
         style={{
@@ -83,6 +90,10 @@ export const ReturnSteps: React.FC<ReturnStepsProps> = ({
                     getIconByStatus(event.status)
                   )
                 }
+                style={{
+                  minWidth: "300px",
+                  padding: "24px",
+                }}
                 description={event.note && event.note}
                 subTitle={
                   <Tooltip

@@ -1,5 +1,9 @@
-import { SaveButton, Show, useForm } from "@refinedev/antd";
-import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
+import { SaveButton, Show, useForm, useModal } from "@refinedev/antd";
+import {
+  IResourceComponentsProps,
+  useParsed,
+  useTranslate,
+} from "@refinedev/core";
 import { App, Button } from "antd";
 import { useEffect, useState } from "react";
 import { ReturnForm } from "../../components/return/ReturnForm";
@@ -15,10 +19,12 @@ import {
   IReturnFormResponse,
 } from "../../interfaces";
 import { ReturnSteps } from "../../components/return/ReturnSteps";
+import { ReturnHistoryTimeLine } from "../../components/return/ReturnHistoryTimeLine";
 
 export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { message } = App.useApp();
+  const { id } = useParsed();
 
   const { onFinish, formProps, saveButtonProps, formLoading } =
     useForm<IReturnFormResponse>({
@@ -128,6 +134,12 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     });
   };
 
+  const {
+    show,
+    close,
+    modalProps: { visible: vi, ...restProps },
+  } = useModal();
+
   return (
     <>
       <Show
@@ -143,7 +155,9 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
         headerButtons={({ defaultButtons }) => (
           <>
             {defaultButtons}
-            <Button type="primary">Xem lịch sử</Button>
+            <Button type="primary" onClick={show}>
+              Xem lịch sử
+            </Button>
           </>
         )}
         footerButtons={
@@ -165,6 +179,9 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
           />
         )}
       </Show>
+      {restProps.open && (
+        <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />
+      )}
     </>
   );
 };
