@@ -1,6 +1,7 @@
 import {
   AlertOutlined,
   CarryOutOutlined,
+  FileProtectOutlined,
   LoadingOutlined,
   RocketOutlined,
 } from "@ant-design/icons";
@@ -33,7 +34,7 @@ export const ReturnSteps: React.FC<ReturnStepsProps> = ({
     .map((screen) => screen[0]);
 
   const notFinishedCurrentStep = (event: IReturnEvent, index: number) =>
-    event.status !== "RECEIVED" && event.loading;
+    event.status !== "COMPLETED" && event.loading;
 
   const stepStatus = (event: IReturnEvent, index: number) => {
     if (!event.date) return "wait";
@@ -117,7 +118,12 @@ export const ReturnSteps: React.FC<ReturnStepsProps> = ({
 const getReturnStatusTimeline = (
   returnFormHistories: IReturnFormHistoryResponse[]
 ): IReturnEvent[] => {
-  const statusList: DeliveryStatus[] = ["PENDING", "RETURNING", "RECEIVED"];
+  const statusList: DeliveryStatus[] = [
+    "PENDING",
+    "RETURNING",
+    "RECEIVED",
+    "COMPLETED",
+  ];
   const eventList: IReturnEvent[] = [];
 
   const exceptionStatusList: DeliveryStatus[] = [];
@@ -166,6 +172,8 @@ const getIconByStatus = (status: DeliveryStatus) => {
       return <RocketOutlined />;
     case "RECEIVED":
       return <CarryOutOutlined />;
+    case "COMPLETED":
+      return <FileProtectOutlined />;
     default:
       return null;
   }

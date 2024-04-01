@@ -2,6 +2,7 @@ import { SaveButton, Show, useForm, useModal } from "@refinedev/antd";
 import {
   IResourceComponentsProps,
   useParsed,
+  useShow,
   useTranslate,
   useUpdate,
 } from "@refinedev/core";
@@ -32,10 +33,12 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   const { message } = App.useApp();
   const { id } = useParsed();
 
+  const {
+    queryResult: { refetch, data, isLoading },
+  } = useShow<IReturnFormResponse>();
+
   const { onFinish, formProps, saveButtonProps, formLoading } =
-    useForm<IReturnFormResponse>({
-      action: "edit",
-    });
+    useForm<IReturnFormResponse>({});
 
   const {
     show: showReason,
@@ -225,7 +228,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
         restModalProps={restPropsReason}
         close={closeReason}
         returnForm={returnForm ?? ({} as IReturnFormResponse)}
-        callBack={null}
+        callBack={refetch}
         status={status}
       />
     </>
