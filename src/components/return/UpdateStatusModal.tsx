@@ -41,7 +41,7 @@ const UpdateStatusModal: React.FC<UpdateStatusModalProps> = ({
             {
               resource: `return-forms/update-return-delivery-status`,
               values: {
-                status: status,
+                returnDeliveryStatus: status,
                 note: value,
               },
               id: returnForm.id,
