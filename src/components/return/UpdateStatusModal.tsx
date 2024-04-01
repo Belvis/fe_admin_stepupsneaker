@@ -39,7 +39,7 @@ const UpdateStatusModal: React.FC<UpdateStatusModalProps> = ({
         accept: () => {
           update(
             {
-              resource: `update-return-delivery-status`,
+              resource: `return-forms/update-return-delivery-status`,
               values: {
                 status: status,
                 note: value,
