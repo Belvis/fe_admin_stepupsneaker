@@ -1,4 +1,5 @@
 import { List, getDefaultSortOrder, useTable } from "@refinedev/antd";
+import { SyncOutlined } from "@ant-design/icons";
 import {
   CrudFilters,
   HttpError,
@@ -6,7 +7,17 @@ import {
   useDelete,
   useTranslate,
 } from "@refinedev/core";
-import { Avatar, Card, Col, Row, Space, Table, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  Col,
+  Row,
+  Space,
+  Table,
+  Typography,
+  Tooltip,
+  Button,
+} from "antd";
 
 import { ColumnsType } from "antd/es/table";
 import { CustomerStatus } from "../../components/customer/CustomerStatus";
@@ -17,14 +28,15 @@ import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { IEmployeeFilterVariables, IEmployeeResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
-import { useMemo } from "react";
-
+import { useMemo, useState } from "react";
+import { ChangePassword } from "../../components/employee/ModalEditPassword";
 const { Text } = Typography;
 
 export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { mutate: mutateDelete } = useDelete();
-
+  const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeResponse>();
   const { tableProps, searchFormProps, current, pageSize, sorters } = useTable<
     IEmployeeResponse,
     HttpError,
@@ -66,6 +78,18 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
       t: t,
     });
   }
+  const showChangePasswordModal = (employee: IEmployeeResponse) => {
+    setSelectedEmployee(employee);
+    setOpenChangePasswordModal(true);
+  };
+
+  const handleOk = () => {
+    setOpenChangePasswordModal(false);
+  };
+
+  const handleCancel = () => {
+    setOpenChangePasswordModal(false);
+  };
 
   const columns = useMemo<ColumnsType<IEmployeeResponse>>(
     () => [
@@ -155,6 +179,18 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
             hideShow
             record={record}
             onDeleteClick={() => handleDelete(record.id)}
+            customButtons={[
+              <Tooltip title={t("employees.buttons.changePassword")}>
+                <Button
+                  style={{ color: "#000000", borderColor: "#000000" }}
+                  size="small"
+                  icon={<SyncOutlined />}
+                  onClick={() => {
+                    showChangePasswordModal(record);
+                  }}
+                />
+              </Tooltip>,
+            ]}
           />
         ),
       },
@@ -202,6 +238,13 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
           />
         </Col>
       </Row>
+      {selectedEmployee && (
+        <ChangePassword
+          employee={selectedEmployee}
+          handleCancel={handleCancel}
+          openChangePasswordModal={openChangePasswordModal}
+        />
+      )}
     </List>
   );
 };
