@@ -1,19 +1,10 @@
 import { SaveButton, Show, useForm, useModal } from "@refinedev/antd";
-import {
-  IResourceComponentsProps,
-  useParsed,
-  useShow,
-  useTranslate,
-  useUpdate,
-} from "@refinedev/core";
+import { IResourceComponentsProps, useParsed, useShow, useTranslate, useUpdate } from "@refinedev/core";
 import { App, Button } from "antd";
 import { useEffect, useState } from "react";
 import { ReturnForm } from "../../components/return/ReturnForm";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
-import {
-  returnFormDetailResponseToRequestList,
-  returnFormDetailsToPayloadFormat,
-} from "../../helpers/mapper";
+import { returnFormDetailResponseToRequestList, returnFormDetailsToPayloadFormat } from "../../helpers/mapper";
 import {
   DeliveryStatus,
   IOrderResponse,
@@ -37,8 +28,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     queryResult: { refetch, data, isLoading },
   } = useShow<IReturnFormResponse>();
 
-  const { onFinish, formProps, saveButtonProps, formLoading } =
-    useForm<IReturnFormResponse>({});
+  const { onFinish, formProps, saveButtonProps, formLoading } = useForm<IReturnFormResponse>({ action: "edit", id });
 
   const {
     show: showReason,
@@ -46,17 +36,14 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     modalProps: { visible: vi2, ...restPropsReason },
   } = useModal();
 
-  const [returnFormDetails, setReturnFormDetails] =
-    useState<IReturnFormDetailRequest[]>();
+  const [returnFormDetails, setReturnFormDetails] = useState<IReturnFormDetailRequest[]>();
 
   const [selectedOrder, setSelectedOrder] = useState<IOrderResponse>();
   const [returnForm, setReturnForm] = useState<IReturnFormResponse>();
 
   const [status, setStatus] = useState<DeliveryStatus>("PENDING");
 
-  const defaultAddress = selectedOrder?.customer?.addressList.find(
-    (address) => address.isDefault
-  );
+  const defaultAddress = selectedOrder?.customer?.addressList.find((address) => address.isDefault);
 
   useEffect(() => {
     if (defaultAddress) {
@@ -72,10 +59,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
 
   useEffect(() => {
     if (selectedOrder) {
-      const customer =
-        selectedOrder?.fullName ??
-        selectedOrder?.customer?.fullName ??
-        t("invoices.retailCustomer");
+      const customer = selectedOrder?.fullName ?? selectedOrder?.customer?.fullName ?? t("invoices.retailCustomer");
 
       formProps.form?.setFieldsValue({
         customer: {
@@ -88,11 +72,9 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
 
   useEffect(() => {
     if (formProps.initialValues) {
-      const returnFormDetailsResponse: IReturnFormDetailResponse[] =
-        formProps.initialValues.returnFormDetails;
+      const returnFormDetailsResponse: IReturnFormDetailResponse[] = formProps.initialValues.returnFormDetails;
       const orderResponse: IOrderResponse = formProps.initialValues.order;
-      const returnForm: IReturnFormResponse =
-        formProps.initialValues as IReturnFormResponse;
+      const returnForm: IReturnFormResponse = formProps.initialValues as IReturnFormResponse;
 
       const returnFormDetailsRequest = returnFormDetailResponseToRequestList(
         returnFormDetailsResponse,
@@ -106,9 +88,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
 
   const handleOnFinish = (values: any) => {
     const isValid = returnFormDetails?.every((returnFormDetail) =>
-      Object.values(returnFormDetail).every(
-        (value) => value !== "" && value !== undefined
-      )
+      Object.values(returnFormDetail).every((value) => value !== "" && value !== undefined)
     );
 
     if (!isValid) {
@@ -116,8 +96,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       return;
     }
 
-    const returnFormDetailsPayload =
-      returnFormDetailsToPayloadFormat(returnFormDetails);
+    const returnFormDetailsPayload = returnFormDetailsToPayloadFormat(returnFormDetails);
 
     const submitData = {
       address: {
@@ -133,9 +112,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       order: selectedOrder?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
       refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      returnDeliveryStatus: formProps.form?.getFieldValue(
-        "returnDeliveryStatus"
-      ),
+      returnDeliveryStatus: formProps.form?.getFieldValue("returnDeliveryStatus"),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
       type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),
@@ -181,9 +158,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
               type="primary"
               disabled={returnForm?.returnDeliveryStatus === "COMPLETED"}
               onClick={() => {
-                const status = getNextStatus(
-                  returnForm?.returnDeliveryStatus ?? "PENDING"
-                );
+                const status = getNextStatus(returnForm?.returnDeliveryStatus ?? "PENDING");
                 setStatus(status ?? "PENDING");
                 showReason();
               }}
@@ -203,13 +178,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             </Button>
           </>
         )}
-        footerButtons={
-          <>
-            {returnForm?.refundStatus === "PENDING" && (
-              <SaveButton {...saveButtonProps} />
-            )}
-          </>
-        }
+        footerButtons={<>{returnForm?.refundStatus === "PENDING" && <SaveButton {...saveButtonProps} />}</>}
       >
         <ReturnSteps record={returnForm} callBack={null} />
         {returnFormDetails && (
@@ -222,9 +191,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
           />
         )}
       </Show>
-      {restProps.open && (
-        <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />
-      )}
+      {restProps.open && <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />}
 
       {restPropsReason.open && (
         <UpdateStatusModal
@@ -239,15 +206,8 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   );
 };
 
-const getNextStatus = (
-  currentStatus: DeliveryStatus
-): DeliveryStatus | null => {
-  const statusList: DeliveryStatus[] = [
-    "PENDING",
-    "RETURNING",
-    "RECEIVED",
-    "COMPLETED",
-  ];
+const getNextStatus = (currentStatus: DeliveryStatus): DeliveryStatus | null => {
+  const statusList: DeliveryStatus[] = ["PENDING", "RETURNING", "RECEIVED", "COMPLETED"];
   const currentIndex = statusList.indexOf(currentStatus);
 
   if (currentIndex !== -1) {
