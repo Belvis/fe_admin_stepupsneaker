@@ -442,7 +442,10 @@
     "titles": {
       "create": "Tạo Nhân Viên",
       "list": "Nhân Viên",
-      "edit": "Chỉnh sửa Nhân Viên"
+      "edit": "Chỉnh sửa Nhân Viên",
+      "modal":{
+        "changePassword": "Thay đổi mật khẩu mới"
+      }
     },
     "fields": {
       "id": "ID",
@@ -464,7 +467,9 @@
       "role": "Chức vụ",
       "status": "Trạng thái",
       "password": "Mật khẩu",
-      "phoneNumber": "Số điện thoại"
+      "phoneNumber": "Số điện thoại",
+      "newPassword": "Mật khẩu mới",
+      "enterThePassword": "Nhập lại mật khẩu"
     },
     "filters": {
       "title": "Bộ lọc",
@@ -475,6 +480,20 @@
       "status": {
         "label": "Trạng thái",
         "placeholder": "Lọc theo trạng thái"
+      }
+    },
+    "buttons": {
+      "changePassword": "Tạo mật khẩu mới"
+    },
+    "messages": {
+      "titleSuccess": "Thành công",
+      "successChangePassword": "Tạo mật khẩu mới thành công"
+    },
+    "validations": {
+      "changePassword":{
+        "newPassword":"Vui lòng nhập mật khẩu mới!",
+        "enterThePassword":"Vui lòng nhập lại mật khẩu mới!",
+        "enterThePasswordFail":"Mật khẩu nhập lại không trùng với mật khẩu mới!"
       }
     }
   },
