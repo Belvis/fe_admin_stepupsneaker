@@ -56,9 +56,6 @@ export const ReturnHistoryTimeLine: React.FC<ReturnHistoryTimeLineProps> = ({
   const histories: IReturnFormHistoryResponse[] = queryResult.data
     ?.data as IReturnFormHistoryResponse[];
 
-  useEffect(() => {
-    console.log("histories", histories);
-  }, [histories]);
   const getStatusColor = (
     status: DeliveryStatus
   ):

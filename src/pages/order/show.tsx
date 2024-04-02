@@ -1,6 +1,7 @@
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  PrinterOutlined,
   RollbackOutlined,
 } from "@ant-design/icons";
 import { List, PageHeader, useModal } from "@refinedev/antd";
@@ -11,7 +12,7 @@ import {
   useTranslate,
 } from "@refinedev/core";
 import { Button, Card, Skeleton, Space, Typography } from "antd";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 import CancelReasonModal from "../../components/customer/CancelModal";
 import ReasonModal from "../../components/customer/ReasonModal";
@@ -22,6 +23,8 @@ import { OrderDescription } from "../../components/order/OrderDescription";
 import { OrderHistoryTimeLine } from "../../components/order/OrderHistoryTimeLine";
 import { OrderSteps } from "../../components/order/OrderSteps";
 import { IOrderResponse, OrderStatus } from "../../interfaces";
+import { useReactToPrint } from "react-to-print";
+import { InvoiceTemplate } from "../../template/invoice";
 
 const { Text } = Typography;
 
@@ -33,6 +36,21 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
   const record = data?.data;
 
   const { id } = useParsed();
+
+  const [printOrder, setPrintOrder] = useState<IOrderResponse | undefined>();
+
+  const componentRef = useRef(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  useEffect(() => {
+    if (printOrder && componentRef.current) {
+      handlePrint();
+      setPrintOrder(undefined);
+    }
+  }, [printOrder, componentRef.current]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [status, setStatus] = useState<OrderStatus>({} as OrderStatus);
@@ -87,6 +105,18 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
           title={t("orders.fields.code")}
           subTitle={`#${record?.code.toUpperCase() ?? ""}`}
           extra={[
+            <Button
+              key="print"
+              icon={<PrinterOutlined />}
+              type="default"
+              onClick={() => {
+                if (record) {
+                  setPrintOrder(record);
+                }
+              }}
+            >
+              In
+            </Button>,
             <Button
               disabled={!canRevertOrder}
               key="back-to-previous"
@@ -206,6 +236,15 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
         close={close}
         showCancel={showCancel}
       />
+      <div className="d-none" key={printOrder?.id}>
+        {printOrder && (
+          <InvoiceTemplate
+            key={printOrder.id || Date.now()}
+            order={printOrder}
+            ref={componentRef}
+          />
+        )}
+      </div>
     </Fragment>
   );
 };
