@@ -94,7 +94,7 @@ export const InvoiceTemplate = React.forwardRef<
             {order.orderDetails &&
               order.orderDetails.map((item, index) => (
                 <tr className="border-b border-gray-300">
-                  <td className="py-2">{index}</td>
+                  <td className="py-2">{index + 1}</td>
                   <td className="py-2">
                     {item.productDetail.product.name} |{" "}
                     {item.productDetail.color.name} -{" "}
