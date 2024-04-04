@@ -35,6 +35,7 @@ export const productDetailToRequest = (
       price,
       quantity,
       status,
+      id,
     }) => ({
       product: product.id,
       tradeMark: tradeMark.id,
@@ -48,6 +49,7 @@ export const productDetailToRequest = (
       price,
       quantity,
       status,
+      id,
     })
   );
 };
