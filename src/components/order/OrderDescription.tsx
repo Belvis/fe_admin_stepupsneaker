@@ -135,7 +135,7 @@ export const OrderDescription: React.FC<OrderDescriptionProps> = ({
           {record.payments &&
             record.payments.map((payment) => (
               <div key={payment.id}>
-                {payment.transactionCode === "PENDING" ? (
+                {payment.paymentStatus === "PENDING" ? (
                   <>
                     <NumberField
                       options={{

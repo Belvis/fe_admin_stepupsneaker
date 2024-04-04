@@ -82,7 +82,9 @@ export const OrderActions: React.FC<OrderActionProps> = ({
             <CloseCircleOutlined style={{ color: "#EE2A1E", fontSize: 17 }} />
           }
           disabled={
-            record.status === "COMPLETED" || record.status === "CANCELED"
+            record.status === "COMPLETED" ||
+            record.status === "CANCELED" ||
+            record.status === "RETURNED"
           }
           onClick={() => handleAction(record.status)}
         >

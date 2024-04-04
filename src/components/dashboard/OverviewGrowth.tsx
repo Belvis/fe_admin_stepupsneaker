@@ -3,7 +3,7 @@ import { useApiUrl, useCustom, useTranslate } from "@refinedev/core";
 import dayjs from "dayjs";
 import { useContext } from "react";
 import { Datum } from "@ant-design/charts";
-import { Typography } from "antd";
+import { Spin, Typography } from "antd";
 import { DashboardContext } from "../../contexts/dashboard";
 const { Text } = Typography;
 
@@ -70,12 +70,12 @@ const OverviewGrowth = () => {
   };
 
   return (
-    <>
+    <Spin spinning={isLoading}>
       <div style={{ textAlign: "center", padding: "5px" }}>
-        <Text strong>Biểu đồ biểu thị tốc độ tăng trưởng</Text>
+        <Text strong>{t(`dashboard.overviewGrowth.title`)}</Text>
       </div>
       <Line {...config} style={{ padding: "20px", height: "100%" }} />
-    </>
+    </Spin>
   );
 };
 

@@ -27,6 +27,7 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
   const [deliveringStatusCount, setDeliveringStatusCount] = useState<number>(0);
   const [completedStatusCount, setCompletedStatusCount] = useState<number>(0);
   const [canceledStatusCount, setCanceledStatusCount] = useState<number>(0);
+  const [returnedStatusCount, retReturnedStatusCount] = useState<number>(0);
 
   useEffect(() => {
     callBack();
@@ -40,6 +41,7 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
     let deliveringCount = 0;
     let completedCount = 0;
     let canceledCount = 0;
+    let returnedCount = 0;
 
     newNotifications.forEach((notification) => {
       switch (notification.status) {
@@ -58,6 +60,9 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
         case "CANCELED":
           canceledCount += notification.count;
           break;
+        case "RETURNED":
+          returnedCount += notification.count;
+          break;
         default:
           break;
       }
@@ -68,12 +73,14 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
     setDeliveringStatusCount(deliveringCount);
     setCompletedStatusCount(completedCount);
     setCanceledStatusCount(canceledCount);
+    retReturnedStatusCount(returnedCount);
     setAllStatusCount(
       confirmCount +
         deliveringCount +
         deliveryCount +
         completedCount +
-        canceledCount
+        canceledCount +
+        returnedCount
     );
   };
 
@@ -145,6 +152,14 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
         </Badge>
       ),
       value: "CANCELED",
+    },
+    {
+      label: (
+        <Badge count={returnedStatusCount} size="small">
+          <Text>{t("enum.orderStatuses.RETURNED")}</Text>
+        </Badge>
+      ),
+      value: "RETURNED",
     },
   ];
 

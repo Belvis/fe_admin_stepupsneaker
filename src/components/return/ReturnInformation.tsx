@@ -30,6 +30,7 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
 
   const type: ReturnType = Form.useWatch("type", formProps.form);
   const { data } = useGetIdentity<IEmployeeResponse>();
+
   const [defaultAddress, setDefaultAddress] = useState<IAddressResponse>();
 
   useEffect(() => {
@@ -71,6 +72,9 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
         phoneNumber: defaultAddress.phoneNumber,
         provinceId: Number(defaultAddress.provinceId),
         districtId: Number(defaultAddress.districtId),
+        wardName: defaultAddress.wardName,
+        provinceName: defaultAddress.provinceName,
+        districtName: defaultAddress.districtName,
         wardCode: defaultAddress.wardCode,
         more: defaultAddress.more,
       });

@@ -24,6 +24,15 @@ import {
   IReturnFormResponse,
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
+import {
+  getDeliveryStatusOptions,
+  getRefundStatusOptions,
+} from "../../constants/status";
+import {
+  getReturnPaymentTypeOptions,
+  getReturnTypeOptions,
+} from "../../constants/type";
+import { OrderType } from "../../components/order/OrderType";
 
 const { Text } = Typography;
 
@@ -38,13 +47,33 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q }) => {
+    onSearch: ({ q, deliveryStatus, paymentType, refundStatus, type }) => {
       const filters: CrudFilters = [];
 
       filters.push({
         field: "q",
         operator: "eq",
         value: q ? q : undefined,
+      });
+      filters.push({
+        field: "deliveryStatus",
+        operator: "eq",
+        value: deliveryStatus ? deliveryStatus : undefined,
+      });
+      filters.push({
+        field: "paymentType",
+        operator: "eq",
+        value: paymentType ? paymentType : undefined,
+      });
+      filters.push({
+        field: "refundStatus",
+        operator: "eq",
+        value: refundStatus ? refundStatus : undefined,
+      });
+      filters.push({
+        field: "type",
+        operator: "eq",
+        value: type ? type : undefined,
       });
 
       return filters;
@@ -86,6 +115,17 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
               {value ? value.fullName : t("orders.tab.retailCustomer")}
             </Text>
           );
+        },
+      },
+      {
+        title: t("return-forms.fields.type.label"),
+        sorter: {},
+        defaultSortOrder: getDefaultSortOrder("type", sorters),
+        key: "type",
+        dataIndex: "type",
+        align: "center",
+        render: (value) => {
+          return <OrderType type={value} />;
         },
       },
       {
@@ -161,15 +201,53 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         <Col span={24}>
           <Card>
             <CommonSearchForm
-              title={t(`orders.filters.title`)}
+              title={t(`return-forms.filters.title`)}
               formProps={searchFormProps}
               fields={[
                 {
                   label: "",
                   name: "q",
                   type: "input",
-                  placeholder: t(`orders.filters.search.placeholder`),
-                  width: "400px",
+                  placeholder: t(`return-forms.filters.search.placeholder`),
+                  width: "200px",
+                },
+                {
+                  label: t(`return-forms.filters.deliveryStatus.label`),
+                  name: "deliveryStatus",
+                  placeholder: t(
+                    `return-forms.filters.deliveryStatus.placeholder`
+                  ),
+                  type: "select",
+                  options: getDeliveryStatusOptions(t),
+                  width: "300px",
+                },
+                {
+                  label: t(`return-forms.filters.refundStatus.label`),
+                  name: "refundStatus",
+                  placeholder: t(
+                    `return-forms.filters.refundStatus.placeholder`
+                  ),
+                  type: "select",
+                  options: getRefundStatusOptions(t),
+                  width: "250px",
+                },
+                {
+                  label: t(`return-forms.filters.type.label`),
+                  name: "type",
+                  placeholder: t(`return-forms.filters.type.placeholder`),
+                  type: "select",
+                  options: getReturnTypeOptions(t),
+                  width: "200px",
+                },
+                {
+                  label: t(`return-forms.filters.paymentType.label`),
+                  name: "paymentType",
+                  placeholder: t(
+                    `return-forms.filters.paymentType.placeholder`
+                  ),
+                  type: "select",
+                  options: getReturnPaymentTypeOptions(t),
+                  width: "300px",
                 },
               ]}
             />

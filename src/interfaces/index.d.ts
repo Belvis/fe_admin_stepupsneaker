@@ -649,5 +649,9 @@ export interface IProductFilterVariables {
 }
 export interface IReturnFormFilterVariables {
   q?: string;
+  deliveryStatus: string;
+  refundStatus: string;
+  type: string;
+  paymentType: string;
 }
 /* End Filter Variables */

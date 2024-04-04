@@ -29,8 +29,8 @@ export const AddressCustomersPie: React.FC = () => {
       );
 
       const province = defaultAddress
-        ? defaultAddress.provinceName || "Khác"
-        : "Khác";
+        ? defaultAddress.provinceName
+        : t(`dashboard.addressCustomerPie.other`);
 
       addressCounts[province] = (addressCounts[province] || 0) + 1;
     });

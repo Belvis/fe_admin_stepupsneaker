@@ -96,36 +96,33 @@ export const DeliverySalesLeft: React.FC<DeliverySalesLeftProps> = ({
       message.error(t("orders.notification.shippingMoney.edit.invalid"));
       return;
     }
-    if (shippingMoney !== order.shippingMoney)
-      mutateUpdate(
-        {
-          resource: "orders/apply-shipping",
-          values: {
-            addressShipping: {
-              ...order.address,
-            },
-            shippingMoney: shippingMoney,
+    mutateUpdate(
+      {
+        resource: "orders/apply-shipping",
+        values: {
+          addressShipping: {
+            ...order.address,
           },
-          id: order.id,
-          successNotification: () => {
-            return false;
-          },
-          errorNotification: () => {
-            return false;
-          },
+          shippingMoney: shippingMoney,
         },
-        {
-          onError: (error, variables, context) => {
-            message.error(t("orders.notification.shippingMoney.edit.error"));
-          },
-          onSuccess: (data, variables, context) => {
-            refetchOrder();
-            message.success(
-              t("orders.notification.shippingMoney.edit.success")
-            );
-          },
-        }
-      );
+        id: order.id,
+        successNotification: () => {
+          return false;
+        },
+        errorNotification: () => {
+          return false;
+        },
+      },
+      {
+        onError: (error, variables, context) => {
+          message.error(t("orders.notification.shippingMoney.edit.error"));
+        },
+        onSuccess: (data, variables, context) => {
+          refetchOrder();
+          message.success(t("orders.notification.shippingMoney.edit.success"));
+        },
+      }
+    );
   }
 
   const removeOrderVoucher = () => {

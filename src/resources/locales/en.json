@@ -1,94 +1,100 @@
 {
     "pages": {
         "login": {
-            "title": "Sign in to your account",
-            "signin": "Sign in",
-            "signup": "Sign up",
+            "title": "Log in",
+            "signin": "Log in",
+            "signup": "Register",
             "divider": "or",
             "fields": {
                 "email": "Email",
                 "password": "Password"
             },
             "errors": {
-                "validEmail": "Invalid email address"
+                "validEmail": "Email address is not valid"
             },
             "buttons": {
-                "submit": "Login",
+                "submit": "Log in",
                 "forgotPassword": "Forgot password?",
-                "noAccount": "Don’t have an account?",
-                "rememberMe": "Remember me"
+                "noAccount": "Do not have an account?",
+                "rememberMe": "Save login"
             }
         },
         "forgotPassword": {
-            "title": "Forgot your password?",
+            "title": "Forgot password?",
             "fields": {
                 "email": "Email"
             },
             "errors": {
-                "validEmail": "Invalid email address"
+                "validEmail": "Email address is not valid"
             },
             "buttons": {
-                "submit": "Send reset instructions"
+                "submit": "Reset Password"
             }
         },
         "register": {
-            "title": "Sign up for your account",
+            "title": "Register a new account",
             "fields": {
                 "email": "Email",
                 "password": "Password"
             },
             "errors": {
-                "validEmail": "Invalid email address"
+                "validEmail": "Email address is not valid"
             },
             "buttons": {
                 "submit": "Register",
-                "haveAccount": "Have an account?"
+                "haveAccount": "Do you already have an account?"
             }
         },
         "updatePassword": {
             "title": "Update password",
             "fields": {
-                "password": "New Password",
+                "password": "A new password",
                 "confirmPassword": "Confirm new password"
             },
             "errors": {
-                "confirmPasswordNotMatch": "Passwords do not match"
+                "confirmPasswordNotMatch": "Password does not match"
             },
             "buttons": {
                 "submit": "Update"
             }
         },
         "error": {
-            "info": "You may have forgotten to add the {{action}} component to {{resource}} resource.",
-            "404": "Sorry, the page you visited does not exist.",
-            "resource404": "Are you sure you have created the {{resource}} resource.",
-            "backHome": "Back Home"
+            "404": "Sorry, the page you are looking for does not exist.",
+            "info": "Maybe you forgot to add an ingredient {{action}} give {{resource}}.",
+            "resource404": "Are you sure you created it? {{resource}}.",
+            "backHome": "Back home"
         }
     },
     "actions": {
         "list": "List",
         "create": "Create",
+        "add": "More",
         "edit": "Edit",
-        "show": "Show",
+        "show": "Detail",
         "delete": "Delete",
-        "clear": "Clear All",
+        "clear": "Clear",
         "setDefault": "Set default",
         "apply": "Apply",
         "remove": "Remove",
         "submit": "Submit",
-        "pay": "CHECK OUT",
-        "payConfirm": "Confirm payment",
-        "proceedPay": "PROCEED TO CHECK OUT",
-        "calculateShipping": "Calculate shipping",
-        "showAddress": "Show user's addresses"
+        "submitChanges": "Confirm changes",
+        "pay": "PAY",
+        "payConfirm": "Payment confirmation",
+        "proceedPay": "PROCEED TO PAY",
+        "calculateShipping": "Calculate shipping fees",
+        "showAddress": "View user's addresses",
+        "deselectAll": "Deselect all",
+        "skip": "Skip",
+        "ok": "Agree",
+        "reset": "Reset"
     },
     "buttons": {
         "pos": "Point of sales",
-        "goBackAdmin": "Go back admin",
+        "goBackAdmin": "Return to the admin page",
         "add": "Add",
         "create": "Create",
         "save": "Save",
-        "logout": "Logout",
+        "logout": "Log out",
         "delete": "Delete",
         "edit": "Edit",
         "cancel": "Cancel",
@@ -96,63 +102,74 @@
         "filter": "Filter",
         "clear": "Clear",
         "refresh": "Refresh",
-        "show": "Show",
+        "show": "View detail",
         "undo": "Undo",
         "import": "Import",
         "export": "Export",
         "clone": "Clone",
         "accept": "Accept",
-        "acceptAll": "Accept All",
+        "acceptAll": "Accept all",
         "reject": "Reject",
-        "rejectAll": "Reject All",
+        "rejectAll": "Reject all",
         "nextStep": "Next",
-        "previousStep": "Previous"
+        "previousStep": "Before",
+        "scanQR": "Scan QR code",
+        "advancedAdd": "Advanced add",
+        "checkSelected": "View your options",
+        "addAndGo": "Add and go",
+        "go": "Go",
+        "addAndContinue": "Add and continue",
+        "forceConfirm": "Force confirm",
+        "inspect": "Check",
+        "choose": "Select",
+        "returnAPart": "Return a part"
     },
     "loading": "Loading",
     "tags": {
         "clone": "Clone"
     },
     "table": {
-        "actions": "Actions"
+        "actions": "Act",
+        "pagination": {
+            "showTotal": "{{start}} - {{end}} belong to {{total}} item"
+        },
+        "selection": "Selected {{count}} item"
     },
     "search": {
         "placeholder": {
-            "product": "Search product by keyword",
-            "customer": "Search customer by keyword",
-            "brand": "Search by product brand name",
-            "material": "Search by material name",
-            "sole": "Search by sole name",
-            "style": "Search by style name",
-            "tradeMark": "Search by trade mark name",
-            "size": "Search by size name",
-            "color": "Search by color name",
-            "employee": "Search employee keyword"
+            "products": "Search products by keywords",
+            "customers": "Search for customers by keywords",
+            "brands": "Search by brand name",
+            "materials": "Search by material name",
+            "soles": "Search by shoe sole name",
+            "styles": "Search by style name",
+            "trade-marks": "Search by brand name",
+            "sizes": "Search by size name",
+            "colors": "Search by color name",
+            "employees": "Search for employee keywords"
         },
-        "more": "more"
+        "more": "see more"
     },
-    "status": {
-        "enable": "Enable",
-        "disable": "Disable"
-    },
-    "warnWhenUnsavedChanges": "Are you sure you want to leave? You have unsaved changes.",
+    "warnWhenUnsavedChanges": "Are you sure you want to leave? ",
     "notifications": {
-        "success": "Successful",
+        "success": "Success",
         "error": "Error (status code: {{statusCode}})",
         "undoable": "You have {{seconds}} seconds to undo",
-        "createSuccess": "Successfully created {{resource}}",
-        "createError": "There was an error creating {{resource}} (status code: {{statusCode}})",
-        "deleteSuccess": "Successfully deleted {{resource}}",
-        "deleteError": "Error when deleting {{resource}} (status code: {{statusCode}})",
-        "editSuccess": "Successfully edited {{resource}}",
-        "editError": "Error when editing {{resource}} (status code: {{statusCode}})",
-        "importProgress": "Importing: {{processed}}/{{total}}"
+        "createSuccess": "Success in creating {{resource}}",
+        "createError": "An error occurred while creating {{resource}} (status code: {{statusCode}})",
+        "deleteSuccess": "Deleted successfully {{resource}}",
+        "deleteError": "Error while deleting {{resource}} (status code: {{statusCode}})",
+        "editSuccess": "Edited successfully {{resource}}",
+        "editError": "Error while editing {{resource}} (status code: {{statusCode}})",
+        "importProgress": "Import: {{processed}}/{{total}}"
     },
     "colors": {
-        "colors": "Colors",
+        "colors": "Color",
         "titles": {
             "create": "Create Color",
             "list": "Color",
-            "edit": "Edit Color"
+            "edit": "Edit Color",
+            "choose": "Choose color"
         },
         "fields": {
             "id": "ID",
@@ -161,21 +178,21 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name, code"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "brands": {
-        "brands": "Brands",
+        "brands": "Brand",
         "titles": {
-            "create": "Create Brand",
+            "create": "Create a Brand",
             "list": "Brand",
             "edit": "Edit Brand"
         },
@@ -185,22 +202,22 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "styles": {
-        "styles": "Styles",
+        "styles": "Designs",
         "titles": {
-            "create": "Create Style",
-            "list": "Style",
+            "create": "Create Styles",
+            "list": "Designs",
             "edit": "Edit Style"
         },
         "fields": {
@@ -209,20 +226,19 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "materials": {
-      "materials": "Materials",
-        "styles": "materials",
+        "materials": "Material",
         "titles": {
             "create": "Create Material",
             "list": "Material",
@@ -234,23 +250,23 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "trade-marks": {
-        "trade-marks": "Trade Mark",
+        "trade-marks": "Trademark",
         "titles": {
-            "create": "Create Trade Mark",
-            "list": "Trade Mark",
-            "edit": "Edit Trade Mark"
+            "create": "Create a Trademark",
+            "list": "Trademark",
+            "edit": "Edit Trademark"
         },
         "fields": {
             "id": "ID",
@@ -258,19 +274,19 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "soles": {
-        "soles": "Soles",
+        "soles": "Sole",
         "titles": {
             "create": "Create Sole",
             "list": "Sole",
@@ -282,23 +298,24 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "sizes": {
-        "sizes": "Sizes",
+        "sizes": "Size",
         "titles": {
             "create": "Create Size",
             "list": "Size",
-            "edit": "Edit Size"
+            "edit": "Edit Size",
+            "choose": "Choose size"
         },
         "fields": {
             "id": "ID",
@@ -306,19 +323,19 @@
             "status": "Status"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         }
     },
     "vouchers": {
-        "vouchers": "Vouchers",
+        "vouchers": "Voucher",
         "titles": {
             "create": "Create Voucher",
             "list": "Voucher",
@@ -333,136 +350,157 @@
             "value": "Value",
             "constraint": "Constraint",
             "quantity": "Quantity",
-            "startDate": "Start Date",
-            "endDate": "End Date",
-            "images": {
-                "description": "Add voucher picture",
-                "validation": "must be 1080x1080 px"
-            },
-            "voucherRange": "Date"
+            "startDate": "Start date",
+            "endDate": "End date",
+            "voucherRange": "Range"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
-                "placeholder": "Search by name"
+                "placeholder": "Search by keyword"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         },
         "type": {
-            "PERCENTAGE": "Percentage",
+            "PERCENTAGE": "Percent",
             "CASH": "Cash"
         },
         "steps": {
             "content": "Content",
-            "relations": "Relations"
+            "relations": "Relations",
+            "message": "Specify the customers to which the voucher applies (Skip to apply to all)"
+        },
+        "table": {
+            "title": {
+                "eligible": "List of customers that have been applied to the voucher",
+                "ineligible": "List of customers that have not yet been applied to the voucher"
+            }
+        },
+        "validation": {
+            "ineligible": "The order is not eligible for voucher"
+        }
+    },
+    "voucherHistories": {
+        "voucherHistories": "Voucher usage history",
+        "fields": {
+            "voucherCode": "Voucher code",
+            "orderCode": "Order code",
+            "moneyReduction": "Reduced Money",
+            "moneyBeforeReduction": "Money before reduction",
+            "moneyAfterReduction": "Money after reduction",
+            "date": "Usage Date"
         }
     },
     "promotionProductDetail": {
-        "table":{
-          "title": {
-            "eligible": "List of products eligible for promotion",
-            "ineligible": "List of products ineligible for promotion"
-          }
+        "table": {
+            "title": {
+                "eligible": "List of products for which the promotion has been applied",
+                "ineligible": "List of products that have not yet been applied to the promotion"
+            }
         }
-      },
+    },
     "promotions": {
-        "promotions": "Promotions",
+        "promotions": "Sale",
         "titles": {
-            "create": "Create Promotion",
-            "list": "Promotion",
-            "edit": "Edit Promotion"
+            "create": "Create a Sale",
+            "list": "Sale",
+            "edit": "Edit Sale"
         },
         "fields": {
             "id": "ID",
             "code": "Code",
             "name": "Name",
             "status": "Status",
-            "type": "Type",
             "value": "Value",
-            "startDate": "Start Date",
-            "endDate": "End Date",
-            "images": {
-                "description": "Add Promotion picture",
-                "validation": "must be 1080x1080 px"
-            },
-            "promotionRange": "Date"
+            "startDate": "Start day",
+            "endDate": "End date",
+            "promotionRange": "Day"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         },
         "steps": {
             "content": "Content",
-            "relations": "Relations"
+            "relations": "Relations",
+            "message": "Specify the products applied to the sale (Skip to apply to all)"
         }
     },
     "employees": {
-        "employees": "Employees",
+        "employees": "Employee",
         "titles": {
             "create": "Create Employee",
             "list": "Employee",
-            "edit": "Edit Employee"
+            "edit": "Edit Employee",
+            "modal": {
+                "changePassword": "Change new password"
+            }
         },
         "fields": {
             "id": "ID",
-            "fullName": "Full Name",
+            "fullName": "Full name",
             "phone": "Phone",
             "address": "Address",
             "email": "Email",
             "dateOfBirth": "Date of birth",
             "gender": {
                 "label": "Gender",
-                "placeholder": "Select gender",
+                "placeholder": "Choose gender",
                 "options": {
-                    "male": "Male",
-                    "female": "Female",
-                    "other": "Other"
+                    "Male": "Male",
+                    "Female": "Female",
+                    "Other": "Other",
+                    "null": "Unknown"
                 }
             },
             "role": "Role",
             "status": "Status",
             "password": "Password",
             "phoneNumber": "Phone number",
-            "images": {
-                "description": "Add customer picture",
-                "validation": "must be 1080x1080 px"
-            }
+            "newPassword": "New password",
+            "enterThePassword": "Confirm password"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
-                "placeholder": "Search by name"
+                "placeholder": "Search by keyword"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             }
         },
-        "type": {
-            "PERCENTAGE": "Percentage",
-            "CASH": "Cash"
+        "buttons": {
+            "changePassword": "Create a new password"
         },
-        "steps": {
-            "content": "Content",
-            "relations": "Relations"
+        "messages": {
+            "titleSuccess": "Success",
+            "successChangePassword": "New password created successfully"
+        },
+        "validations": {
+            "changePassword": {
+                "newPassword": "Please enter new password!",
+                "enterThePassword": "Please re-enter new password!",
+                "enterThePasswordFail": "The re-entered password does not match the new password!"
+            }
         }
     },
     "roles": {
-        "roles": "Roles",
+        "roles": "Role",
         "titles": {
-            "create": "Create Role",
+            "create": "Create a Role",
             "list": "Role",
             "edit": "Edit Role"
         },
@@ -471,54 +509,38 @@
             "name": "Name"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             }
-        }
+        },
+        "ROLE_ADMIN": "Administration",
+        "ROLE_STAFF": "Staff"
     },
-    "paymentMethods": {
-        "paymentMethods": "Payment Methods",
+    "payment-methods": {
+        "payment-methods": "Payment method",
         "titles": {
-            "create": "Create Payment Method",
-            "list": "Payment Method",
-            "edit": "Edit Payment Method"
+            "create": "Create a payment method",
+            "list": "Payment method",
+            "edit": "Edit payment method"
         },
         "fields": {
             "id": "ID",
             "name": "Name"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             }
         }
     },
-    "payment-methods": {
-        "payment-methods": "Payment methods",
-        "titles": {
-          "create": "Create Payment Method",
-          "list": "Payment Method",
-          "edit": "Edit Payment Method"
-        },
-        "fields": {
-          "id": "ID",
-          "name": "Name"
-        },
-        "filters": {
-          "title": "Filters",
-          "search": {
-            "label": "Name",
-            "placeholder": "Search by name"
-          }
-        }
-      },
     "customers": {
-        "customers": "Customers",
-        "addresses": "Addresses",
+        "customers": "Customer",
+        "addresses": "Address",
+        "defaultAddress": "Default address",
         "titles": {
             "create": "Create Customer",
             "list": "Customer",
@@ -526,30 +548,30 @@
         },
         "fields": {
             "id": "ID",
-            "fullName": "Full Name",
-            "phone": "Phone",
+            "fullName": "First and last name",
+            "phone": {
+                "label": "Phone",
+                "placeholder": "Enter your phone number"
+            },
             "address": "Address",
-            "defaultAddress": "Default Address",
             "email": "Email",
             "dateOfBirth": "Date of birth",
             "gender": {
                 "label": "Gender",
-                "placeholder": "Select gender",
+                "placeholder": "Choose gender",
                 "options": {
-                    "male": "Male",
-                    "female": "Female",
-                    "other": "Other"
+                    "Male": "Male",
+                    "Female": "Female",
+                    "Other": "Other",
+                    "null": "Unknown"
                 }
             },
             "status": "Status",
+            "statusPlaceholder": "Select status",
             "password": "Password",
             "phoneNumber": "Phone number",
-            "images": {
-                "description": "Add customer picture",
-                "validation": "must be 1080x1080 px"
-            },
             "province": {
-                "label": "Provice",
+                "label": "Province/City",
                 "placeholder": "Select province"
             },
             "district": {
@@ -557,13 +579,13 @@
                 "placeholder": "Select district"
             },
             "ward": {
-                "label": "Ward",
+                "label": "Wards",
                 "placeholder": "Select ward"
             },
-            "more": "Line"
+            "more": "Address details"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name, phone, email and address"
@@ -576,286 +598,542 @@
                 "label": "Gender",
                 "placeholder": "Search by gender"
             }
+        },
+        "age": {
+            "UNDER_18": "Under 18",
+            "AGE_18_30": "18-30",
+            "AGE_31_50": "31-50",
+            "AGE_51_60": "51-60",
+            "OVER_60": "Over 60"
+        }
+    },
+    "addresses": {
+        "addresses": "Address",
+        "titles": {
+            "create": "Create address",
+            "list": "Address",
+            "edit": "Edit address"
+        },
+        "filters": {
+            "title": "Filter",
+            "search": {
+                "label": "Search",
+                "placeholder": "Search by keyword"
+            }
+        },
+        "notification": {
+            "setDefault": {
+                "success": {
+                    "message": "Set default address successfully.",
+                    "description": "No errors occurred."
+                },
+                "error": {
+                    "message": "There was a problem setting the default address.",
+                    "description": "Any error has arisen."
+                }
+            }
         }
     },
     "dashboard": {
+        "dashboard": "Dashboard",
         "title": "Dashboard",
         "deliveryMap": {
-            "title": "Delivery Map"
+            "title": "Delivery map"
         },
         "orders": {
-            "title": "Orders"
+            "title": "Order"
         },
         "totalSales": {
-            "title": "Total Sales"
+            "title": "Total revenue"
         },
         "dailyRevenue": {
-            "title": "Daily Revenue"
+            "title": "Sales"
         },
         "dailyOrders": {
-            "title": "Daily Orders"
+            "title": "Order"
         },
         "newCustomers": {
-            "title": "New Customers"
+            "title": "New customers"
+        },
+        "groupAge": {
+            "title": "Age Classification Chart"
+        },
+        "addressCustomerPie": {
+            "title": "Area Classification Chart",
+            "other": "Other"
+        },
+        "overviewGrowth": {
+            "title": "Growth rate Chart"
+        },
+        "genderCustomerPie": {
+            "title": "Gender Classification Chart"
         },
         "timeline": {
             "title": "Timeline",
+            "type": {
+                "unknown": "Unknown",
+                "insert": "The order has been created",
+                "update": "Order has been updated",
+                "delete": "The order has been deleted"
+            },
+            "changes": {
+                "address": "Address",
+                "orderDetails": "Cart",
+                "voucher": "Voucher",
+                "phoneNumber": "Phone number",
+                "status": "Status",
+                "note": "Note",
+                "originMoney": "Origin money",
+                "totalMoney": "Total money",
+                "shippingMoney": "Shipping money",
+                "email": "Email",
+                "fullName": "Full name",
+                "reduceMoney": "Reduced money"
+            },
             "orderStatuses": {
-                "pending": "Preparing order",
+                "pending": "Preparing orders",
                 "ready": "Order is ready",
-                "on the way": "Order is on the way",
-                "delivered": "Order is delivered",
-                "cancelled": "Order is cancelled"
+                "on the way": "Order is on its way",
+                "delivered": "Order delivered",
+                "cancelled": "Order was cancelled",
+                "returned": "Order returned",
+                "undefined": "Unknown",
+                "null": "Unknown"
             }
         },
         "recentOrders": {
-            "title": "Recent Orders"
+            "title": "Recent orders"
         },
         "trendingMenus": {
-            "title": "Daily Trending Menus"
+            "title": "Trend",
+            "sales": "{{count}} sold",
+            "options": {
+                "day": "Day",
+                "week": "Week",
+                "month": "Month",
+                "year": "Year"
+            }
+        },
+        "overviewTab": {
+            "title": "Analysis chart",
+            "growth": {
+                "title": "generality"
+            },
+            "gender": {
+                "title": "Gender"
+            },
+            "address": {
+                "title": "Area"
+            },
+            "age": {
+                "title": "Age"
+            },
+            "overview": {
+                "Revenue": "Revenue",
+                "Order": "Order",
+                "Customers": "Client"
+            }
         }
     },
     "enum": {
         "orderStatuses": {
-            "PENDING": "Pending",
-            "WAIT_FOR_CONFIRMATION": "Waiting for comfirmation",
-            "WAIT_FOR_DELIVERY": "Ready",
-            "DELIVERING": "On the way",
-            "COMPLETED": "Completed",
-            "CANCELED": "Cancelled",
-            "EXPIRED": "Expired",
-            "RETURNED": "Returned",
-            "EXCHANGED": "Exchanged"
+            "pending": "Order is being prepared",
+            "ready": "Order is ready for pickup",
+            "on the way": "Order is on its way",
+            "delivered": "Order has been delivered",
+            "cancelled": "Order has been cancelled",
+            "returned": "Order has been returned",
+            "undefined": "Unknown",
+            "null": "Unknown"
         },
         "productStatuses": {
-            "IN_ACTIVE": "In Active",
+            "IN_ACTIVE": "Inactive",
             "ACTIVE": "Active"
         },
-        "userStatuses": {
-            "IN_ACTIVE": "In Active",
+        "customerStatuses": {
+            "IN_ACTIVE": "Inactive",
             "ACTIVE": "Active",
-            "BLOCKED": "Blocked"
-        },
-        "vouchersStatuses": {
-            "IN_ACTIVE": "In Active",
-            "ACTIVE": "Active",
-            "EXPIRED": "Expired",
-            "CANCELLED": "Cancelled",
-            "UP_COMING": "Up coming"
+            "BLOCKED": "Blocked",
+            "null": "Unknown"
         },
         "promotionsStatuses": {
-            "IN_ACTIVE": "In Active",
+            "IN_ACTIVE": "Inactive",
             "ACTIVE": "Active",
             "EXPIRED": "Expired",
             "CANCELLED": "Cancelled",
-            "UP_COMING": "Up coming"
+            "UP_COMING": "Upcoming"
+        },
+        "vouchersStatuses": {
+            "IN_ACTIVE": "Inactive",
+            "ACTIVE": "Active",
+            "EXPIRED": "Expired",
+            "CANCELLED": "Cancelled",
+            "UP_COMING": "Upcoming"
         }
     },
     "orders": {
-        "orders": "Orders",
+        "orders": "Order",
         "titles": {
-            "list": "Orders",
-            "show": "Show Order"
+            "list": "List of orders",
+            "show": "Order Details"
         },
         "fields": {
-            "code": "Order code",
-            "id": "Order ID",
+            "code": "Code",
+            "id": "ID",
             "status": "Status",
-            "store": "Store",
             "customer": "Customer",
+            "fullName": "Full name",
+            "phoneNumber": "Phone number",
             "employee": "Employee",
             "voucher": "Voucher",
-            "orderDetails": "Products",
-            "createdAt": "CreatedAt",
-            "totalPrice": "Total amount",
-            "itemsAmount": "{{amount}} items",
-            "note": "Order note",
+            "orderDetails": "Order details",
+            "createdAt": "Create at",
+            "totalPrice": "Total",
+            "itemsAmount": "{{amount}} product",
+            "note": "Order notes",
             "type": {
                 "title": "Type",
                 "ONLINE": "Online",
                 "OFFLINE": "Offline"
-            }
+            },
+            "address": "Invoice address"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Search",
-                "placeholder": "Order Number, User, etc."
+                "placeholder": "Order ID, User, etc."
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Order type"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Order Status"
+                "placeholder": "Order status"
             },
             "createdAt": {
-                "label": "Created At"
+                "label": "Created at"
             },
             "submit": "Filter"
         },
         "deliverables": {
-            "deliverables": "Deliverables",
+            "deliverables": "Order details",
             "fields": {
-                "items": "Items",
+                "items": "Product",
+                "paymentMethod": "Payment methods",
+                "payment": "Payment",
+                "shipping": "Shipping fee",
                 "quantity": "Quantity",
                 "price": "Price",
-                "total": "Total"
+                "total": "total"
             },
-            "mainTotal": "MAIN TOTAL"
+            "mainTotal": "TOTAL COST",
+            "receipt": "Official receipt"
         },
         "tab": {
-            "label":"Order",
+            "label": "Order",
+            "example": "Sample",
             "discount": "Discount",
             "amountDue": "Amount due",
-            "retailCustomer": "Retail Customer",
-            "customerPay": "Customer pay",
+            "retailCustomer": "Retail customer",
+            "customerPay": "Customer pays",
             "change": "Change",
-            "cod": "Cash on delivery",
-            "shippingMoney": "Shipping money"
+            "paymentCode": "Transaction code",
+            "cod": "COD",
+            "shippingMoney": "Shipping money",
+            "directSales": "Direct sales",
+            "deliverySales": "Delivery sales"
         },
         "transportAddress": {
-            "name" :"Recipient's name",
-            "phoneNumber":"Phone number"
+            "name": "Recipient's name",
+            "email": "Email address",
+            "phoneNumber": "Phone number"
+        },
+        "notification": {
+            "product": {
+                "add": {
+                    "success": "Added product to cart successfully.",
+                    "error": "Adding product to cart failed: ",
+                    "notFound": "No suitable products found."
+                },
+                "edit": {
+                    "success": "Order edited successfully.",
+                    "error": "Edit failed orders: "
+                }
+            },
+            "employee": {
+                "edit": {
+                    "success": "Successfully edited the employee in the order.",
+                    "error": "Edit employee in failed order: "
+                }
+            },
+            "customer": {
+                "edit": {
+                    "success": "Edit customer in order successfully.",
+                    "error": "Edit customers in failed orders: "
+                }
+            },
+            "note": {
+                "edit": {
+                    "success": "Order note edited successfully.",
+                    "error": "Edit failed order notes: "
+                }
+            },
+            "shippingMoney": {
+                "edit": {
+                    "success": "Successfully edited delivery fee.",
+                    "error": "Edit failed delivery charges: ",
+                    "invalid": "Invalid value"
+                }
+            },
+            "voucher": {
+                "edit": {
+                    "success": "Successfully edited order discount.",
+                    "error": "Edit failed order discounts: ",
+                    "notFound": "Please choose a discount first."
+                }
+            },
+            "orderDetail": {
+                "remove": {
+                    "success": "Remove product from order successfully.",
+                    "error": "Remove products from failed orders: "
+                }
+            },
+            "tab": {
+                "add": {
+                    "success": "Added new order successfully.",
+                    "error": "Adding new order failed: "
+                },
+                "remove": {
+                    "success": "Order deleted successfully.",
+                    "error": "Delete failed orders: "
+                },
+                "advancedAdd": {
+                    "error": "Please add your order first"
+                },
+                "checkoutDrawer": {
+                    "error": "The customer's payment cannot be less than the customer needs to pay."
+                }
+            },
+            "order": {
+                "error": "Failed to update order"
+            }
+        },
+        "modal": {
+            "title": "Your order",
+            "tooltip": "You can only update some basic information of the order."
+        },
+        "validation": {
+            "discount": {
+                "retailCustomer": "Retail customers cannot use discounts."
+            }
+        }
+    },
+    "orderDetails": {
+        "orderDetails": "Order details",
+        "titles": {},
+        "fields": {
+            "products": "Product",
+            "qty": "Qty",
+            "price": "Unit price",
+            "totalPrice": "Into money"
         }
     },
     "payments": {
-        "payments": "Payments",
+        "payments": "Pay",
         "titles": {
-            "multiple": "Multi-payment methods feature",
-            "list": "Payments",
-            "show": "Show Payment"
+            "multiple": "Multiple payment",
+            "list": "Pay",
+            "show": "Payment Details"
         },
         "fields": {
-            "id": "Payment ID",
+            "id": "ID",
             "order": "Order",
-            "paymentMethod": "Payment method",
+            "paymentMethod": "Payment methods",
             "transactionCode": "Transaction code",
             "totalMoney": "Total money",
             "description": "Description",
             "money": "Money",
             "amountDue": "Amount due",
-            "customerPay":"Customer pay",
+            "customerPay": "Customer pay",
             "customer": "Customer",
-            "createdAt": "Time"   
+            "createdAt": "Created at"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Search",
-                "placeholder": "Order Number, User, etc."
+                "placeholder": "Order ID, User, etc."
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Order Status"
+                "placeholder": "Order status"
             },
             "createdAt": {
-                "label": "Created At"
+                "label": "Created at"
             },
             "submit": "Filter"
         },
         "tab": {
-            "label":"Order",
+            "label": "order",
             "discount": "Discount",
             "amountDue": "Amount due",
-            "retailCustomer": "Retail Customer",
-            "customerPay": "Customer pay",
+            "retailCustomer": "Retail customer",
+            "customerPay": "Customer pays",
             "change": "Change"
+        },
+        "pending": "Unpaid",
+        "retailCustomer": "Retail customer",
+        "modal": {
+            "title": "Payment QR code",
+            "buttons": {
+                "footer": {
+                    "label": "Payment confirmation",
+                    "placeholder": "Enter the transaction code"
+                }
+            },
+            "error": {
+                "transactionCode": "Transaction code cannot be blank"
+            }
+        }
+    },
+    "paymentMethods": {
+        "paymentMethods": "Payment methods",
+        "noPaymentMethods": "No payment methods available",
+        "titles": {
+            "list": "Payment methods",
+            "show": "Payment method details"
+        },
+        "fields": {
+            "id": "ID",
+            "name": "Name"
+        },
+        "filters": {
+            "title": "Filter",
+            "search": {
+                "label": "Search",
+                "placeholder": "Search by keyword, etc."
+            },
+            "submit": "Filter"
+        },
+        "options": {
+            "Cash": "Cash",
+            "Transfer": "Transfer",
+            "Card": "Card"
         }
     },
     "products": {
-        "products": "Products",
-        "noProducts": "No Products",
+        "products": "List of products",
+        "noProducts": "No products",
         "titles": {
-            "list": "Products",
+            "list": "Product",
             "create": "Create Product",
-            "edit": "Edit Product"
+            "edit": "Edit Products",
+            "add": "Add products"
         },
         "fields": {
             "id": "ID",
             "name": "Name",
             "code": "Code",
             "description": "Description",
-            "isActive": "Active",
             "price": "Price",
-            "category": "Category",
-            "images": {
-                "label": "Images",
-                "description": "Add product picture",
-                "validation": "must be 1080x1080 px"
-            },
-            "createdAt": "CreatedAt",
-            "quantity": "Stock quantity",
+            "createdAt": "Create at",
+            "quantity": "Quantity",
             "status": "Status",
             "color": "Color",
             "size": "Size"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
             "search": {
                 "label": "Name",
                 "placeholder": "Search by name"
             },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
-            }
+                "placeholder": "Filter by status"
+            },
+            "attribute": "Filter by product attributes"
+        },
+        "sorters": {
+            "attribute": "Sort by product attributes"
+        },
+        "messages": {
+            "limitReached": "Sorry, the product quantity limit has been reached",
+            "purchaseLimit": "You can only purchase a maximum of 5 products",
+            "minReached": "Minimum quantity reached",
+            "selectProductFirst": "Please select the product first",
+            "invalid": "Invalid product"
         }
     },
     "productDetails": {
-        "productDetails": "Product Details",
+        "productDetails": "Product details",
+        "list": "Detailed product list",
         "fields": {
-            "id": "ID",
+            "id": "Id",
             "name": "Name",
             "quantity": "Quantity",
             "price": "Price",
-            "image": "Upload image",
+            "image": "Image",
             "size": "Size",
             "color": "Color",
-            "status": "Status"
+            "status": "Status",
+            "brand": "Brand",
+            "style": "Designs",
+            "material": "Material",
+            "tradeMark": "Trademark",
+            "sole": "Sole"
         },
         "filters": {
-            "title": "Filters",
+            "title": "Filter",
+            "search": {
+                "title": "Search",
+                "placeholder": "Search by keyword"
+            },
             "status": {
                 "label": "Status",
-                "placeholder": "Filter by Status"
+                "placeholder": "Filter by status"
             },
             "brand": {
                 "label": "Brand",
-                "placeholder": "Filter by Brand"
+                "placeholder": "Filter by brand"
             },
             "color": {
                 "label": "Color",
-                "placeholder": "Filter by Color"
+                "placeholder": "Filter by color"
             },
             "material": {
                 "label": "Material",
-                "placeholder": "Filter by Material"
+                "placeholder": "Filter by material"
             },
             "size": {
                 "label": "Size",
-                "placeholder": "Filter by Size"
+                "placeholder": "Filter by size"
             },
             "sole": {
-                "label": "Sole",
-                "placeholder": "Filter by Sole"
+                "label": "Only",
+                "placeholder": "Filter by base"
             },
             "style": {
                 "label": "Style",
-                "placeholder": "Filter by Style"
+                "placeholder": "Filter by style"
             },
             "tradeMark": {
-                "label": "Trade Mark",
-                "placeholder": "Filter by Trade Mark"
+                "label": "Trademark",
+                "placeholder": "Filter by Trademark"
             },
             "priceMax": {
-                "label": "Price max",
-                "placeholder": "Filter by Price max"
+                "label": "Maximum price",
+                "placeholder": "Filter by Maximum Price"
             },
             "priceMin": {
-                "label": "Price min",
-                "placeholder": "Filter by Price min"
+                "label": "Minimum price",
+                "placeholder": "Filter by minimum price"
             },
             "quantity": {
                 "label": "Quantity",
-                "placeholder": "Filter by Quantity"
+                "placeholder": "Filter by quantity"
             }
         }
     },
@@ -871,76 +1149,353 @@
             "rating": "Rating"
         }
     },
-    "stores": {
-        "stores": "Stores",
+    "return-forms": {
+        "return-forms": "Return Forms",
         "titles": {
-            "create": "Create Store",
-            "edit": "Edit Store",
-            "list": "Stores",
-            "show": "Show Store"
+            "list": "Return Forms",
+            "create": "Create Return Form",
+            "show": "Return Form Details",
+            "form": "General Information",
+            "return-details": "Return Product Details",
+            "return-address": "Address Information",
+            "steps": {
+                "selectOrder": "Select Return Order",
+                "selectProduct": "Select Return Product",
+                "fillInformation": "Fill Return Information"
+            }
         },
         "fields": {
-            "id": "Store ID",
-            "title": "Title",
-            "isActive": "Active",
-            "createdAt": "CreatedAt",
-            "address": "Address",
-            "email": "Email",
-            "gsm": "Phone"
+            "code": "Return Code",
+            "orderCode": "Order Code",
+            "customer": {
+                "label": "Customer",
+                "placeholder": "Not selected"
+            },
+            "description": "Description",
+            "employee": {
+                "label": "Assigned Employee",
+                "placeholder": "Not selected"
+            },
+            "shippingMoney": "Estimated Shipping Fee",
+            "returnProducts": "Return Products",
+            "phoneNumber": "Phone Number",
+            "amountToBePaid": "Amount To Be Paid",
+            "createdAt": "Created At",
+            "createdBy": "Created By",
+            "paymentInfo": {
+                "label": "Payment Information",
+                "placeholder": "VCB XXXBANK XXXXXXXXXXXXXXXXX"
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Select return type",
+                "OFFLINE": "In-store",
+                "ONLINE": "Online"
+            },
+            "paymentType": {
+                "label": "Payment Method",
+                "placeholder": "Select payment method for return",
+                "tooltip": "Payment method for returning the product to the customer",
+                "Cash": "Cash",
+                "Transfer": "Transfer"
+            },
+            "returnDeliveryStatus": {
+                "label": "Return Delivery Status",
+                "placeholder": "Select return delivery status",
+                "tooltip": "Return delivery status is the processing status of the return order. For example, when creating a return form in-store, the status will be 'Received', while when the customer creates an online return form, the status will be 'Pending'",
+                "PENDING": "Pending",
+                "RETURNING": "Returning",
+                "RECEIVED": "Received",
+                "COMPLETED": "Completed"
+            },
+            "refundStatus": {
+                "label": "Refund Status",
+                "placeholder": "Select refund status",
+                "PENDING": "Pending",
+                "COMPLETED": "Completed"
+            }
         },
-        "buttons": {
-            "editProducts": "Edit Products",
-            "addProduct": "Add Product",
-            "outOfStock": "Out Of Stock",
-            "edit": "Edit Product"
+        "message": {
+            "emptySelected": "Please select return products",
+            "emptyReturnDetails": "Please check return products details first",
+            "invalidReturnQuantity": "Return quantity cannot exceed initial quantity",
+            "emptyReturnQuantity": "Please enter return quantity"
         },
-        "selectLocation": "Choose store location on the map",
-        "storeProducts": "Store Products",
-        "tagFilterDescription": "Use tags to filter your search",
-        "all": "All",
-        "productSearch": "Product Search"
+        "timeline": {
+            "title": "Timeline",
+            "status": {
+                "pending": "Return form is pending",
+                "on the way": "Return form is on the way",
+                "received": "Return form has been received",
+                "completed": "Return form is completed",
+                "undefined": "Unknown",
+                "null": "Unknown"
+            }
+        },
+        "filters": {
+            "title": "Filters",
+            "search": {
+                "label": "Name",
+                "placeholder": "Search by keyword"
+            },
+            "deliveryStatus": {
+                "label": "Delivery Status",
+                "placeholder": "Search by delivery status"
+            },
+            "refundStatus": {
+                "label": "Refund Status",
+                "placeholder": "Search by refund status"
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Search by type"
+            },
+            "paymentType": {
+                "label": "Payment Method",
+                "placeholder": "Search by payment method"
+            }
+        }
+    },
+    "return-form-details": {
+        "return-form-details": "Thông tin hàng hoá trả lại",
+        "fields": {
+            "orderCode": "Mã hoá đơn",
+            "quantity": "Số lượng",
+            "name": "Tên",
+            "returnQuantity": "Số lượng hoàn trả",
+            "unitPrice": "Đơn giá",
+            "totalPrice": "Thành tiền",
+            "reason": {
+                "label": "Lý do trả hàng",
+                "placeholder": "Nhập lý do trả hàng cho sản phẩm"
+            },
+            "feedback": {
+                "label": "Phản hồi",
+                "placeholder": "Nhập phản hồi của khách đối với sản phẩm"
+            },
+            "evidence": {
+                "label": "Hình ảnh thực tế",
+                "tooltip": "Hình ảnh thực tế hiện trạng sản phẩm hoàn trả"
+            },
+            "resellable": {
+                "label": "Có thể bán lại",
+                "YES": "Có",
+                "NO": "Không"
+            },
+            "returnInspectionStatus": {
+                "label": "Trạng thái kiểm tra",
+                "placeholder": "Chọn trạng thái kiểm tra",
+                "tooltip": "Trạng thái kiểm tra là trạng thái đánh giá xem hàng hoá có được trả lại hay không.",
+                "PASSED": "Đồng ý",
+                "FAILED": "Từ chối",
+                "PENDING": "Chưa giải quyết",
+                "null": "Chưa giải quyết"
+            },
+            "returnInspectionReason": {
+                "label": "Lý do kiểm tra trả hàng",
+                "placeholder": "Nhập lý do kiểm tra trả hàng",
+                "tooltip": "Lý do kiểm tra trả hàng là nguyên nhân được chỉ ra cho quyết định trả hàng."
+            }
+        }
+    },
+    "product/reviews": {
+        "product/reviews": "Customer Reviews",
+        "titles": {
+            "list": "Customer Reviews",
+            "create": "Create Review",
+            "edit": "Edit Review",
+            "show": "Review Details"
+        },
+        "filters": {
+            "title": "Filters",
+            "search": {
+                "label": "Name",
+                "placeholder": "Search by keyword"
+            },
+            "status": {
+                "label": "Status",
+                "placeholder": "Search by status"
+            }
+        },
+        "fields": {
+            "customer": "Customer",
+            "rating": "Rating",
+            "comment": "Content",
+            "urlImage": "Attachment",
+            "status": {
+                "label": "Status",
+                "WAITING": "Waiting for approval",
+                "ACCEPTED": "Accepted",
+                "REJECTED": "Rejected"
+            }
+        }
     },
     "errors": {
         "required": {
-            "field": "'{{ field }}' is required",
+            "field": "'{{ field }}' cannot be empty",
             "common": "This field is required",
-            "min": "This field must be at least {{ min }} characters",
-            "max": "This field must be at most {{ max }} characters",
-            "invalidMail": "This field must be a valid email address"
+            "min": "This field must have at least {{ min }} characters",
+            "max": "This field must have at most {{ max }} characters",
+            "invalidMail": "Invalid email address"
         }
     },
     "userSelect": {
-        "product":{
-            "brand": "Brand",
-            "material": "Material",
-            "sole": "Sole",
-            "style": "Style",
-            "tradeMark": "Trade Mark",
-            "size": "Size",
-            "color": "Color"
+        "product": {
+            "brands": "Brands",
+            "materials": "Materials",
+            "soles": "Soles",
+            "styles": "Styles",
+            "trade-marks": "Trade Marks",
+            "sizes": "Sizes",
+            "colors": "Colors"
         }
     },
     "confirmDialog": {
         "delete": {
             "message": "Are you sure?",
-            "header": "Delete confirmation!",
-            "acceptLabel": "Yes",
-            "rejectLabel": "No"
+            "header": "Confirm Deletion!",
+            "acceptLabel": "YES",
+            "rejectLabel": "NO"
         },
         "edit": {
-            "message": "Are you sure you want to proceed?",
-            "header": "Confirmation!",
-            "acceptLabel": "Yes",
-            "rejectLabel": "No"
+            "message": "Are you sure you want to continue?",
+            "header": "Confirm!",
+            "acceptLabel": "YES",
+            "rejectLabel": "NO"
+        },
+        "quantityChange": {
+            "remove": {
+                "header": "Are you sure?",
+                "message": "The total amount of the order is being reduced below the current discount threshold, equivalent to removing the discount from the order."
+            }
         }
     },
     "pos": {
-        "title": "Point of sales"
+        "pos": "Point of Sale",
+        "titles": {
+            "advancedAdd": "Advanced Product Addition"
+        },
+        "message": {
+            "orderDetailLengthExceed": "Please add products first."
+        }
     },
     "shop": {
-        "title": "Shop"
+        "title": "Products"
+    },
+    "discount": {
+        "title": "Discounts"
     },
     "transactions": {
         "title": "Transactions"
+    },
+    "sse": {
+        "notification": {
+            "SEGMENT": {
+                "ALL": "All",
+                "UNREAD": "Unread"
+            },
+            "NO_NOTIFICATION": "You have no new notifications"
+        },
+        "message": {
+            "ORDER_PLACED": " just placed an order ",
+            "ORDER_CHANGED": " just made changes to an order ",
+            "ORDER_PENDING": " just placed an order ",
+            "PRODUCT_LOW_STOCK": " just placed an order "
+        }
+    },
+    "validator": {
+        "message": {
+            "fullName": "Full name cannot be empty!",
+            "full_name": "Full name cannot be empty!",
+            "name": "Name cannot be empty!",
+            "dateOfBirth": "Date of birth cannot be empty!",
+            "gender": "Gender cannot be empty!",
+            "provinceId": "Province/City cannot be empty!",
+            "districtId": "District cannot be empty!",
+            "wardCode": "Ward cannot be empty!",
+            "more": "Detailed address cannot be empty!",
+            "line": "Detailed address cannot be empty",
+            "status": "Status cannot be empty",
+            "description": "Description cannot be empty",
+            "code": "Code cannot be empty",
+            "price": "Price cannot be empty",
+            "quantity": "Quantity cannot be empty",
+            "value": "Value cannot be empty",
+            "constraint": "Constraint cannot be empty",
+            "voucherRange": "Date range cannot be empty",
+            "address": "Address cannot be empty",
+            "length": "Length cannot be empty",
+            "weight": "Weight cannot be empty",
+            "height": "Height cannot be empty",
+            "weightUnit": "Weight unit cannot be empty",
+            "amountToBePaid": "Amount to be paid cannot be empty",
+            "returnType": "Return type cannot be empty",
+            "returnDeliveryStatus": "Return delivery status cannot be empty",
+            "paymentType": "Payment type cannot be empty",
+            "refundStatus": "Refund status cannot be empty",
+            "paymentInfo": "Payment information cannot be empty",
+            "reason": "Return reason cannot be empty",
+            "feedback": "Feedback cannot be empty",
+            "returnQuantity": "Return quantity cannot be empty",
+            "unitPrice": "Unit price cannot be empty",
+            "returnInspectionStatus": "Return inspection status cannot be empty",
+            "returnInspectionReason": "Return inspection reason cannot be empty",
+            "resellable": "Please decide if the product is resellable or not"
+        },
+        "vouchers": {
+            "exceed": "Value cannot exceed {{length}} percent"
+        }
+    },
+    "common": {
+        "access": {
+            "title": "Access Rights",
+            "role": {
+                "ROLE_ADMIN": "Administrator",
+                "ROLE_STAFF": "Staff"
+            }
+        },
+        "maxLength": "Maximum {{length}} characters",
+        "rowSelection": "{{count}} items selected",
+        "copied": "Copied to clipboard",
+        "update": {
+            "success": "Update completed"
+        },
+        "checkout": {
+            "success": "Order has been successfully paid!"
+        },
+        "success": "Success",
+        "error": "An error occurred: "
+    },
+    "image": {
+        "upload": "Upload",
+        "dragger": {
+            "text": "Click or drag files into this area to upload",
+            "hint": "Support uploading one or multiple files. Uploading company data or other prohibited files is strictly prohibited."
+        },
+        "error": {
+            "invalid": "You can only upload JPG/PNG files!",
+            "exceed": "Image must be smaller than 2MB!"
+        },
+        "description": {
+            "add": "Add Image",
+            "edit": "Edit Image"
+        },
+        "validation": "must be {{size}}x{{size}} px"
+    },
+    "invoices": {
+        "title": "Invoices",
+        "store": "{APP_TITLE} Store",
+        "recipient": "Recipient",
+        "retailCustomer": "Retail Customer",
+        "noAddress": "Customer has no address",
+        "fields": {
+            "description": "Description",
+            "unitPrice": "Unit Price",
+            "quantity": "Quantity",
+            "reduceMoney": "Discount",
+            "totalPrice": "Total Price",
+            "total": "Total",
+            "totalMoney": "Total Money"
+        }
     }
 }

@@ -2,6 +2,7 @@ import {
   CheckCircleOutlined,
   CloseOutlined,
   CreditCardFilled,
+  MinusSquareFilled,
   PlusSquareFilled,
 } from "@ant-design/icons";
 import { NumberField, useModal } from "@refinedev/antd";
@@ -266,7 +267,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         errorNotification: (error: any) => {
           return {
             message: t("common.error") + error.message,
-            description: "Oops!..",
+            description: "Oops!.. ",
             type: "error",
           };
         },
@@ -335,6 +336,35 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       {renderButtons(totalPrice, handleSuggestedButtonOnClick)}
     </Row>
   );
+
+  const removeOrderVoucher = () => {
+    mutateUpdate(
+      {
+        resource: "orders/apply-voucher",
+        values: {
+          voucher: null,
+        },
+        id: order.id,
+        successNotification: () => {
+          return false;
+        },
+        errorNotification: () => {
+          return false;
+        },
+      },
+      {
+        onError: (error, variables, context) => {
+          message.error(
+            t("orders.notification.voucher.edit.error") + error.message
+          );
+        },
+        onSuccess: (data, variables, context) => {
+          refetchOrder();
+          message.success(t("orders.notification.voucher.edit.success"));
+        },
+      }
+    );
+  };
 
   const renderTransferMethod = () => (
     <Row gutter={[16, 24]}>
@@ -622,12 +652,24 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
         </Col>
         <Col span={24}>
           <Flex gap="middle" justify="space-between" align="center">
-            <Space size="large" wrap>
+            <Space wrap>
               <Text>{t("orders.tab.discount")}</Text>
               {order.voucher ? (
-                <Text strong style={{ fontSize: "18px" }}>
-                  #{order.voucher.code}
-                </Text>
+                <>
+                  <Button
+                    type="text"
+                    size="small"
+                    icon={
+                      <MinusSquareFilled
+                        style={{ color: token.colorPrimary }}
+                      />
+                    }
+                    onClick={removeOrderVoucher}
+                  />
+                  <Text strong style={{ fontSize: "18px" }}>
+                    #{order.voucher.code}
+                  </Text>
+                </>
               ) : (
                 <Tooltip
                   title={

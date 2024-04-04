@@ -412,7 +412,7 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
                     validateCommon(_, value, t, "weightUnit"),
                 },
               ]}
-              initialValue="gram"
+              initialValue="1"
             >
               <Select
                 showSearch

@@ -443,7 +443,7 @@
       "create": "Tạo Nhân Viên",
       "list": "Nhân Viên",
       "edit": "Chỉnh sửa Nhân Viên",
-      "modal":{
+      "modal": {
         "changePassword": "Thay đổi mật khẩu mới"
       }
     },
@@ -490,10 +490,10 @@
       "successChangePassword": "Tạo mật khẩu mới thành công"
     },
     "validations": {
-      "changePassword":{
-        "newPassword":"Vui lòng nhập mật khẩu mới!",
-        "enterThePassword":"Vui lòng nhập lại mật khẩu mới!",
-        "enterThePasswordFail":"Mật khẩu nhập lại không trùng với mật khẩu mới!"
+      "changePassword": {
+        "newPassword": "Vui lòng nhập mật khẩu mới!",
+        "enterThePassword": "Vui lòng nhập lại mật khẩu mới!",
+        "enterThePasswordFail": "Mật khẩu nhập lại không trùng với mật khẩu mới!"
       }
     }
   },
@@ -659,7 +659,11 @@
       "title": "Biểu đồ Phân loại độ tuổi"
     },
     "addressCustomerPie": {
-      "title": "Biểu đồ Phân loại khu vực"
+      "title": "Biểu đồ Phân loại khu vực",
+      "other": "Khác"
+    },
+    "overviewGrowth": {
+      "title": "Biểu đồ biểu thị tốc độ tăng trưởng"
     },
     "genderCustomerPie": {
       "title": "Biểu đồ Phân loại giới tính"
@@ -702,9 +706,28 @@
     },
     "trendingMenus": {
       "title": "Xu hướng",
-      "sales": "{{count}} đã bán"
+      "sales": "{{count}} đã bán",
+      "options": {
+        "day": "Ngày",
+        "week": "Tuần",
+        "month": "Tháng",
+        "year": "Năm"
+      }
     },
     "overviewTab": {
+      "title": "Biểu đồ phân tích",
+      "growth": {
+        "title": "Tổng quát"
+      },
+      "gender": {
+        "title": "Giới tính"
+      },
+      "address": {
+        "title": "Khu vực"
+      },
+      "age": {
+        "title": "Độ tuổi"
+      },
       "overview": {
         "Revenue": "Doanh thu",
         "Order": "Đơn hàng",
@@ -813,6 +836,7 @@
     },
     "tab": {
       "label": "Đơn Hàng",
+      "example": "Mẫu",
       "discount": "Giảm giá",
       "amountDue": "Khách cần trả",
       "retailCustomer": "Khách lẻ",
@@ -896,12 +920,12 @@
         }
       },
       "order": {
-        "error": "Cập nhật đơn hàng th"
+        "error": "Cập nhật đơn hàng thất bại"
       }
     },
     "modal": {
       "title": "Đơn hàng của bạn",
-      "tooltip": "Bạn chỉ có thể 1 số thông tin cơ bản của đơn hàng."
+      "tooltip": "Bạn chỉ có thể cập nhật 1 số thông tin cơ bản của đơn hàng."
     },
     "validation": {
       "discount": {
@@ -1209,6 +1233,29 @@
         "completed": "Phiếu giảm giá hoàn tất",
         "undefined": "Unknown",
         "null": "Unknown"
+      }
+    },
+    "filters": {
+      "title": "Bộ lọc",
+      "search": {
+        "label": "Tên",
+        "placeholder": "Tìm kiếm theo từ khoá"
+      },
+      "deliveryStatus": {
+        "label": "Trạng thái giao hàng",
+        "placeholder": "Tìm kiếm theo trạng thái giao hàng"
+      },
+      "refundStatus": {
+        "label": "Trạng thái hoàn trả",
+        "placeholder": "Tìm kiếm theo trạng thái hoàn trả"
+      },
+      "type": {
+        "label": "Hình thức",
+        "placeholder": "Tìm kiếm theo hình thức"
+      },
+      "paymentType": {
+        "label": "Phương thức hoàn trả",
+        "placeholder": "Tìm kiếm theo phương thức hoàn trả "
       }
     }
   },

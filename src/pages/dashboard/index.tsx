@@ -1,17 +1,16 @@
-import { Card, Col, Flex, Row, Segmented, Select, Typography } from "antd";
+import { Card, Col, Flex, Row, Segmented, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { useState } from "react";
-import dayjs from "dayjs";
 import { SegmentedValue } from "antd/es/segmented";
-import { DailyRevenue } from "../../components/dashboard/DailyRevenue";
+import dayjs from "dayjs";
+import { useState } from "react";
 import { DailyOrders } from "../../components/dashboard/DailyOrders";
+import { DailyRevenue } from "../../components/dashboard/DailyRevenue";
 import { NewCustomers } from "../../components/dashboard/NewCustomers";
+import { OrderTimelineTwo } from "../../components/dashboard/OrderTimelineTwo";
 import OverviewTab from "../../components/dashboard/OverViewTab";
-import { OrderTimeline } from "../../components/dashboard/OrderTimeline";
 import { RecentOrders } from "../../components/dashboard/RecentOrders";
 import { TrendingMenu } from "../../components/dashboard/TrendingMenu";
-import { OrderTimelineTwo } from "../../components/dashboard/OrderTimelineTwo";
 
 const { Text } = Typography;
 
@@ -135,7 +134,7 @@ export const DashboardPage: React.FC = () => {
               paddingRight: 0,
             },
           }}
-          title={<Text strong>Biểu đồ phân tích</Text>}
+          title={<Text strong>{t("dashboard.overviewTab.title")}</Text>}
         >
           <OverviewTab />
         </Card>
@@ -168,7 +167,24 @@ export const DashboardPage: React.FC = () => {
             <Flex align="center" justify="space-between">
               <Text strong>{t("dashboard.trendingMenus.title")}</Text>
               <Segmented
-                options={["Ngày", "Tuần", "Tháng", "Năm"]}
+                options={[
+                  {
+                    label: t("dashboard.trendingMenus.options.day"),
+                    value: "Ngày",
+                  },
+                  {
+                    label: t("dashboard.trendingMenus.options.week"),
+                    value: "Tuần",
+                  },
+                  {
+                    label: t("dashboard.trendingMenus.options.month"),
+                    value: "Tháng",
+                  },
+                  {
+                    label: t("dashboard.trendingMenus.options.year"),
+                    value: "Năm",
+                  },
+                ]}
                 onChange={handleOptionChange}
               />
             </Flex>
