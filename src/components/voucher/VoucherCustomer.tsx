@@ -1,22 +1,8 @@
 import { getDefaultSortOrder, useTable } from "@refinedev/antd";
-import {
-  CrudFilters,
-  HttpError,
-  useCreate,
-  useDelete,
-  useParsed,
-  useTranslate,
-} from "@refinedev/core";
+import { CrudFilters, HttpError, useCreate, useDelete, useParsed, useTranslate } from "@refinedev/core";
 import { Avatar, Button, Flex, Space, Table, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
-import {
-  Dispatch,
-  Fragment,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useMemo, useState } from "react";
 import { getCustomerStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
@@ -33,11 +19,7 @@ type VoucherCustomerProps = {
   setShouldRefetch: Dispatch<SetStateAction<boolean>>;
 };
 
-const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
-  type,
-  shouldRefetch,
-  setShouldRefetch,
-}) => {
+const VoucherCustomer: React.FC<VoucherCustomerProps> = ({ type, shouldRefetch, setShouldRefetch }) => {
   const t = useTranslate();
   const { id } = useParsed();
 
@@ -101,8 +83,7 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
         width: "1rem",
         sorter: {},
         defaultSortOrder: getDefaultSortOrder("createdAt", sorters),
-        render: (value, record, index) =>
-          calculateIndex(sorters, current, pageSize, tableProps, index),
+        render: (value, record, index) => calculateIndex(sorters, current, pageSize, tableProps, index),
       },
       {
         title: t("customers.fields.fullName"),
@@ -122,12 +103,8 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         render: (_, record) => {
-          const defaultAddress = record.addressList.find(
-            (address) => address.isDefault
-          );
-          const phoneNumber = defaultAddress
-            ? defaultAddress.phoneNumber
-            : "N/A";
+          const defaultAddress = record.addressList.find((address) => address.isDefault);
+          const phoneNumber = defaultAddress ? defaultAddress.phoneNumber : "N/A";
           return <>{phoneNumber}</>;
         },
       },
@@ -173,6 +150,20 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
             voucher: id,
             customers: selectedIds,
           },
+          successNotification: (data, values, resource) => {
+            return {
+              message: t("common.update.success"),
+              description: t("common.success"),
+              type: "success",
+            };
+          },
+          errorNotification(error) {
+            return {
+              message: t("common.error") + error?.message,
+              description: "Oops!..",
+              type: "success",
+            };
+          },
         },
         {
           onSuccess: () => {
@@ -196,6 +187,21 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
             values: {
               customers: selectedIds,
             },
+            successNotification: (data, values, resource) => {
+              return {
+                message: t("common.update.success"),
+                description: t("common.success"),
+                type: "success",
+              };
+            },
+            errorNotification(error) {
+              return {
+                message: t("common.error") + error?.message,
+                description: "Oops!..",
+                type: "success",
+              };
+            },
+
             id: id,
           },
           {
@@ -255,21 +261,14 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
           return (
             <Flex justify={"space-between"} align={"center"}>
               <Title level={5}>
-                {t(`vouchers.table.title.${type}`)} (
-                {tableProps.dataSource?.length})
+                {t(`vouchers.table.title.${type}`)} ({tableProps.dataSource?.length})
               </Title>
               {hasSelected && (
                 <Space>
-                  <Button
-                    type="primary"
-                    loading={tableProps.loading}
-                    onClick={handleButtonClick}
-                  >
+                  <Button type="primary" loading={tableProps.loading} onClick={handleButtonClick}>
                     {t(`actions.${type === "eligible" ? "remove" : "apply"}`)}
                   </Button>
-                  <span style={{ marginLeft: 8 }}>
-                    {t("common.rowSelection", { count: selectedIds.length })}
-                  </span>
+                  <span style={{ marginLeft: 8 }}>{t("common.rowSelection", { count: selectedIds.length })}</span>
                 </Space>
               )}
             </Flex>

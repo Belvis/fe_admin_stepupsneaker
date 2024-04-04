@@ -1064,7 +1064,8 @@
             "purchaseLimit": "You can only purchase a maximum of 5 products",
             "minReached": "Minimum quantity reached",
             "selectProductFirst": "Please select the product first",
-            "invalid": "Invalid product"
+            "invalid": "Invalid product",
+            "updateSuccess": "Successfully update {{count}} product details"
         }
     },
     "productDetails": {

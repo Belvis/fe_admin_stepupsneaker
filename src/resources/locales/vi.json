@@ -1067,7 +1067,8 @@
       "purchaseLimit": "Bạn chỉ có thể mua tối đa 5 sản phẩm",
       "minReached": "Đã đạt số lượng nhỏ nhất",
       "selectProductFirst": "Vui lòng chọn sản phẩm trước",
-      "invalid": "Sản phẩm không hợp lệ"
+      "invalid": "Sản phẩm không hợp lệ",
+      "updateSuccess": "Cập nhật thành công {{count}} sản phẩm chi tiết"
     }
   },
   "productDetails": {
@@ -1227,10 +1228,10 @@
     "timeline": {
       "title": "Mốc thời gian",
       "status": {
-        "pending": "Phiếu giảm giá đang chờ giải quyết",
-        "on the way": "Phiếu giảm giá đang trên đường tới",
-        "received": "Phiếu giảm giá đã được giao",
-        "completed": "Phiếu giảm giá hoàn tất",
+        "pending": "Phiếu trả hàng đang chờ giải quyết",
+        "on the way": "Phiếu trả hàng đang trên đường tới",
+        "received": "Phiếu trả hàng đã được giao",
+        "completed": "Phiếu trả hàng hoàn tất",
         "undefined": "Unknown",
         "null": "Unknown"
       }

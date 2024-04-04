@@ -9,16 +9,7 @@ import {
   useParsed,
   useTranslate,
 } from "@refinedev/core";
-import {
-  Avatar,
-  Badge,
-  Button,
-  Card,
-  ColorPicker,
-  InputNumber,
-  Table,
-  Typography,
-} from "antd";
+import { Avatar, Badge, Button, Card, ColorPicker, InputNumber, Table, Typography } from "antd";
 
 import { ColumnsType } from "antd/es/table";
 import { debounce } from "lodash";
@@ -29,11 +20,7 @@ import ColumnActions from "../../../components/table/ColumnActions";
 import { tablePaginationSettings } from "../../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../../helpers/confirm";
 import { productDetailToRequest } from "../../../helpers/mapper";
-import {
-  IProductDetailFilterVariables,
-  IProductDetailRequest,
-  IProductDetailResponse,
-} from "../../../interfaces";
+import { IProductDetailFilterVariables, IProductDetailRequest, IProductDetailResponse } from "../../../interfaces";
 import { EditProdDetail } from "../../../components/product/EditProdDetail";
 
 const { Text } = Typography;
@@ -43,26 +30,21 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const { id } = useParsed();
   const API_URL = useApiUrl();
 
-  const { mutate: mutateUpdateMany, isLoading } =
-    useCustomMutation<IProductDetailResponse>();
+  const { mutate: mutateUpdateMany, isLoading } = useCustomMutation<IProductDetailResponse>();
 
   /**
    * State lưu trữ product-details.
    * Thay vì lấy thằng từ datasource, cần lưu thêm vào state vì cần hiển thị thêm cả những thay đổi của người dùng.
    * @type {IProductDetailResponse[]}
    */
-  const [productDetails, setProductDetails] = useState<
-    IProductDetailResponse[]
-  >([]);
+  const [productDetails, setProductDetails] = useState<IProductDetailResponse[]>([]);
 
   /**
    * State lưu trữ product-details cần chỉnh sửa.
    * Thay vì gửi toàn bộ cho backend, lưu những thay đổi của người dùng vào state và chỉ gửi chúng đi.
    * @type {IProductDetailResponse[]}
    */
-  const [productDetailsSave, setProductDetailsSave] = useState<
-    IProductDetailResponse[]
-  >([]);
+  const [productDetailsSave, setProductDetailsSave] = useState<IProductDetailResponse[]>([]);
 
   const {
     modalProps: editModalProps,
@@ -101,19 +83,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({
-      status,
-      brand,
-      color,
-      material,
-      priceMax,
-      priceMin,
-      quantity,
-      size,
-      sole,
-      style,
-      tradeMark,
-    }) => {
+    onSearch: ({ status, brand, color, material, priceMax, priceMin, quantity, size, sole, style, tradeMark }) => {
       const productDetailFilters: CrudFilters = [];
 
       productDetailFilters.push({
@@ -179,20 +149,13 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
 
   useEffect(() => {
     if (tableProps && tableProps.dataSource) {
-      const fetchedProductDetails: IProductDetailResponse[] = [
-        ...tableProps.dataSource,
-      ];
+      const fetchedProductDetails: IProductDetailResponse[] = [...tableProps.dataSource];
       setProductDetails(fetchedProductDetails);
     }
   }, [tableProps.dataSource]);
 
-  const updateProductDetailsSaveQuantity = (
-    record: IProductDetailResponse,
-    value: number
-  ) => {
-    const existingIndex = productDetailsSave.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
+  const updateProductDetailsSaveQuantity = (record: IProductDetailResponse, value: number) => {
+    const existingIndex = productDetailsSave.findIndex((productDetail) => productDetail.id === record.id);
     const updatedDetails = [...productDetailsSave];
     if (existingIndex !== -1) {
       updatedDetails[existingIndex].quantity = value;
@@ -208,26 +171,16 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     setProductDetails(updatedProducts);
   };
 
-  const handleQuantityChange = (
-    value: number,
-    record: IProductDetailResponse
-  ) => {
-    const index = productDetails.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
+  const handleQuantityChange = (value: number, record: IProductDetailResponse) => {
+    const index = productDetails.findIndex((productDetail) => productDetail.id === record.id);
 
     updateProductDetailsSaveQuantity(record, value);
 
     updateProductDetailsQuantity(index, value);
   };
 
-  const updateProductDetailsSavePrice = (
-    record: IProductDetailResponse,
-    value: number
-  ) => {
-    const existingIndex = productDetailsSave.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
+  const updateProductDetailsSavePrice = (record: IProductDetailResponse, value: number) => {
+    const existingIndex = productDetailsSave.findIndex((productDetail) => productDetail.id === record.id);
     const updatedDetails = [...productDetailsSave];
     if (existingIndex !== -1) {
       updatedDetails[existingIndex].price = value;
@@ -243,18 +196,13 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     setProductDetails(updatedProducts);
   };
 
-  const handlePriceChange = debounce(
-    (value: number, record: IProductDetailResponse) => {
-      const index = productDetails.findIndex(
-        (productDetail) => productDetail.id === record.id
-      );
+  const handlePriceChange = debounce((value: number, record: IProductDetailResponse) => {
+    const index = productDetails.findIndex((productDetail) => productDetail.id === record.id);
 
-      updateProductDetailsSavePrice(record, value);
+    updateProductDetailsSavePrice(record, value);
 
-      updateProductDetailsPrice(index, value);
-    },
-    500
-  );
+    updateProductDetailsPrice(index, value);
+  }, 500);
 
   const columns: ColumnsType<IProductDetailResponse> = [
     {
@@ -273,18 +221,13 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       dataIndex: "image",
       key: "image",
       render: (_, { image, promotionProductDetails }) => {
-        const promotionProductDetailsActive = (
-          promotionProductDetails ?? []
-        ).filter((productDetail) => productDetail.promotion.status == "ACTIVE");
-
-        const maxPromotionProductDetail = promotionProductDetailsActive.reduce(
-          (maxProduct, currentProduct) => {
-            return currentProduct.promotion.value > maxProduct.promotion.value
-              ? currentProduct
-              : maxProduct;
-          },
-          promotionProductDetailsActive[0]
+        const promotionProductDetailsActive = (promotionProductDetails ?? []).filter(
+          (productDetail) => productDetail.promotion.status == "ACTIVE"
         );
+
+        const maxPromotionProductDetail = promotionProductDetailsActive.reduce((maxProduct, currentProduct) => {
+          return currentProduct.promotion.value > maxProduct.promotion.value ? currentProduct : maxProduct;
+        }, promotionProductDetailsActive[0]);
 
         if (promotionProductDetailsActive.length > 0) {
           const value = maxPromotionProductDetail.promotion.value;
@@ -334,9 +277,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       render: (_, record) => (
         <InputNumber
           min={1}
-          formatter={(value) =>
-            `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }
+          formatter={(value) => `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           parser={(value: string | undefined) => {
             const parsedValue = parseInt(value!.replace(/₫\s?|(,*)/g, ""), 10);
             return isNaN(parsedValue) ? 0 : parsedValue;
@@ -361,9 +302,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       dataIndex: "color",
       align: "center",
       sorter: (a, b) => a.color.name.localeCompare(b.color.name),
-      render: (_, record) => (
-        <ColorPicker value={record.color.code} showText disabled />
-      ),
+      render: (_, record) => <ColorPicker value={record.color.code} showText disabled />,
     },
     {
       title: t("products.fields.status"),
@@ -380,19 +319,12 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       key: "actions",
       width: "5%",
       align: "center",
-      render: (_, record) => (
-        <ColumnActions
-          hideShow
-          record={record}
-          onEditClick={() => editModalShow(record.id)}
-        />
-      ),
+      render: (_, record) => <ColumnActions hideShow record={record} onEditClick={() => editModalShow(record.id)} />,
     },
   ];
 
   const handleSubmit = async () => {
-    const convertedPayload: IProductDetailRequest[] =
-      productDetailToRequest(productDetailsSave);
+    const convertedPayload: IProductDetailRequest[] = productDetailToRequest(productDetailsSave);
 
     mutateUpdateMany(
       {
@@ -401,16 +333,16 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         values: convertedPayload,
         successNotification: () => {
           return {
-            message: `Successfully update ${convertedPayload.length} product details.`,
-            description: "Success with no errors",
+            message: t("products.messages.updateSuccess", { count: convertedPayload.length }),
+            description: t("common.success"),
             type: "success",
           };
         },
-        errorNotification: () => {
+        errorNotification: (error) => {
           return {
-            message: `Something went wrong when updating product details`,
-            description: "Error",
-            type: "error",
+            message: t("common.error") + error?.message,
+            description: "Oops!..",
+            type: "success",
           };
         },
       },
@@ -468,11 +400,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           columns={columns}
         />
       </Card>
-      <EditProdDetail
-        onFinish={editOnFinish}
-        modalProps={editModalProps}
-        formProps={editFormProps}
-      />
+      <EditProdDetail onFinish={editOnFinish} modalProps={editModalProps} formProps={editFormProps} />
     </Show>
   );
 };
