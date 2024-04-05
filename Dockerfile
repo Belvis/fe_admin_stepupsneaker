@@ -1,56 +1,29 @@
-FROM refinedev/node:18 AS base
+# 1. For build React app
+FROM node:18-alpine AS build
 
-FROM base as deps
+# Set working directory
+WORKDIR /app
+COPY package*.json /.
 
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-FROM base as builder
-
-ENV NODE_ENV production
-
-COPY --from=deps /app/refine/node_modules ./node_modules
-
+# npm install
+RUN npm install --legacy-peer-deps
 COPY . .
 
+# build
 RUN npm run build
 
-FROM nginx:1.21.3-alpine as runner
+# 2. For Nginx setup
+FROM nginx:stable-alpine as production-stage
 
-ENV NODE_ENV production
+# Copy config nginx
+COPY --from=build /app/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /usr/share/nginx/html
 
-COPY --from=builder /app/refine/dist /usr/share/nginx/html
+# Remove default nginx static assets
+RUN rm -rf ./*
 
-RUN touch /etc/nginx/conf.d/default.conf
+# Copy static assets from builder stage
+COPY --from=build /app/dist .
 
-RUN <<EOF
-echo "server {" >> /etc/nginx/conf.d/default.conf
-echo "  listen 80;" >> /etc/nginx/conf.d/default.conf
-echo "" >> /etc/nginx/conf.d/default.conf
-echo "  gzip on;" >> /etc/nginx/conf.d/default.conf
-echo "  gzip_proxied any;" >> /etc/nginx/conf.d/default.conf
-echo "  gzip_comp_level 6;" >> /etc/nginx/conf.d/default.conf
-echo "  gzip_buffers 16 8k;" >> /etc/nginx/conf.d/default.conf
-echo "  gzip_http_version 1.1;" >> /etc/nginx/conf.d/default.conf
-echo "  gzip_types text/css application/javascript application/json application/font-woff application/font-tff image/gif image/png image/svg+xml application/octet-stream;" >> /etc/nginx/conf.d/default.conf
-echo "  gzip_vary on;" >> /etc/nginx/conf.d/default.conf
-echo "" >> /etc/nginx/conf.d/default.conf
-echo "  location / {" >> /etc/nginx/conf.d/default.conf
-echo "    root   /usr/share/nginx/html;" >> /etc/nginx/conf.d/default.conf
-echo "    index  index.html index.htm;" >> /etc/nginx/conf.d/default.conf
-echo "    try_files $uri /index.html =404;" >> /etc/nginx/conf.d/default.conf
-echo "  }" >> /etc/nginx/conf.d/default.conf
-echo "" >> /etc/nginx/conf.d/default.conf
-echo "  error_page   500 502 503 504  /50x.html;" >> /etc/nginx/conf.d/default.conf
-echo "" >> /etc/nginx/conf.d/default.conf
-echo "  location = /50x.html {" >> /etc/nginx/conf.d/default.conf
-echo "    root   /usr/share/nginx/html;" >> /etc/nginx/conf.d/default.conf
-echo "  }" >> /etc/nginx/conf.d/default.conf
-echo "}" >> /etc/nginx/conf.d/default.conf
-EOF
-
-CMD ["nginx", "-g", "daemon off;"]
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
