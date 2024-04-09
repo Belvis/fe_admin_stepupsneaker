@@ -1,11 +1,6 @@
-# This Dockerfile uses `serve` npm package to serve the static files with node process.
-# You can find the Dockerfile for nginx in the following link:
-# https://github.com/refinedev/dockerfiles/blob/main/vite/Dockerfile.nginx
 FROM refinedev/node:18 AS base
 
 FROM base as deps
-
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -24,14 +19,38 @@ COPY . .
 
 RUN npm run build
 
-FROM base as runner
+FROM nginx:1.21.3-alpine as runner
 
 ENV NODE_ENV production
 
-RUN npm install -g serve
+COPY --from=builder /app/refine/dist /usr/share/nginx/html
 
-COPY --from=builder /app/refine/dist ./
+RUN touch /etc/nginx/conf.d/default.conf
 
-USER refine
+RUN <<EOF
+echo "server {" >> /etc/nginx/conf.d/default.conf
+echo "  listen 80;" >> /etc/nginx/conf.d/default.conf
+echo "" >> /etc/nginx/conf.d/default.conf
+echo "  gzip on;" >> /etc/nginx/conf.d/default.conf
+echo "  gzip_proxied any;" >> /etc/nginx/conf.d/default.conf
+echo "  gzip_comp_level 6;" >> /etc/nginx/conf.d/default.conf
+echo "  gzip_buffers 16 8k;" >> /etc/nginx/conf.d/default.conf
+echo "  gzip_http_version 1.1;" >> /etc/nginx/conf.d/default.conf
+echo "  gzip_types text/css application/javascript application/json application/font-woff application/font-tff image/gif image/png image/svg+xml application/octet-stream;" >> /etc/nginx/conf.d/default.conf
+echo "  gzip_vary on;" >> /etc/nginx/conf.d/default.conf
+echo "" >> /etc/nginx/conf.d/default.conf
+echo "  location / {" >> /etc/nginx/conf.d/default.conf
+echo "    root   /usr/share/nginx/html;" >> /etc/nginx/conf.d/default.conf
+echo "    index  index.html index.htm;" >> /etc/nginx/conf.d/default.conf
+echo "    try_files $uri /index.html =404;" >> /etc/nginx/conf.d/default.conf
+echo "  }" >> /etc/nginx/conf.d/default.conf
+echo "" >> /etc/nginx/conf.d/default.conf
+echo "  error_page   500 502 503 504  /50x.html;" >> /etc/nginx/conf.d/default.conf
+echo "" >> /etc/nginx/conf.d/default.conf
+echo "  location = /50x.html {" >> /etc/nginx/conf.d/default.conf
+echo "    root   /usr/share/nginx/html;" >> /etc/nginx/conf.d/default.conf
+echo "  }" >> /etc/nginx/conf.d/default.conf
+echo "}" >> /etc/nginx/conf.d/default.conf
+EOF
 
-CMD ["serve"]
+CMD ["nginx", "-g", "daemon off;"]

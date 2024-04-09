@@ -1,10 +1,24 @@
 import { SaveButton, Show, useForm, useModal } from "@refinedev/antd";
-import { IResourceComponentsProps, useParsed, useShow, useTranslate, useUpdate } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  useParsed,
+  useShow,
+  useTranslate,
+} from "@refinedev/core";
 import { App, Button } from "antd";
 import { useEffect, useState } from "react";
+import { AiOutlineFileDone } from "react-icons/ai";
+import { MdHistoryEdu } from "react-icons/md";
+import { TbStatusChange } from "react-icons/tb";
 import { ReturnForm } from "../../components/return/ReturnForm";
+import { ReturnHistoryTimeLine } from "../../components/return/ReturnHistoryTimeLine";
+import { ReturnSteps } from "../../components/return/ReturnSteps";
+import UpdateStatusModal from "../../components/return/UpdateStatusModal";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
-import { returnFormDetailResponseToRequestList, returnFormDetailsToPayloadFormat } from "../../helpers/mapper";
+import {
+  returnFormDetailResponseToRequestList,
+  returnFormDetailsToPayloadFormat,
+} from "../../helpers/mapper";
 import {
   DeliveryStatus,
   IOrderResponse,
@@ -12,12 +26,6 @@ import {
   IReturnFormDetailResponse,
   IReturnFormResponse,
 } from "../../interfaces";
-import { ReturnSteps } from "../../components/return/ReturnSteps";
-import { ReturnHistoryTimeLine } from "../../components/return/ReturnHistoryTimeLine";
-import { TbStatusChange } from "react-icons/tb";
-import { AiOutlineFileDone } from "react-icons/ai";
-import UpdateStatusModal from "../../components/return/UpdateStatusModal";
-import { MdHistoryEdu } from "react-icons/md";
 
 export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -28,7 +36,10 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     queryResult: { refetch, data, isLoading },
   } = useShow<IReturnFormResponse>();
 
-  const { onFinish, formProps, saveButtonProps, formLoading } = useForm<IReturnFormResponse>({ action: "edit", id });
+  const record = data?.data;
+
+  const { onFinish, formProps, saveButtonProps, formLoading } =
+    useForm<IReturnFormResponse>({ action: "edit", id });
 
   const {
     show: showReason,
@@ -36,59 +47,60 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     modalProps: { visible: vi2, ...restPropsReason },
   } = useModal();
 
-  const [returnFormDetails, setReturnFormDetails] = useState<IReturnFormDetailRequest[]>();
-
-  const [selectedOrder, setSelectedOrder] = useState<IOrderResponse>();
-  const [returnForm, setReturnForm] = useState<IReturnFormResponse>();
+  const [returnFormDetails, setReturnFormDetails] =
+    useState<IReturnFormDetailRequest[]>();
 
   const [status, setStatus] = useState<DeliveryStatus>("PENDING");
 
-  const defaultAddress = selectedOrder?.customer?.addressList.find((address) => address.isDefault);
-
   useEffect(() => {
-    if (defaultAddress) {
-      formProps.form?.setFieldsValue({
-        phoneNumber: defaultAddress.phoneNumber,
-        provinceId: Number(defaultAddress.provinceId),
-        districtId: Number(defaultAddress.districtId),
-        wardCode: defaultAddress.wardCode,
-        line: defaultAddress.more,
-      });
-    }
-  }, [defaultAddress]);
-
-  useEffect(() => {
-    if (selectedOrder) {
-      const customer = selectedOrder?.fullName ?? selectedOrder?.customer?.fullName ?? t("invoices.retailCustomer");
+    if (record?.order) {
+      const customer =
+        record.order?.fullName ??
+        record.order?.customer?.fullName ??
+        t("invoices.retailCustomer");
 
       formProps.form?.setFieldsValue({
         customer: {
           name: customer,
         },
-        code: selectedOrder.code,
+        code: record.order.code,
       });
     }
-  }, [selectedOrder]);
+  }, [record]);
 
   useEffect(() => {
-    if (formProps.initialValues) {
-      const returnFormDetailsResponse: IReturnFormDetailResponse[] = formProps.initialValues.returnFormDetails;
-      const orderResponse: IOrderResponse = formProps.initialValues.order;
-      const returnForm: IReturnFormResponse = formProps.initialValues as IReturnFormResponse;
+    if (record) {
+      const returnFormDetailsResponse: IReturnFormDetailResponse[] =
+        record.returnFormDetails;
+      const orderResponse: IOrderResponse = record.order;
+      const defaultAddress = orderResponse?.customer?.addressList.find(
+        (address) => address.isDefault
+      );
 
       const returnFormDetailsRequest = returnFormDetailResponseToRequestList(
         returnFormDetailsResponse,
         orderResponse.code
       );
+
+      if (defaultAddress) {
+        formProps.form?.setFieldsValue({
+          phoneNumber: defaultAddress.phoneNumber,
+          provinceId: Number(defaultAddress.provinceId),
+          districtId: Number(defaultAddress.districtId),
+          wardCode: defaultAddress.wardCode,
+          line: defaultAddress.more,
+        });
+      }
+
       setReturnFormDetails(returnFormDetailsRequest);
-      setSelectedOrder(orderResponse);
-      setReturnForm(returnForm);
     }
-  }, [formProps.initialValues]);
+  }, [record]);
 
   const handleOnFinish = (values: any) => {
     const isValid = returnFormDetails?.every((returnFormDetail) =>
-      Object.values(returnFormDetail).every((value) => value !== "" && value !== undefined)
+      Object.values(returnFormDetail).every(
+        (value) => value !== "" && value !== undefined
+      )
     );
 
     if (!isValid) {
@@ -96,7 +108,8 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       return;
     }
 
-    const returnFormDetailsPayload = returnFormDetailsToPayloadFormat(returnFormDetails);
+    const returnFormDetailsPayload =
+      returnFormDetailsToPayloadFormat(returnFormDetails);
 
     const submitData = {
       address: {
@@ -109,10 +122,12 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
         wardName: formProps.form?.getFieldValue("wardName"),
         more: formProps.form?.getFieldValue("line"),
       },
-      order: selectedOrder?.id,
+      order: record?.order?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
       refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      returnDeliveryStatus: formProps.form?.getFieldValue("returnDeliveryStatus"),
+      returnDeliveryStatus: formProps.form?.getFieldValue(
+        "returnDeliveryStatus"
+      ),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
       type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),
@@ -156,9 +171,11 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             <Button
               icon={<TbStatusChange />}
               type="primary"
-              disabled={returnForm?.returnDeliveryStatus === "COMPLETED"}
+              disabled={record?.returnDeliveryStatus === "COMPLETED"}
               onClick={() => {
-                const status = getNextStatus(returnForm?.returnDeliveryStatus ?? "PENDING");
+                const status = getNextStatus(
+                  record?.returnDeliveryStatus ?? "PENDING"
+                );
                 setStatus(status ?? "PENDING");
                 showReason();
               }}
@@ -167,7 +184,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             </Button>
             <Button
               icon={<AiOutlineFileDone />}
-              disabled={returnForm?.returnDeliveryStatus === "COMPLETED"}
+              disabled={record?.returnDeliveryStatus === "COMPLETED"}
               type="primary"
               onClick={() => {
                 setStatus("COMPLETED");
@@ -178,9 +195,15 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             </Button>
           </>
         )}
-        footerButtons={<>{returnForm?.refundStatus === "PENDING" && <SaveButton {...saveButtonProps} />}</>}
+        footerButtons={
+          <>
+            {record?.refundStatus === "PENDING" && (
+              <SaveButton {...saveButtonProps} />
+            )}
+          </>
+        }
       >
-        <ReturnSteps record={returnForm} callBack={null} />
+        <ReturnSteps record={record} callBack={null} />
         {returnFormDetails && (
           <ReturnForm
             action="edit"
@@ -191,13 +214,15 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
           />
         )}
       </Show>
-      {restProps.open && <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />}
+      {restProps.open && (
+        <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />
+      )}
 
       {restPropsReason.open && (
         <UpdateStatusModal
           restModalProps={restPropsReason}
           close={closeReason}
-          returnForm={returnForm ?? ({} as IReturnFormResponse)}
+          returnForm={record ?? ({} as IReturnFormResponse)}
           callBack={refetch}
           status={status}
         />
@@ -206,8 +231,15 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   );
 };
 
-const getNextStatus = (currentStatus: DeliveryStatus): DeliveryStatus | null => {
-  const statusList: DeliveryStatus[] = ["PENDING", "RETURNING", "RECEIVED", "COMPLETED"];
+const getNextStatus = (
+  currentStatus: DeliveryStatus
+): DeliveryStatus | null => {
+  const statusList: DeliveryStatus[] = [
+    "PENDING",
+    "RETURNING",
+    "RECEIVED",
+    "COMPLETED",
+  ];
   const currentIndex = statusList.indexOf(currentStatus);
 
   if (currentIndex !== -1) {

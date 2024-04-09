@@ -433,7 +433,7 @@ export interface IReturnFormResponse {
   code: string;
   employee: IEmployeeResponse;
   address: IAddressResponse;
-  returnDetails: IReturnFormDetailResponse[];
+  returnFormDetails: IReturnFormDetailResponse[];
   amountToBePaid: number;
   type: ReturnType;
   returnDeliveryStatus: DeliveryStatus;
