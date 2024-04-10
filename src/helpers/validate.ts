@@ -3,9 +3,9 @@
  * Các hàm validator cho các trường common trong form như số điện thoại, email, họ và tên, và mật khẩu.
  */
 
-import { TranslateFunction } from "@refinedev/core/dist/interfaces/bindings/i18n";
 import { RuleObject } from "antd/es/form";
 import { PhoneNumberUtil } from "google-libphonenumber";
+import { TranslateFunction } from "../interfaces";
 
 /**
  * Hàm kiểm tra tính hợp lệ của số điện thoại.

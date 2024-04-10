@@ -40,11 +40,11 @@ export type PromotionStatus =
 export type VoucherType = "PERCENTAGE" | "CASH";
 export type OrderType = "ONLINE" | "OFFLINE";
 export type RevisionType = "UNKNOWN" | "INSERT" | "UPDATE" | "DELETE";
-export type ReturnType = "ONLINE" | "OFFLINE";
 export type PaymentType = "Cash" | "Transfer";
-export type RefundStatus = "PENDING" | "COMPLETED";
-export type InspectionStatus = "PASSED" | "FAILED" | undefined;
-export type DeliveryStatus = "PENDING" | "RETURNING" | "RECEIVED" | "COMPLETED";
+export type TranslateFunction = {
+  (key: string, options?: any, defaultMessage?: string | undefined): string;
+  (key: string, defaultMessage?: string | undefined): string;
+};
 /* End Types */
 
 /* Start Intefaces */
@@ -76,18 +76,18 @@ export interface IReturnEvent {
 }
 
 export interface IUserSelected {
-  product: IProductResponse;
-  tradeMark: IProdAttributeResponse;
-  style: IProdAttributeResponse;
-  size: IProdAttributeResponse[];
-  material: IProdAttributeResponse;
-  color: IColorResponse[];
-  brand: IProdAttributeResponse;
-  sole: IProdAttributeResponse;
-  image: string;
-  price: number;
-  quantity: number;
-  status: ProductStatus;
+  product?: IProductResponse;
+  tradeMark?: IProdAttributeResponse;
+  style?: IProdAttributeResponse;
+  size?: IProdAttributeResponse[];
+  material?: IProdAttributeResponse;
+  color?: IColorResponse[];
+  brand?: IProdAttributeResponse;
+  sole?: IProdAttributeResponse;
+  image?: string;
+  price?: number;
+  quantity?: number;
+  status?: ProductStatus;
 }
 export interface IProductClient {
   id: string;
@@ -435,14 +435,10 @@ export interface IReturnFormResponse {
   address: IAddressResponse;
   returnFormDetails: IReturnFormDetailResponse[];
   amountToBePaid: number;
-  type: ReturnType;
-  returnDeliveryStatus: DeliveryStatus;
   paymentType: PaymentType;
   paymentInfo: string;
-  refundStatus: RefundStatus;
   createdBy: string;
   createdAt: number;
-  returnFormHistories: IReturnFormHistoryResponse[];
 }
 export interface IReturnFormDetailResponse {
   id: string;
@@ -450,19 +446,8 @@ export interface IReturnFormDetailResponse {
   quantity: number;
   reason: string;
   feedback: string;
-  returnInspectionStatus: InspectionStatus;
-  returnInspectionReason: string;
   urlImage: string;
-  resellable: boolean;
   createdAt?: number;
-}
-export interface IReturnFormHistoryResponse {
-  id: string;
-  returnForm: IReturnFormResponse;
-  actionStatus: DeliveryStatus;
-  note: string;
-  createdAt: number;
-  createdBy: string;
 }
 export interface IReviewResponse {
   id: string;
@@ -527,14 +512,10 @@ export interface IPaymentRequest {
 export interface IReturnFormRequest {
   code: string;
   employee: string;
-  address: IAddressResponse;
   returnDetails: IReturnFormDetailRequest[];
   amountToBePaid: number;
-  type: ReturnType;
-  returnDeliveryStatus: DeliveryStatus;
   paymentType: PaymentType;
   paymentInfo: string;
-  refundStatus: RefundStatus;
 }
 export interface IReturnFormDetailRequest {
   id?: string;
@@ -546,10 +527,7 @@ export interface IReturnFormDetailRequest {
   unitPrice: number;
   reason: string;
   feedback: string;
-  returnInspectionStatus: InspectionStatus;
-  returnInspectionReason: string;
   evidence: string;
-  resellable: boolean;
 }
 /* End Request */
 /* Start Filter Variables */
@@ -649,9 +627,6 @@ export interface IProductFilterVariables {
 }
 export interface IReturnFormFilterVariables {
   q?: string;
-  deliveryStatus: string;
-  refundStatus: string;
-  type: string;
   paymentType: string;
 }
 /* End Filter Variables */

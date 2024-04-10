@@ -1,4 +1,4 @@
-import { TranslateFunction } from "@refinedev/core/dist/interfaces/bindings/i18n";
+import { TranslateFunction } from "../interfaces";
 
 export const getOrderTypeOptions = (t: TranslateFunction) => [
   {
@@ -7,17 +7,6 @@ export const getOrderTypeOptions = (t: TranslateFunction) => [
   },
   {
     label: t("orders.fields.type.ONLINE"),
-    value: "ONLINE",
-  },
-];
-
-export const getReturnTypeOptions = (t: TranslateFunction) => [
-  {
-    label: t("return-forms.fields.type.OFFLINE"),
-    value: "OFFLINE",
-  },
-  {
-    label: t("return-forms.fields.type.ONLINE"),
     value: "ONLINE",
   },
 ];

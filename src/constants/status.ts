@@ -1,4 +1,4 @@
-import { TranslateFunction } from "@refinedev/core/dist/interfaces/bindings/i18n";
+import { TranslateFunction } from "../interfaces";
 
 export const getProductStatusOptions = (t: TranslateFunction) => [
   {
@@ -138,15 +138,5 @@ export const getRefundStatusOptions = (t: TranslateFunction) => [
   {
     label: t("return-forms.fields.refundStatus.COMPLETED"),
     value: "COMPLETED",
-  },
-];
-export const getInspectionStatusOptions = (t: TranslateFunction) => [
-  {
-    label: t("return-form-details.fields.returnInspectionStatus.PASSED"),
-    value: "PASSED",
-  },
-  {
-    label: t("return-form-details.fields.returnInspectionStatus.FAILED"),
-    value: "FAILED",
   },
 ];

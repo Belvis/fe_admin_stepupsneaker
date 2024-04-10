@@ -99,6 +99,11 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
         noStyle={!label}
         required={required}
         hidden={hidden}
+        rules={[
+          {
+            required: required,
+          },
+        ]}
       >
         <Upload.Dragger
           name="file"

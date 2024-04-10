@@ -29,6 +29,8 @@ import {
 import { IOrderDetailResponse, IOrderResponse } from "../../interfaces";
 import { AddressFormThree } from "../form/AddressFormThree";
 import { MyOrderModalFooter } from "./MyOrderModalFooter";
+import { useModal } from "@refinedev/antd";
+import { AdvancedAddModal } from "../point-of-sales/AdvancedAddModal";
 
 const { Title } = Typography;
 
@@ -69,6 +71,12 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
   const [viewOrder, setViewOrder] = useState<IOrderResponse>(order);
 
   const [shippingMoney, setShippingMoney] = useState<number>(0);
+
+  const {
+    show: advancedAddShow,
+    close: advancedAddClose,
+    modalProps: advancedAddModalProps,
+  } = useModal();
 
   // Reset on open
 
@@ -305,7 +313,7 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
 
   const columns: ColumnsType<IOrderDetailResponse> = [
     {
-      title: "Ảnh",
+      title: t("image.image"),
       key: "image",
       dataIndex: ["productDetail", "image"],
       align: "center",
@@ -323,7 +331,7 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
       ),
     },
     {
-      title: "Tên sản phẩm",
+      title: t("products.titles.list"),
       key: "name",
       dataIndex: ["productDetail", "product", "name"],
       align: "start",
@@ -340,9 +348,13 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
               {record.productDetail.product.name}
             </Link>
             <div className="cart-item-variation">
-              <span>Màu sắc: {record.productDetail.color.name}</span>
+              <span>
+                {t("colors.colors")}: {record.productDetail.color.name}
+              </span>
               <br />
-              <span>Kích cỡ: {record.productDetail.size.name}</span>
+              <span>
+                {t("sizes.sizes")}: {record.productDetail.size.name}
+              </span>
             </div>
           </div>
         );
@@ -430,6 +442,9 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
           <Tooltip title={t("orders.modal.tooltip")}>
             <InfoCircleOutlined />
           </Tooltip>
+          <Button type="primary" onClick={advancedAddShow}>
+            {t("products.titles.add")}
+          </Button>
         </Space>
       }
       {...restModalProps}
@@ -523,6 +538,14 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
           </Form>
         </div>
       </div>
+      {advancedAddModalProps.open && (
+        <AdvancedAddModal
+          type="state"
+          setViewOrder={setViewOrder}
+          modalProps={advancedAddModalProps}
+          close={advancedAddClose}
+        />
+      )}
     </Modal>
   );
 };

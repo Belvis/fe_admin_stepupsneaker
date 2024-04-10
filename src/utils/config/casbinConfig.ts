@@ -33,6 +33,6 @@ p, ROLE_STAFF, dashboard, (list)
 p, ROLE_STAFF, payments, (list)
 
 p, ROLE_STAFF, return-forms, (list)|(create)
-p, ROLE_STAFF, return-forms/*, (edit)|(show)
+p, ROLE_STAFF, return-forms/*, (edit)
 
 `);

@@ -16,9 +16,15 @@ import { IUserSelected } from "../../../interfaces";
 export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
 
-  const [userSelected, setUserSelected] = useState<IUserSelected>(
-    {} as IUserSelected
-  );
+  const [userSelected, setUserSelected] = useState<IUserSelected>({
+    tradeMark: undefined,
+    style: undefined,
+    size: undefined,
+    material: undefined,
+    color: undefined,
+    brand: undefined,
+    sole: undefined,
+  });
 
   const beadcrumbItems = [
     {

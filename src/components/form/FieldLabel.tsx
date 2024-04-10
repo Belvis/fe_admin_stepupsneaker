@@ -1,4 +1,4 @@
-import { TranslateFunction } from "@refinedev/core/dist/interfaces/bindings/i18n";
+import { TranslateFunction } from "../../interfaces";
 
 interface FieldLabel {
   fieldName: string;

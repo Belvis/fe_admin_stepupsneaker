@@ -268,9 +268,6 @@ export const returnFormDetailsToPayloadFormat = (
       quantity: detail.returnQuantity,
       reason: detail.reason,
       feedback: detail.feedback,
-      resellable: detail.resellable,
-      returnInspectionStatus: detail.returnInspectionStatus,
-      returnInspectionReason: detail.returnInspectionReason,
       image: detail.evidence,
     };
   });
@@ -290,10 +287,7 @@ export const returnFormDetailResponseToRequest = (
     unitPrice: responseDetail.orderDetail.price,
     reason: responseDetail.reason,
     feedback: responseDetail.feedback,
-    returnInspectionStatus: responseDetail.returnInspectionStatus,
-    returnInspectionReason: responseDetail.returnInspectionReason,
     evidence: responseDetail.urlImage,
-    resellable: responseDetail.resellable,
   };
 };
 

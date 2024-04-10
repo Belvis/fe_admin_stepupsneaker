@@ -1,5 +1,4 @@
 import { AccessControlProvider, CanParams } from "@refinedev/core";
-import { CanResponse } from "@refinedev/core/dist/interfaces/bindings/access-control";
 import { newEnforcer } from "casbin";
 import {
   decodeToken,
@@ -7,6 +6,7 @@ import {
   getToken,
 } from "../helpers/token";
 import { adapter, model } from "../utils/config/casbinConfig";
+import { CanResponse } from "@refinedev/core/dist/contexts/accessControl/types";
 
 export const accessControlProvider: AccessControlProvider = {
   can: async ({

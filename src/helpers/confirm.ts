@@ -3,9 +3,8 @@
  * Các hàm hiển thị comfirm dialog với các tùy chọn tùy chỉnh, sử dụng PrimeReact ConfirmDialog.
  */
 
-import { TranslateFunction } from "@refinedev/core/dist/interfaces/bindings/i18n";
 import { confirmDialog } from "primereact/confirmdialog";
-import { IConfirmDialogOptions } from "../interfaces";
+import { IConfirmDialogOptions, TranslateFunction } from "../interfaces";
 
 type ConfirmDialogProps = {
   options: IConfirmDialogOptions;

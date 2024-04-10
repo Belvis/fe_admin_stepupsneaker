@@ -1,4 +1,11 @@
-import { Action, Authenticated, IResourceItem, Refine } from "@refinedev/core";
+import {
+  Action,
+  Authenticated,
+  CanAccess,
+  IResourceItem,
+  Refine,
+  useGetIdentity,
+} from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
@@ -89,6 +96,11 @@ import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
 import { accessControlProvider } from "./providers/accessControlProvider";
 import { authProvider } from "./providers/authProvider";
 import { ReviewList } from "./pages/review/list";
+import {
+  decodeToken,
+  getRoleFromDecodedToken,
+  getToken,
+} from "./helpers/token";
 
 const API_BASE_URL = `${window.location.protocol}//${
   window.location.hostname
@@ -144,6 +156,10 @@ function App() {
       return "SUNS";
     }
   };
+
+  const userToken = getToken();
+  const decodedToken = decodeToken(userToken);
+  const role = getRoleFromDecodedToken(decodedToken);
 
   return (
     <BrowserRouter>
@@ -492,7 +508,23 @@ function App() {
                     </Route>
                   </Route>
                   <Route path="/return-forms">
-                    <Route index element={<ReturnList />} />
+                    <Route
+                      index
+                      element={
+                        <CanAccess
+                          resource="return-forms"
+                          action="show"
+                          key="return-forms-author"
+                          fallback={
+                            <ReturnFormContextProvider>
+                              <ReturnCreate />
+                            </ReturnFormContextProvider>
+                          }
+                        >
+                          <ReturnList />
+                        </CanAccess>
+                      }
+                    />
                     <Route
                       path="create"
                       element={

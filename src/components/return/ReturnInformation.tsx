@@ -4,16 +4,12 @@ import {
   useTranslate,
 } from "@refinedev/core";
 
-import { App, Form } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { App } from "antd";
+import { useContext, useEffect } from "react";
 import { ReturnFormContext } from "../../contexts/return";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { returnFormDetailsToPayloadFormat } from "../../helpers/mapper";
-import {
-  IAddressResponse,
-  IEmployeeResponse,
-  ReturnType,
-} from "../../interfaces";
+import { IEmployeeResponse } from "../../interfaces";
 import { ReturnForm } from "./ReturnForm";
 
 export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
@@ -28,20 +24,7 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
     setReturnFormDetails,
   } = useContext(ReturnFormContext);
 
-  const type: ReturnType = Form.useWatch("type", formProps.form);
   const { data } = useGetIdentity<IEmployeeResponse>();
-
-  const [defaultAddress, setDefaultAddress] = useState<IAddressResponse>();
-
-  useEffect(() => {
-    if (selectedOrder) {
-      const defaultAddress = selectedOrder?.customer?.addressList.find(
-        (address) => address.isDefault
-      );
-
-      setDefaultAddress(defaultAddress);
-    }
-  }, [selectedOrder]);
 
   useEffect(() => {
     const calculateTotalMoney = () => {
@@ -65,21 +48,6 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
       formProps.form?.setFieldValue("amountToBePaid", newTotalMoney);
     }
   }, [returnFormDetails]);
-
-  useEffect(() => {
-    if (defaultAddress) {
-      formProps.form?.setFieldsValue({
-        phoneNumber: defaultAddress.phoneNumber,
-        provinceId: Number(defaultAddress.provinceId),
-        districtId: Number(defaultAddress.districtId),
-        wardName: defaultAddress.wardName,
-        provinceName: defaultAddress.provinceName,
-        districtName: defaultAddress.districtName,
-        wardCode: defaultAddress.wardCode,
-        more: defaultAddress.more,
-      });
-    }
-  }, [defaultAddress]);
 
   useEffect(() => {
     if (selectedOrder) {
@@ -109,12 +77,15 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
 
   const handleOnFinish = (values: any) => {
     const isValid = returnFormDetails?.every((returnFormDetail) =>
-      Object.values(returnFormDetail).every(
-        (value) => value !== "" && value !== undefined
-      )
+      Object.values(returnFormDetail).every((value) => {
+        if (!(value !== "" && value !== undefined)) {
+          console.log("returnFormDetail", returnFormDetail);
+        }
+        return value !== "" && value !== undefined;
+      })
     );
 
-    if (!isValid && type === "OFFLINE") {
+    if (!isValid) {
       message.warning(t("return-forms.message.emptyReturnDetails"));
       return;
     }
@@ -123,24 +94,9 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
       returnFormDetailsToPayloadFormat(returnFormDetails);
 
     const submitData = {
-      address: {
-        phoneNumber: formProps.form?.getFieldValue("phoneNumber"),
-        districtId: formProps.form?.getFieldValue("districtId"),
-        districtName: formProps.form?.getFieldValue("districtName"),
-        provinceId: formProps.form?.getFieldValue("provinceId"),
-        provinceName: formProps.form?.getFieldValue("provinceName"),
-        wardCode: formProps.form?.getFieldValue("wardCode"),
-        wardName: formProps.form?.getFieldValue("wardName"),
-        more: formProps.form?.getFieldValue("line"),
-      },
       order: selectedOrder?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
-      refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      returnDeliveryStatus: formProps.form?.getFieldValue(
-        "returnDeliveryStatus"
-      ),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
-      type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),
       returnFormDetails: returnFormDetailsPayload,
     };

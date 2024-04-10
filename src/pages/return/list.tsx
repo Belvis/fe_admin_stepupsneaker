@@ -14,25 +14,15 @@ import { Card, Col, Row, Table, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useMemo } from "react";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
-import { ReturnDeliveryStatus } from "../../components/return/ReturnDeliveryStatus";
-import { ReturnRefundStatus } from "../../components/return/ReturnRefundStatus";
 import ColumnActions from "../../components/table/ColumnActions";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
+import { getReturnPaymentTypeOptions } from "../../constants/type";
 import {
   ICustomerResponse,
   IReturnFormFilterVariables,
   IReturnFormResponse,
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
-import {
-  getDeliveryStatusOptions,
-  getRefundStatusOptions,
-} from "../../constants/status";
-import {
-  getReturnPaymentTypeOptions,
-  getReturnTypeOptions,
-} from "../../constants/type";
-import { OrderType } from "../../components/order/OrderType";
 
 const { Text } = Typography;
 
@@ -47,7 +37,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, deliveryStatus, paymentType, refundStatus, type }) => {
+    onSearch: ({ q, paymentType }) => {
       const filters: CrudFilters = [];
 
       filters.push({
@@ -56,24 +46,9 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         value: q ? q : undefined,
       });
       filters.push({
-        field: "deliveryStatus",
-        operator: "eq",
-        value: deliveryStatus ? deliveryStatus : undefined,
-      });
-      filters.push({
         field: "paymentType",
         operator: "eq",
         value: paymentType ? paymentType : undefined,
-      });
-      filters.push({
-        field: "refundStatus",
-        operator: "eq",
-        value: refundStatus ? refundStatus : undefined,
-      });
-      filters.push({
-        field: "type",
-        operator: "eq",
-        value: type ? type : undefined,
       });
 
       return filters;
@@ -115,39 +90,6 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
               {value ? value.fullName : t("orders.tab.retailCustomer")}
             </Text>
           );
-        },
-      },
-      {
-        title: t("return-forms.fields.type.label"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("type", sorters),
-        key: "type",
-        dataIndex: "type",
-        align: "center",
-        render: (value) => {
-          return <OrderType type={value} />;
-        },
-      },
-      {
-        title: t("return-forms.fields.returnDeliveryStatus.label"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("returnDeliveryStatus", sorters),
-        key: "returnDeliveryStatus",
-        dataIndex: "returnDeliveryStatus",
-        align: "center",
-        render: (value) => {
-          return <ReturnDeliveryStatus status={value} />;
-        },
-      },
-      {
-        title: t("return-forms.fields.refundStatus.label"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("refundStatus", sorters),
-        key: "refundStatus",
-        dataIndex: "refundStatus",
-        align: "center",
-        render: (value) => {
-          return <ReturnRefundStatus status={value} />;
         },
       },
       {
@@ -209,34 +151,6 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`return-forms.filters.search.placeholder`),
-                  width: "200px",
-                },
-                {
-                  label: t(`return-forms.filters.deliveryStatus.label`),
-                  name: "deliveryStatus",
-                  placeholder: t(
-                    `return-forms.filters.deliveryStatus.placeholder`
-                  ),
-                  type: "select",
-                  options: getDeliveryStatusOptions(t),
-                  width: "300px",
-                },
-                {
-                  label: t(`return-forms.filters.refundStatus.label`),
-                  name: "refundStatus",
-                  placeholder: t(
-                    `return-forms.filters.refundStatus.placeholder`
-                  ),
-                  type: "select",
-                  options: getRefundStatusOptions(t),
-                  width: "250px",
-                },
-                {
-                  label: t(`return-forms.filters.type.label`),
-                  name: "type",
-                  placeholder: t(`return-forms.filters.type.placeholder`),
-                  type: "select",
-                  options: getReturnTypeOptions(t),
                   width: "200px",
                 },
                 {

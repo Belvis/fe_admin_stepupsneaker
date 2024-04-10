@@ -52,6 +52,12 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
     }
   }, [printOrder, componentRef.current]);
 
+  useEffect(() => {
+    if (record && record.status === "WAIT_FOR_DELIVERY") {
+      setPrintOrder(record);
+    }
+  }, [record]);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [status, setStatus] = useState<OrderStatus>({} as OrderStatus);
 
@@ -128,7 +134,7 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
                 showReason();
               }}
             >
-              Trở về trạng thái trước đó
+              {t("buttons.backToPrevious")}
             </Button>,
             <Button
               disabled={!canRejectOrder}
@@ -190,10 +196,10 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
                 disabled={record && record?.status !== "WAIT_FOR_CONFIRMATION"}
                 onClick={show}
               >
-                Chỉnh sửa đơn hàng
+                {t("orders.titles.edit")}
               </Button>
               <Button type="primary" onClick={showModal}>
-                Xem lịch sử
+                {t("buttons.viewHistory")}
               </Button>
             </>
           )}
