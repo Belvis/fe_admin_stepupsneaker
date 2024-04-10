@@ -345,7 +345,6 @@ export interface IOrderResponse {
   fullName: string;
   totalMoney: number;
   shippingMoney: number;
-  totalMoney: number;
   originMoney: number;
   reduceMoney: number;
   confirmationDate: number;

@@ -45,7 +45,7 @@ import {
   IPaymentRequest,
   IPaymentResponse,
 } from "../../../interfaces";
-import { InvoiceTemplate } from "../../../template/invoice";
+import { InvoiceTemplate } from "../../../template/InvoiceTemplate";
 import {
   calculateChange,
   calculatePayment,

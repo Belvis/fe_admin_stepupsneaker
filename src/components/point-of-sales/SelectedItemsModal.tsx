@@ -92,9 +92,43 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
     if (type === "state" && setViewOrder) {
       setViewOrder((prev) => {
         const payLoad = productDetailToOrderDetail(copiedItems, prev);
+        let addition = 0;
+
+        const updatedOrderDetails = prev.orderDetails.map((existingItem) => {
+          const itemToUpdate = payLoad.find(
+            (newItem) => newItem.id === existingItem.id
+          );
+
+          if (itemToUpdate) {
+            addition += itemToUpdate.quantity * existingItem.price;
+
+            return {
+              ...existingItem,
+              quantity: existingItem.quantity + itemToUpdate.quantity,
+              totalPrice:
+                (existingItem.quantity + itemToUpdate.quantity) *
+                existingItem.price,
+            };
+          }
+          return existingItem;
+        });
+
+        const newItemsToAdd = payLoad.filter(
+          (newItem) =>
+            !prev.orderDetails.some(
+              (existingItem) => existingItem.id === newItem.id
+            )
+        );
+        addition += newItemsToAdd.reduce(
+          (accumulator, detail) => accumulator + detail.totalPrice,
+          0
+        );
+
         return {
           ...prev,
-          orderDetails: [...prev.orderDetails, ...payLoad],
+          orderDetails: [...updatedOrderDetails, ...newItemsToAdd],
+          originMoney: prev.originMoney + addition,
+          totalMoney: prev.totalMoney + addition,
         };
       });
       message.success(t("orders.notification.product.add.success"));

@@ -132,7 +132,11 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
   const handleUpdateOrder = () => {
     const simplifiedCartItems: { id: string; quantity: number }[] =
       viewOrder.orderDetails.map((item) => {
-        return { id: item.id, quantity: item.quantity };
+        return {
+          id: item.id,
+          productDetailId: item.productDetail.id,
+          quantity: item.quantity,
+        };
       });
     const orderPayload = orderToRequest(order);
 
@@ -265,11 +269,15 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
   };
 
   const handleRemoveItem = (record: IOrderDetailResponse) => {
-    const cartCount = viewOrder.orderDetails.length;
-    const newOriginMoney = viewOrder.orderDetails.reduce(
+    const newCartDetails = viewOrder.orderDetails.filter(
+      (detail) => detail.id !== record.id
+    );
+
+    const newOriginMoney = newCartDetails.reduce(
       (accumulator, detail) => accumulator + detail.totalPrice,
       0
     );
+
     const newShippingMoney =
       newOriginMoney < FREE_SHIPPING_THRESHOLD
         ? shippingMoney === 0
@@ -277,7 +285,10 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
           : shippingMoney
         : 0;
 
-    if (cartCount == 1) {
+    const newTotalMoney =
+      newOriginMoney + newShippingMoney - viewOrder.reduceMoney;
+
+    if (newCartDetails.length === 0) {
       showWarningConfirmDialog({
         options: {
           message:
@@ -296,12 +307,10 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
           accept: () => {
             setViewOrder((prev) => ({
               ...prev,
-              orderDetails: prev.orderDetails.filter(
-                (detail) => detail.id !== record.id
-              ),
+              orderDetails: newCartDetails,
               originMoney: newOriginMoney,
               shippingMoney: newShippingMoney,
-              totalMoney: newOriginMoney + newShippingMoney - prev.reduceMoney,
+              totalMoney: newTotalMoney,
             }));
           },
           reject: () => {},

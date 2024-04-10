@@ -11,7 +11,7 @@ import {
   IPaymentResponse,
 } from "../../../interfaces";
 import { PaymentComfirmModal } from "../PaymentConfirmModal";
-import { InvoiceTemplate } from "../../../template/invoice";
+import { InvoiceTemplate } from "../../../template/InvoiceTemplate";
 import { useReactToPrint } from "react-to-print";
 
 type DeliverySalesRightFooterProps = {

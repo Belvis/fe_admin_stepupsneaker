@@ -24,7 +24,7 @@ import { OrderHistoryTimeLine } from "../../components/order/OrderHistoryTimeLin
 import { OrderSteps } from "../../components/order/OrderSteps";
 import { IOrderResponse, OrderStatus } from "../../interfaces";
 import { useReactToPrint } from "react-to-print";
-import { InvoiceTemplate } from "../../template/invoice";
+import { InvoiceTemplate } from "../../template/InvoiceTemplate";
 
 const { Text } = Typography;
 
@@ -68,8 +68,7 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
     record?.status === "WAIT_FOR_DELIVERY" ||
     record?.status === "DELIVERING" ||
     record?.status === "CANCELED" ||
-    record?.status === "EXCHANGED" ||
-    record?.status === "RETURNED";
+    record?.status === "EXCHANGED";
   const canRevertOrder = record?.status === "WAIT_FOR_DELIVERY";
 
   const {

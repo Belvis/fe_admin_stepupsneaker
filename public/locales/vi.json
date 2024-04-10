@@ -1346,7 +1346,7 @@
       "common": "Trường này là bắt buộc",
       "min": "Trường này ít nhất phải có {{ min }} ký tự",
       "max": "Trường này phải có nhiều nhất {{ max }} ký tự",
-      "invalidMail": "Dà địa chỉ email không hợp lệ"
+      "invalidMail": "Địa chỉ email không hợp lệ"
     }
   },
   "userSelect": {

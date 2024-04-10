@@ -4,7 +4,6 @@ import {
   CanAccess,
   IResourceItem,
   Refine,
-  useGetIdentity,
 } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -34,7 +33,6 @@ import {
   DollarOutlined,
   ForkOutlined,
   ReadOutlined,
-  SafetyOutlined,
   ShopOutlined,
   ShoppingOutlined,
   TagsOutlined,
@@ -42,9 +40,12 @@ import {
   WalletOutlined,
 } from "@ant-design/icons";
 
-import { MdOutlineAssignmentReturn, MdSecurity } from "react-icons/md";
+import {
+  MdOutlineAssignmentReturn,
+  MdOutlineReviews,
+  MdSecurity,
+} from "react-icons/md";
 import { PointOfSaleIcon } from "./components/icons/icon-pos";
-import { MdOutlineReviews } from "react-icons/md";
 
 import {
   ColorIcon,
@@ -60,6 +61,11 @@ import {
 import { DashboardContextProvider } from "./contexts/dashboard";
 import { POSContextProvider } from "./contexts/point-of-sales";
 import { ReturnFormContextProvider } from "./contexts/return";
+import {
+  decodeToken,
+  getRoleFromDecodedToken,
+  getToken,
+} from "./helpers/token";
 import { Header } from "./layouts/header";
 import { ThemedSiderV2 } from "./layouts/sider";
 import { ThemedTitleV2 } from "./layouts/title";
@@ -91,16 +97,11 @@ import {
 import { ReturnCreate } from "./pages/return/create";
 import { ReturnList } from "./pages/return/list";
 import { ReturnShow } from "./pages/return/show";
+import { ReviewList } from "./pages/review/list";
 import { RoleList } from "./pages/role";
 import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
 import { accessControlProvider } from "./providers/accessControlProvider";
 import { authProvider } from "./providers/authProvider";
-import { ReviewList } from "./pages/review/list";
-import {
-  decodeToken,
-  getRoleFromDecodedToken,
-  getToken,
-} from "./helpers/token";
 
 const API_BASE_URL = `${window.location.protocol}//${
   window.location.hostname

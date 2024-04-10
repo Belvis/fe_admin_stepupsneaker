@@ -1,5 +1,5 @@
 // App properties
-export const APP_TITLE: string = "Stepsneaker";
+export const APP_TITLE: string = "Stepupsneaker";
 export const STORE_ADDRESS = {
   city: "Hà Nội",
   province: "Nam Từ Liêm",
@@ -8,6 +8,7 @@ export const STORE_ADDRESS = {
 };
 export const FREE_SHIPPING_THRESHOLD: number = 5000000;
 export const CONTACT_PHONE_NUMBER: string = "0987654321";
+export const CONTACT_EMAIL: string = "sus_support@email.com";
 export const QRCODE_VALUE: string =
   "00020101021138570010A00000072701270006970436011306910004415480208QRIBFTTA53037045802VN63042141";
 export const QRCODE_ICON_URL: string =
