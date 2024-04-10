@@ -1,26 +1,19 @@
-import { SaveButton, Show, useForm, useModal } from "@refinedev/antd";
+import { SaveButton, Show, useForm } from "@refinedev/antd";
 import {
   IResourceComponentsProps,
   useParsed,
   useShow,
   useTranslate,
 } from "@refinedev/core";
-import { App, Button } from "antd";
+import { App } from "antd";
 import { useEffect, useState } from "react";
-import { AiOutlineFileDone } from "react-icons/ai";
-import { MdHistoryEdu } from "react-icons/md";
-import { TbStatusChange } from "react-icons/tb";
 import { ReturnForm } from "../../components/return/ReturnForm";
-import { ReturnHistoryTimeLine } from "../../components/return/ReturnHistoryTimeLine";
-import { ReturnSteps } from "../../components/return/ReturnSteps";
-import UpdateStatusModal from "../../components/return/UpdateStatusModal";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import {
   returnFormDetailResponseToRequestList,
   returnFormDetailsToPayloadFormat,
 } from "../../helpers/mapper";
 import {
-  DeliveryStatus,
   IOrderResponse,
   IReturnFormDetailRequest,
   IReturnFormDetailResponse,
@@ -41,16 +34,8 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
   const { onFinish, formProps, saveButtonProps, formLoading } =
     useForm<IReturnFormResponse>({ action: "edit", id });
 
-  const {
-    show: showReason,
-    close: closeReason,
-    modalProps: { visible: vi2, ...restPropsReason },
-  } = useModal();
-
   const [returnFormDetails, setReturnFormDetails] =
     useState<IReturnFormDetailRequest[]>();
-
-  const [status, setStatus] = useState<DeliveryStatus>("PENDING");
 
   useEffect(() => {
     if (record?.order) {
@@ -112,24 +97,9 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       returnFormDetailsToPayloadFormat(returnFormDetails);
 
     const submitData = {
-      address: {
-        phoneNumber: formProps.form?.getFieldValue("phoneNumber"),
-        districtId: formProps.form?.getFieldValue("districtId"),
-        districtName: formProps.form?.getFieldValue("districtName"),
-        provinceId: formProps.form?.getFieldValue("provinceId"),
-        provinceName: formProps.form?.getFieldValue("provinceName"),
-        wardCode: formProps.form?.getFieldValue("wardCode"),
-        wardName: formProps.form?.getFieldValue("wardName"),
-        more: formProps.form?.getFieldValue("line"),
-      },
       order: record?.order?.id,
       paymentType: formProps.form?.getFieldValue("paymentType"),
-      refundStatus: formProps.form?.getFieldValue("refundStatus"),
-      returnDeliveryStatus: formProps.form?.getFieldValue(
-        "returnDeliveryStatus"
-      ),
       paymentInfo: formProps.form?.getFieldValue("paymentInfo") ?? "Cash",
-      type: formProps.form?.getFieldValue("type"),
       amountToBePaid: formProps.form?.getFieldValue("amountToBePaid"),
       returnFormDetails: returnFormDetailsPayload,
     };
@@ -144,12 +114,6 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
     });
   };
 
-  const {
-    show,
-    close,
-    modalProps: { visible: vi, ...restProps },
-  } = useModal();
-
   return (
     <>
       <Show
@@ -162,48 +126,12 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             justifyContent: "end",
           },
         }}
-        headerButtons={({ defaultButtons }) => (
-          <>
-            {defaultButtons}
-            <Button icon={<MdHistoryEdu />} type="primary" onClick={show}>
-              Xem lịch sử
-            </Button>
-            <Button
-              icon={<TbStatusChange />}
-              type="primary"
-              disabled={record?.returnDeliveryStatus === "COMPLETED"}
-              onClick={() => {
-                const status = getNextStatus(
-                  record?.returnDeliveryStatus ?? "PENDING"
-                );
-                setStatus(status ?? "PENDING");
-                showReason();
-              }}
-            >
-              Cập nhật trạng thái
-            </Button>
-            <Button
-              icon={<AiOutlineFileDone />}
-              disabled={record?.returnDeliveryStatus === "COMPLETED"}
-              type="primary"
-              onClick={() => {
-                setStatus("COMPLETED");
-                showReason();
-              }}
-            >
-              Xác nhận hoàn thành
-            </Button>
-          </>
-        )}
         footerButtons={
           <>
-            {record?.refundStatus === "PENDING" && (
-              <SaveButton {...saveButtonProps} />
-            )}
+            <SaveButton {...saveButtonProps} />
           </>
         }
       >
-        <ReturnSteps record={record} callBack={null} />
         {returnFormDetails && (
           <ReturnForm
             action="edit"
@@ -214,48 +142,6 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
           />
         )}
       </Show>
-      {restProps.open && (
-        <ReturnHistoryTimeLine id={id} modalProps={restProps} close={close} />
-      )}
-
-      {restPropsReason.open && (
-        <UpdateStatusModal
-          restModalProps={restPropsReason}
-          close={closeReason}
-          returnForm={record ?? ({} as IReturnFormResponse)}
-          callBack={refetch}
-          status={status}
-        />
-      )}
     </>
   );
-};
-
-const getNextStatus = (
-  currentStatus: DeliveryStatus
-): DeliveryStatus | null => {
-  const statusList: DeliveryStatus[] = [
-    "PENDING",
-    "RETURNING",
-    "RECEIVED",
-    "COMPLETED",
-  ];
-  const currentIndex = statusList.indexOf(currentStatus);
-
-  if (currentIndex !== -1) {
-    let nextIndex = currentIndex + 1;
-
-    // Check if current status is COMPLETED
-    if (currentStatus === "COMPLETED") {
-      // If current status is COMPLETED, return to PENDING (statusList[0])
-      return statusList[0];
-    }
-
-    // Otherwise, proceed normally
-    if (nextIndex < statusList.length) {
-      return statusList[nextIndex];
-    }
-  }
-
-  return null;
 };

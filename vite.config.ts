@@ -18,6 +18,5 @@ export default defineConfig({
   plugins: [react(), nodePolyfills()],
   server: {
     open: true,
-    host: true,
   },
 });

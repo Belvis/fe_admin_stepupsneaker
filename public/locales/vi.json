@@ -122,7 +122,10 @@
     "forceConfirm": "Chủ động xác nhận",
     "inspect": "Kiểm tra",
     "choose": "Chọn",
-    "returnAPart": "Trả một phần"
+    "returnAPart": "Trả một phần",
+    "search": "Tìm kiếm",
+    "backToPrevious": "Trở về trạng thái trước đó",
+    "viewHistory": "Xem lịch sử"
   },
   "loading": "Đang tải",
   "tags": {
@@ -778,7 +781,8 @@
     "orders": "Đơn Hàng",
     "titles": {
       "list": "Danh sách đơn Hàng",
-      "show": "Chi tiết Đơn Hàng"
+      "show": "Chi tiết Đơn Hàng",
+      "edit": "Chỉnh sửa Đơn Hàng"
     },
     "fields": {
       "code": "Mã đơn hàng",
@@ -1069,6 +1073,9 @@
       "selectProductFirst": "Vui lòng chọn sản phẩm trước",
       "invalid": "Sản phẩm không hợp lệ"
     }
+  },
+  "product-details": {
+    "product-details": "Sản phẩm chi tiết"
   },
   "productDetails": {
     "productDetails": "Chi tiết sản phẩm",
@@ -1471,13 +1478,15 @@
   },
   "image": {
     "upload": "Tải lên",
+    "image": "Hình ảnh",
     "dragger": {
       "text": "Nhấp hoặc kéo tệp vào khu vực này để tải lên",
       "hint": "Hỗ trợ tải lên một hoặc nhiều tệp. Nghiêm cấm tải lên dữ liệu của công ty hoặc các tệp bị cấm khác."
     },
     "error": {
       "invalid": "Bạn chỉ có thể đăng tải file JPG/PNG!",
-      "exceed": "Ảnh phải nhỏ hơn 2MB!"
+      "exceed": "Ảnh phải nhỏ hơn 2MB!",
+      "empty": "Vui lòng thêm hình ảnh trước!"
     },
     "description": {
       "add": "Thêm hình ảnh",

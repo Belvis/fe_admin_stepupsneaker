@@ -62,7 +62,7 @@
     "vite-plugin-node-stdlib-browser": "^0.2.1"
   },
   "scripts": {
-    "start": "refine dev --port 6969 -- --host",
+    "start": "refine dev --port 6969",
     "build": "refine build",
     "preview": "refine start",
     "refine": "refine"

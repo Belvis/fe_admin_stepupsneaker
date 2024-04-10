@@ -73,6 +73,10 @@ export const CreateProdHeaderSection: React.FC<
 
   const setImageUrl = (imageUrl: string) => {
     setUserSelected((prevUserSelected) => {
+      if (!prevUserSelected) {
+        return {};
+      }
+
       return {
         ...prevUserSelected,
         product: {
@@ -116,6 +120,7 @@ export const CreateProdHeaderSection: React.FC<
                   onSearch={debounce((value: string) => setValue(value), 300)}
                 >
                   <Input
+                    disabled
                     size="large"
                     placeholder={t("search.placeholder.products")}
                     suffix={<SearchOutlined />}

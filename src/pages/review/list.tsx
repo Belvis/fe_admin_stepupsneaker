@@ -26,7 +26,7 @@ import {
   Table,
   Image,
 } from "antd";
-import { ReviewStatus } from "../../components/review/ReturnInspectionStatus";
+import { ReviewStatus } from "../../components/review/ReviewStatus";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";

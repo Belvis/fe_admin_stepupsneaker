@@ -175,67 +175,72 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
   }, [fileLists]);
 
   useEffect(() => {
-    if (userSelected.color && userSelected.size) {
-      setProductDetails((prevProductDetails) => {
-        const updatedProductDetails = [...prevProductDetails];
-        for (let i = 0; i < userSelected.color.length; i++) {
-          const color = userSelected.color[i];
-          for (let j = 0; j < userSelected.size.length; j++) {
-            const size = userSelected.size[j];
-            const index = i * userSelected.size.length + j;
-            if (updatedProductDetails[index]) {
-              const {
-                id,
-                product,
-                tradeMark,
-                style,
-                material,
-                brand,
-                sole,
-                image,
-                price,
-                quantity,
-                status,
-                saleCount,
-              } = updatedProductDetails[index];
-              updatedProductDetails[index] = {
-                id,
-                product,
-                tradeMark,
-                style,
-                size,
-                material,
-                color,
-                brand,
-                sole,
-                image,
-                price,
-                quantity,
-                status,
-                saleCount,
-              };
-            } else {
-              updatedProductDetails[index] = {
-                id: getRandomId(10),
-                product: userSelected.product,
-                tradeMark: userSelected.tradeMark,
-                style: userSelected.style,
-                size: size,
-                material: userSelected.material,
-                color: color,
-                brand: userSelected.brand,
-                sole: userSelected.sole,
-                image: "",
-                price: 0,
-                quantity: 0,
-                saleCount: 0,
-                status: "ACTIVE",
-              };
+    if (userSelected && userSelected.color && userSelected.size) {
+      const isValid = Object.values(userSelected).every(
+        (value) => value !== "" && value !== undefined
+      );
+      if (isValid) {
+        setProductDetails((prevProductDetails) => {
+          const updatedProductDetails = [...prevProductDetails];
+          for (let i = 0; i < userSelected.color!.length; i++) {
+            const color = userSelected.color![i];
+            for (let j = 0; j < userSelected.size!.length; j++) {
+              const size = userSelected.size![j];
+              const index = i * userSelected.size!.length + j;
+              if (updatedProductDetails[index]) {
+                const {
+                  id,
+                  product,
+                  tradeMark,
+                  style,
+                  material,
+                  brand,
+                  sole,
+                  image,
+                  price,
+                  quantity,
+                  status,
+                  saleCount,
+                } = updatedProductDetails[index];
+                updatedProductDetails[index] = {
+                  id,
+                  product,
+                  tradeMark,
+                  style,
+                  size,
+                  material,
+                  color,
+                  brand,
+                  sole,
+                  image,
+                  price,
+                  quantity,
+                  status,
+                  saleCount,
+                };
+              } else {
+                updatedProductDetails[index] = {
+                  id: getRandomId(10),
+                  product: userSelected.product!,
+                  tradeMark: userSelected.tradeMark!,
+                  style: userSelected.style!,
+                  size: size,
+                  material: userSelected.material!,
+                  color: color,
+                  brand: userSelected.brand!,
+                  sole: userSelected.sole!,
+                  image: "",
+                  price: 0,
+                  quantity: 0,
+                  saleCount: 0,
+                  status: "ACTIVE",
+                };
+              }
             }
           }
-        }
-        return updatedProductDetails;
-      });
+          return updatedProductDetails;
+        });
+      }
     }
   }, [userSelected.color, userSelected.size]);
 
@@ -396,7 +401,11 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
           icon={<CheckSquareOutlined />}
           loading={isLoading}
           onClick={() => {
-            if (!userSelected || _.isEmpty(userSelected)) {
+            const isValid = Object.values(userSelected).every(
+              (value) => value !== "" && value !== undefined
+            );
+
+            if (!isValid || !productDetails) {
               message.info(t("products.messages.invalid"));
               return;
             }

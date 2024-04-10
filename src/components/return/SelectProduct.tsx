@@ -41,10 +41,7 @@ export const SelectProduct: React.FC<IResourceComponentsProps> = () => {
         unitPrice: orderDetail.price,
         reason: "",
         feedback: "",
-        returnInspectionStatus: undefined,
-        returnInspectionReason: "",
         evidence: "",
-        resellable: false,
       }));
     };
 

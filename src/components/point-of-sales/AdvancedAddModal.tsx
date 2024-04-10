@@ -20,6 +20,7 @@ import { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import {
+  IOrderResponse,
   IProductDetailFilterVariables,
   IProductDetailResponse,
 } from "../../interfaces";
@@ -31,11 +32,15 @@ const { Text } = Typography;
 
 type AdvancedAddModalProps = {
   modalProps: ModalProps;
+  type?: "state" | "database";
+  setViewOrder?: React.Dispatch<React.SetStateAction<IOrderResponse>>;
   close: () => void;
 };
 
 export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
   modalProps,
+  type = "database",
+  setViewOrder,
   close,
 }) => {
   const t = useTranslate();
@@ -218,7 +223,9 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
   const columns: ColumnsType<IProductDetailResponse> = [
     {
       title: "#",
-      key: "index",
+      key: "createdAt",
+      dataIndex: "createdAt",
+      sorter: {},
       width: "1px",
       align: "center",
       render: (text, record, index) => {
@@ -280,12 +287,14 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
     {
       title: t("productDetails.fields.quantity"),
       key: "quantity",
+      sorter: {},
       dataIndex: "quantity",
       align: "center",
     },
     {
       title: t("productDetails.fields.price"),
       key: "price",
+      sorter: {},
       dataIndex: "price",
       align: "center",
       render: (_, productDetail) => {
@@ -331,6 +340,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       title: t("productDetails.fields.size"),
       key: "size",
       dataIndex: "size",
+      sorter: {},
       align: "center",
       render: (_, record) => (
         <Text style={{ width: "100%" }}>{record.size.name}</Text>
@@ -340,6 +350,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       title: t("productDetails.fields.color"),
       key: "color",
       dataIndex: "color",
+      sorter: {},
       align: "center",
       render: (_, record) => (
         <ColorPicker defaultValue={record.color.code} showText disabled />
@@ -416,6 +427,8 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
         modalProps={itemModalProps}
         close={closeItem}
         parentClose={close}
+        type={type}
+        setViewOrder={setViewOrder}
         setSelectedProductDetails={setSelectedProductDetails}
         items={selectedProductDetails}
         showAddAndGoButton={showAddAndGoButton}

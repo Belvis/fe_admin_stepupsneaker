@@ -1,5 +1,6 @@
 import { useTranslate } from "@refinedev/core";
 import {
+  App,
   Col,
   Form,
   FormProps,
@@ -34,10 +35,16 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
   onFinish,
 }) => {
   const t = useTranslate();
+  const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
-  const modalWidth = breakpoint.sm ? "500px" : "100%";
+  const modalWidth = breakpoint.sm ? "700px" : "100%";
+  const imageUrl = Form.useWatch("image", formProps.form);
 
   const onFinishHandler = (values: IProductResponse) => {
+    if (!imageUrl) {
+      return message.error(t("image.error.empty"));
+    }
+
     const submitData = {
       ...values,
       status: "ACTIVE",
@@ -110,6 +117,7 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
                   t={t}
                 />
               }
+              required
               name="description"
               rules={[
                 {

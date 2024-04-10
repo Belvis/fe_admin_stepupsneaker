@@ -76,8 +76,11 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
 
   const handleColorClose = (color: IColorResponse) => {
     setUserSelected((prevUserSelected) => {
-      const updatedColors = prevUserSelected.color.filter((c) => c !== color);
-      return { ...prevUserSelected, color: updatedColors };
+      if (prevUserSelected.color) {
+        const updatedColors = prevUserSelected.color.filter((c) => c !== color);
+        return { ...prevUserSelected, color: updatedColors };
+      }
+      return prevUserSelected;
     });
   };
 
@@ -121,7 +124,7 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
         <Modal
           title={
             <Space size="large">
-              <Text className="h6 m-0">{t("sizes.titles.choose")}</Text>
+              <Text className="h6 m-0">{t("colors.titles.choose")}</Text>
               <CreateButton
                 type="default"
                 onClick={() => {
@@ -147,9 +150,7 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
                 <StyledCheckableTag
                   colorcode={item.code}
                   key={item.code}
-                  checked={
-                    userSelected.color && userSelected.color.includes(item)
-                  }
+                  checked={userSelected.color?.includes(item) ?? false}
                   onChange={(checked) => handleColorChange(item, checked)}
                 >
                   #{item.code.toLocaleUpperCase()}

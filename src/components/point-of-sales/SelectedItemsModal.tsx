@@ -19,13 +19,20 @@ import {
 } from "react";
 import { POSContext } from "../../contexts/point-of-sales";
 import { getPriceProductFinal } from "../../helpers/money";
-import { IOrderDetailRequest, IProductDetailResponse } from "../../interfaces";
+import {
+  IOrderDetailRequest,
+  IOrderDetailResponse,
+  IOrderResponse,
+  IProductDetailResponse,
+} from "../../interfaces";
 import { ProductDetailItem } from "./ProductDetailItem";
 import ShoppingCartHeader from "./ShoppingCartHeader";
 
 type SelectedItemsModalProps = {
   modalProps: ModalProps;
   close: () => void;
+  type: "state" | "database";
+  setViewOrder: Dispatch<SetStateAction<IOrderResponse>> | undefined;
   parentClose: () => void;
   setSelectedProductDetails: Dispatch<SetStateAction<IProductDetailResponse[]>>;
   items: IProductDetailResponse[];
@@ -35,6 +42,8 @@ type SelectedItemsModalProps = {
 export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
   modalProps,
   close,
+  type,
+  setViewOrder,
   setSelectedProductDetails,
   items,
   showAddAndGoButton,
@@ -80,7 +89,19 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
 
   const addAndGo = async () => {
     await handleOk();
-    handleSubmit();
+    if (type === "state" && setViewOrder) {
+      setViewOrder((prev) => {
+        const payLoad = productDetailToOrderDetail(copiedItems, prev);
+        return {
+          ...prev,
+          orderDetails: [...prev.orderDetails, ...payLoad],
+        };
+      });
+      message.success(t("orders.notification.product.add.success"));
+      parentClose();
+    } else {
+      handleSubmit();
+    }
   };
 
   const handleSubmit = async () => {
@@ -101,11 +122,11 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
         {
           onError: (error, variables, context) => {
             message.error(
-              t("orders.notification.tab.add.error") + error.message
+              t("orders.notification.product.add.error") + error.message
             );
           },
           onSuccess: () => {
-            message.success(t("orders.notification.tab.add.success"));
+            message.success(t("orders.notification.product.add.success"));
             refetchOrder();
             parentClose();
           },
@@ -172,6 +193,20 @@ const orderDetailToPayload = (
   return productDetails.map((detail) => ({
     order: orderId,
     productDetail: detail.id,
+    quantity: detail.quantity,
+    price: getPriceProductFinal(detail),
+    totalPrice: getPriceProductFinal(detail) * detail.quantity,
+    status: "COMPLETED",
+  }));
+};
+const productDetailToOrderDetail = (
+  productDetails: IProductDetailResponse[],
+  order: IOrderResponse
+): IOrderDetailResponse[] => {
+  return productDetails.map((detail) => ({
+    id: "",
+    order: order,
+    productDetail: detail,
     quantity: detail.quantity,
     price: getPriceProductFinal(detail),
     totalPrice: getPriceProductFinal(detail) * detail.quantity,

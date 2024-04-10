@@ -80,8 +80,11 @@ export const CreateProdSizeSection: React.FC<CreateProdSizeSectionProps> = ({
 
   const handleSizeClose = (size: IProdAttributeResponse) => {
     setUserSelected((prevUserSelected) => {
-      const updatedSizes = prevUserSelected.size.filter((s) => s !== size);
-      return { ...prevUserSelected, size: updatedSizes };
+      if (prevUserSelected.size) {
+        const updatedSizes = prevUserSelected.size.filter((s) => s !== size);
+        return { ...prevUserSelected, size: updatedSizes };
+      }
+      return prevUserSelected;
     });
   };
 
@@ -152,9 +155,7 @@ export const CreateProdSizeSection: React.FC<CreateProdSizeSectionProps> = ({
                 <StyledCheckableTag
                   colorcode="c1c1c1"
                   key={item.id}
-                  checked={
-                    userSelected.size && userSelected.size.includes(item)
-                  }
+                  checked={userSelected.size?.includes(item) ?? false}
                   onChange={(checked) => handleSizeChange(item, checked)}
                 >
                   {item.name}

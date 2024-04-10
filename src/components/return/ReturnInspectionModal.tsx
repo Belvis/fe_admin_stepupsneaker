@@ -1,3 +1,5 @@
+import { useForm } from "@refinedev/antd";
+import { useTranslate } from "@refinedev/core";
 import {
   Button,
   Form,
@@ -6,27 +8,16 @@ import {
   InputNumber,
   Modal,
   ModalProps,
-  Radio,
-  Select,
 } from "antd";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import {
-  IReturnFormDetailRequest,
-  InspectionStatus,
-  ReturnType,
-} from "../../interfaces";
-import { useTranslate } from "@refinedev/core";
-import { useForm } from "@refinedev/antd";
-import { validateCommon } from "../../helpers/validate";
 import { LENGTH_DESCRIPTION } from "../../constants/common";
-import { getInspectionStatusOptions } from "../../constants/status";
+import { validateCommon } from "../../helpers/validate";
+import { IReturnFormDetailRequest } from "../../interfaces";
 import ImageUpload from "../form/ImageUpload";
-import { error } from "console";
 
 type ReturnInspectionModalProps = {
   modalProps: ModalProps;
   action: "create" | "edit";
-  type: ReturnType;
   close: () => void;
   returnDetail: IReturnFormDetailRequest;
   setReturnFormDetails: Dispatch<
@@ -40,17 +31,11 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
   returnDetail,
   close,
   setReturnFormDetails,
-  type,
 }) => {
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
 
   const { formProps, formLoading } = useForm<IReturnFormDetailRequest>();
-
-  const returnInspectionStatus: InspectionStatus = Form.useWatch(
-    "returnInspectionStatus",
-    formProps.form
-  );
 
   useEffect(() => {
     if (returnDetail) {
@@ -61,9 +46,6 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
         reason: returnDetail.reason,
         feedback: returnDetail.feedback,
         image: returnDetail.evidence,
-        returnInspectionStatus: returnDetail.returnInspectionStatus,
-        returnInspectionReason: returnDetail.returnInspectionReason,
-        resellable: returnDetail.resellable,
       });
     }
   }, [returnDetail]);
@@ -73,21 +55,13 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
     const reason = formProps.form?.getFieldValue("reason");
     const feedback = formProps.form?.getFieldValue("feedback");
     const evidence = formProps.form?.getFieldValue("image");
-    const returnInspectionStatus = formProps.form?.getFieldValue(
-      "returnInspectionStatus"
-    );
-    const returnInspectionReason = formProps.form?.getFieldValue(
-      "returnInspectionReason"
-    );
-    const resellable = formProps.form?.getFieldValue("resellable");
 
     if (
       returnDetail &&
       returnQuantity !== undefined &&
       reason &&
       feedback !== undefined &&
-      evidence !== undefined &&
-      resellable !== undefined
+      evidence !== undefined
     ) {
       setReturnFormDetails((prevState) => {
         if (prevState) {
@@ -99,9 +73,6 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
                 reason: reason,
                 feedback: feedback,
                 evidence: evidence,
-                returnInspectionStatus: returnInspectionStatus,
-                returnInspectionReason: returnInspectionReason,
-                resellable: resellable,
               };
             }
             return detail;
@@ -116,7 +87,7 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
   return (
     <Modal
       {...modalProps}
-      title={t("orders.orders")}
+      title={t("return-form-details.return-form-details")}
       zIndex={1001}
       width={breakpoint.sm ? "700px" : "100%"}
       footer={
@@ -228,97 +199,11 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
             showCount
           />
         </Form.Item>
-        <Form.Item
-          label={t("return-form-details.fields.returnInspectionStatus.label")}
-          name="returnInspectionStatus"
-          required={!(type === "ONLINE" && action === "create")}
-          hidden={type == "ONLINE" && action === "create"}
-          rules={[
-            {
-              validator: (_, value) => {
-                if (type == "ONLINE" && action === "create") {
-                  return Promise.resolve();
-                } else {
-                  return validateCommon(_, value, t, "returnInspectionStatus");
-                }
-              },
-            },
-          ]}
-        >
-          <Select
-            placeholder={t(
-              "return-form-details.fields.returnInspectionStatus.placeholder"
-            )}
-            options={getInspectionStatusOptions(t)}
-          />
-        </Form.Item>
-        <Form.Item
-          label={t("return-form-details.fields.returnInspectionReason.label")}
-          name="returnInspectionReason"
-          required={!(type === "ONLINE" && action === "create")}
-          hidden={type == "ONLINE" && action === "create"}
-          rules={[
-            {
-              validator: (_, value) => {
-                if (type == "ONLINE" && action === "create") {
-                  return Promise.resolve();
-                } else {
-                  return validateCommon(_, value, t, "returnInspectionReason");
-                }
-              },
-            },
-          ]}
-        >
-          <Input
-            placeholder={t(
-              "return-form-details.fields.returnInspectionReason.placeholder"
-            )}
-            maxLength={LENGTH_DESCRIPTION / 4}
-            showCount
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t("return-form-details.fields.resellable.label")}
-          name="resellable"
-          required={
-            !(type === "ONLINE" && action === "create") ||
-            returnInspectionStatus === "FAILED"
-          }
-          hidden={
-            (type == "ONLINE" && action === "create") ||
-            returnInspectionStatus === "FAILED"
-          }
-          rules={[
-            {
-              validator: (_, value) => {
-                if (
-                  (type == "ONLINE" && action === "create") ||
-                  returnInspectionStatus === "FAILED"
-                ) {
-                  return Promise.resolve();
-                } else {
-                  return validateCommon(_, value, t, "resellable");
-                }
-              },
-            },
-          ]}
-        >
-          <Radio.Group>
-            <Radio value={true}>
-              {t("return-form-details.fields.resellable.YES")}
-            </Radio>
-            <Radio value={false}>
-              {t("return-form-details.fields.resellable.NO")}
-            </Radio>
-          </Radio.Group>
-        </Form.Item>
         <ImageUpload
           formProps={formProps}
           label={t("return-form-details.fields.evidence.label")}
           tooltip={t("return-form-details.fields.evidence.tooltip")}
-          required={false}
-          hidden={type == "ONLINE" && action === "create"}
+          required={true}
           raw
         />
       </Form>

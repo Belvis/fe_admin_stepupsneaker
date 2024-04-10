@@ -122,7 +122,10 @@
         "forceConfirm": "Force confirm",
         "inspect": "Check",
         "choose": "Select",
-        "returnAPart": "Return a part"
+        "returnAPart": "Return a part",
+        "search": "Search",
+        "backToPrevious": "Back to previous",
+        "viewHistory": "View history"
     },
     "loading": "Loading",
     "tags": {
@@ -775,7 +778,8 @@
         "orders": "Order",
         "titles": {
             "list": "List of orders",
-            "show": "Order Details"
+            "show": "Order Details",
+            "edit": "Edit order"
         },
         "fields": {
             "code": "Code",
@@ -1468,13 +1472,15 @@
     },
     "image": {
         "upload": "Upload",
+        "image": "Image",
         "dragger": {
             "text": "Click or drag files into this area to upload",
             "hint": "Support uploading one or multiple files. Uploading company data or other prohibited files is strictly prohibited."
         },
         "error": {
             "invalid": "You can only upload JPG/PNG files!",
-            "exceed": "Image must be smaller than 2MB!"
+            "exceed": "Image must be smaller than 2MB!",
+            "empty": "Please add images first!"
         },
         "description": {
             "add": "Add Image",

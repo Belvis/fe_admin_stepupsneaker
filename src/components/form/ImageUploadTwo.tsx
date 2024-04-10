@@ -66,6 +66,7 @@ const ImageUploadTwo: React.FC<IImageUploadTwoProps> = ({
             } catch (error) {}
           }
         }}
+        disabled
         maxCount={1}
         style={styles.imageUpload}
       >
