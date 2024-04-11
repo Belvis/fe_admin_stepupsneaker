@@ -259,10 +259,6 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
       return message.info(t("products.messages.limitReached"));
     }
 
-    if (value > 5) {
-      return message.info(t("products.messages.purchaseLimit"));
-    }
-
     if (value !== record.quantity) {
       setViewOrder((prev) => setViewOrderWithValidation(prev, record, value));
     }

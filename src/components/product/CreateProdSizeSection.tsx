@@ -99,7 +99,16 @@ export const CreateProdSizeSection: React.FC<CreateProdSizeSectionProps> = ({
             hideText
             type="default"
             onClick={() => {
-              if (!userSelected || !userSelected.product) {
+              const isValid = Object.entries(userSelected).every(
+                ([key, value]) => {
+                  if (key === "size") {
+                    return true;
+                  }
+                  return value !== "" && value !== undefined;
+                }
+              );
+
+              if (!isValid) {
                 message.info(t("products.messages.selectProductFirst"));
                 return;
               }

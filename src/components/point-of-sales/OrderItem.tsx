@@ -77,10 +77,6 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
         return message.info(t("products.messages.limitReached"));
       }
 
-      if (value > 5) {
-        return message.info(t("products.messages.purchaseLimit"));
-      }
-
       if (value !== orderDetail.quantity) {
         const payLoad = orderDetailToRequest([orderDetail], activeKey)[0];
         updateQuantity(

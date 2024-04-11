@@ -4,8 +4,10 @@ import {
   App,
   Button,
   Card,
+  Flex,
   InputNumber,
   Modal,
+  Space,
   Table,
   TablePaginationConfig,
   Typography,
@@ -86,28 +88,60 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
     value: number,
     record: IProductDetailResponse
   ) => {
-    const index = productDetails.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
-    const updatedProductDetails = [...productDetails];
-    updatedProductDetails[index] = {
-      ...updatedProductDetails[index],
-      quantity: value,
-    };
-    setProductDetails(updatedProductDetails);
-  };
-
-  const handlePriceChange = debounce(
-    (value: number, record: IProductDetailResponse) => {
+    if (hasSelected) {
+      const updatedProductDetails = productDetails.map((productDetail) => {
+        if (
+          selectedRowKeys.includes(productDetail.id) ||
+          productDetail.id === record.id
+        ) {
+          return {
+            ...productDetail,
+            quantity: value,
+          };
+        }
+        return productDetail;
+      });
+      setProductDetails(updatedProductDetails);
+    } else {
       const index = productDetails.findIndex(
         (productDetail) => productDetail.id === record.id
       );
       const updatedProductDetails = [...productDetails];
       updatedProductDetails[index] = {
         ...updatedProductDetails[index],
-        price: value,
+        quantity: value,
       };
       setProductDetails(updatedProductDetails);
+    }
+  };
+
+  const handlePriceChange = debounce(
+    (value: number, record: IProductDetailResponse) => {
+      if (hasSelected) {
+        const updatedProductDetails = productDetails.map((productDetail) => {
+          if (
+            selectedRowKeys.includes(productDetail.id) ||
+            productDetail.id === record.id
+          ) {
+            return {
+              ...productDetail,
+              price: value,
+            };
+          }
+          return productDetail;
+        });
+        setProductDetails(updatedProductDetails);
+      } else {
+        const index = productDetails.findIndex(
+          (productDetail) => productDetail.id === record.id
+        );
+        const updatedProductDetails = [...productDetails];
+        updatedProductDetails[index] = {
+          ...updatedProductDetails[index],
+          price: value,
+        };
+        setProductDetails(updatedProductDetails);
+      }
     },
     500
   );
@@ -243,6 +277,27 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
       }
     }
   }, [userSelected.color, userSelected.size]);
+
+  const [selectedRows, setSelectedRows] = useState<IProductDetailResponse[]>(
+    []
+  );
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const onSelectChange = (
+    newSelectedRowKeys: React.Key[],
+    selectedRows: IProductDetailResponse[]
+  ) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRows(selectedRows);
+  };
+
+  const rowSelection = {
+    preserveSelectedRowKeys: true,
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
+  const hasSelected = selectedRows.length > 0;
 
   const columns: ColumnsType<IProductDetailResponse> = [
     {
@@ -395,32 +450,51 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
   return (
     <Card
       style={{ marginTop: "0.1rem" }}
+      styles={{
+        extra: {
+          margin: 0,
+          width: "100%",
+        },
+      }}
       extra={
-        <Button
-          type="primary"
-          icon={<CheckSquareOutlined />}
-          loading={isLoading}
-          onClick={() => {
-            const isValid = Object.values(userSelected).every(
-              (value) => value !== "" && value !== undefined
-            );
+        <div className="d-flex justify-content-between">
+          <Space className="text-start w-100">
+            <Text strong>{t("productDetails.list")}</Text>
+            {hasSelected && (
+              <span>
+                |{" "}
+                {t("table.selection", {
+                  count: selectedRowKeys.length,
+                })}
+              </span>
+            )}
+          </Space>
+          <Button
+            type="primary"
+            icon={<CheckSquareOutlined />}
+            loading={isLoading}
+            onClick={() => {
+              const isValid = Object.values(userSelected).every(
+                (value) => value !== "" && value !== undefined
+              );
 
-            if (!isValid || !productDetails) {
-              message.info(t("products.messages.invalid"));
-              return;
-            }
+              if (!isValid || !productDetails) {
+                message.info(t("products.messages.invalid"));
+                return;
+              }
 
-            showWarningConfirmDialog({
-              options: {
-                accept: handleSubmit,
-                reject: () => {},
-              },
-              t: t,
-            });
-          }}
-        >
-          {t("actions.submit")}
-        </Button>
+              showWarningConfirmDialog({
+                options: {
+                  accept: handleSubmit,
+                  reject: () => {},
+                },
+                t: t,
+              });
+            }}
+          >
+            {t("actions.submit")}
+          </Button>
+        </div>
       }
     >
       <Table
@@ -428,6 +502,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
           ...pagination,
           ...tablePaginationSettings,
         }}
+        rowSelection={rowSelection}
         dataSource={productDetails}
         rowKey="id"
         columns={columns}
