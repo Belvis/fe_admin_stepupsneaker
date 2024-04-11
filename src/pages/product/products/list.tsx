@@ -27,9 +27,8 @@ import {
 import type { ColumnsType } from "antd/es/table";
 
 import CommonSearchForm from "../../../components/form/CommonSearchForm";
-import { ProductStatus } from "../../../components/product/ProductStatus";
+import { EditProduct } from "../../../components/product/EditProduct";
 import ColumnActions from "../../../components/table/ColumnActions";
-import { getProductStatusOptions } from "../../../constants/status";
 import { tablePaginationSettings } from "../../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../../helpers/confirm";
 import {
@@ -39,7 +38,6 @@ import {
   IProductResponse,
 } from "../../../interfaces";
 import { calculateIndex } from "../../../utils/common/calculator";
-import { EditProduct } from "../../../components/product/EditProduct";
 
 const { Text } = Typography;
 
@@ -67,14 +65,8 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const productFilters: CrudFilters = [];
-
-      productFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       productFilters.push({
         field: "q",
@@ -239,15 +231,6 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
       },
     },
     {
-      title: t("products.fields.status"),
-      sorter: {},
-      defaultSortOrder: getDefaultSortOrder("status", sorters),
-      key: "status",
-      dataIndex: "status",
-      align: "center",
-      render: (_, { status }) => <ProductStatus status={status} />,
-    },
-    {
       title: t("table.actions"),
       dataIndex: "actions",
       key: "actions",
@@ -292,14 +275,6 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`products.filters.search.placeholder`),
                   width: "400px",
-                },
-                {
-                  label: t(`products.fields.status`),
-                  name: "status",
-                  placeholder: t(`products.filters.status.placeholder`),
-                  type: "select",
-                  options: getProductStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

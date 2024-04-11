@@ -1,3 +1,8 @@
+import {
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
 import {
   Button,
@@ -5,27 +10,20 @@ import {
   Drawer,
   Flex,
   Grid,
-  Radio,
   RadioChangeEvent,
   Row,
   Select,
   Space,
-  Switch,
   Typography,
 } from "antd";
+import { AnimatePresence, motion } from "framer-motion";
 import _ from "lodash";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   DirectSalesContext,
   SorterType,
   initialSorters,
 } from "../../../contexts/point-of-sales/direct-sales";
-import {
-  CheckOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
-import { AnimatePresence, motion } from "framer-motion";
 
 const { Title, Text } = Typography;
 
@@ -47,13 +45,6 @@ export const POSSorter: React.FC<POSSorterProps> = ({ open, onClose }) => {
       setTempSorter(_.cloneDeep(initialSorter));
     }
   }, [initialSorter, open]);
-
-  const onRadioChange = ({ target: { value } }: RadioChangeEvent) => {
-    setTempSorter((prevSorter) => ({
-      ...prevSorter,
-      field: value,
-    }));
-  };
 
   const handleFieldSelectChange = (value: string) => {
     setTempSorter((prevSorter) => ({

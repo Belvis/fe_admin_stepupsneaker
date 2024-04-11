@@ -18,8 +18,6 @@ import type { ColumnsType } from "antd/es/table";
 import { useMemo } from "react";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import ColumnActions from "../../components/table/ColumnActions";
-import { VoucherStatus } from "../../components/voucher/VoucherStatus";
-import { getVoucherStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
@@ -40,14 +38,8 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const voucherFilters: CrudFilters = [];
-
-      voucherFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       voucherFilters.push({
         field: "q",
@@ -178,16 +170,6 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        title: t("vouchers.fields.status"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        key: "status",
-        dataIndex: "status",
-        align: "center",
-        width: "1rem",
-        render: (_, { status }) => <VoucherStatus status={status} />,
-      },
-      {
         title: t("table.actions"),
         dataIndex: "actions",
         key: "actions",
@@ -235,14 +217,6 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`vouchers.filters.search.placeholder`),
                   width: "400px",
-                },
-                {
-                  label: t(`vouchers.fields.status`),
-                  name: "status",
-                  placeholder: t(`vouchers.filters.status.placeholder`),
-                  type: "select",
-                  options: getVoucherStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

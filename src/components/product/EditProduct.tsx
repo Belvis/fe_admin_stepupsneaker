@@ -8,7 +8,6 @@ import {
   Modal,
   ModalProps,
   Row,
-  Select,
   Typography,
 } from "antd";
 import {
@@ -16,7 +15,6 @@ import {
   LENGTH_DESCRIPTION,
   LENGTH_NAME,
 } from "../../constants/common";
-import { getProductStatusOptions } from "../../constants/status";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { validateCommon } from "../../helpers/validate";
 import { FieldLabel } from "../form/FieldLabel";
@@ -123,19 +121,6 @@ export const EditProduct: React.FC<EditProductProps> = ({
                 maxLength={LENGTH_DESCRIPTION}
                 showCount
               />
-            </Form.Item>
-            <Form.Item
-              label={t("products.fields.status")}
-              required
-              name="status"
-              rules={[
-                {
-                  validator: (_, value) =>
-                    validateCommon(_, value, t, "status"),
-                },
-              ]}
-            >
-              <Select options={getProductStatusOptions(t)} />
             </Form.Item>
           </Col>
         </Row>

@@ -103,7 +103,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       },
     },
     {
-      title: "Phương thức",
+      title: t("payments.fields.paymentMethod"),
       dataIndex: "paymentMethod",
       key: "paymentMethod",
       render: (value, { paymentMethod }) => {
@@ -111,7 +111,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       },
     },
     {
-      title: "Số tiền",
+      title: t("payments.fields.money"),
       dataIndex: "amount",
       key: "amount",
       render: (value, { totalMoney }) => {
@@ -128,7 +128,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       },
     },
     {
-      title: "Mã giao dịch",
+      title: t("payments.fields.transactionCode"),
       dataIndex: "transactionCode",
       key: "transactionCode",
       render: (_, record, index) => (
@@ -174,7 +174,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       <Table
         title={() => (
           <Text strong className="h6 m-0">
-            Khách thanh toán
+            {t("payments.fields.customerPay")}
           </Text>
         )}
         dataSource={copiedPayments}

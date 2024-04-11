@@ -14,7 +14,6 @@ import {
   Flex,
   Space,
   Table,
-  Tag,
   Typography,
 } from "antd";
 import { ColumnsType } from "antd/es/table";
@@ -28,17 +27,12 @@ import {
 } from "react";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
-import { formatTimestamp } from "../../helpers/timestamp";
 import {
-  ICustomerFilterVariables,
-  ICustomerResponse,
   IProductDetailFilterVariables,
   IProductDetailResponse,
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
 import CommonSearchForm from "../form/CommonSearchForm";
-import { ProductStatus } from "../product/ProductStatus";
-import { getPromotionStatusOptions } from "../../constants/status";
 
 const { Title, Text } = Typography;
 
@@ -90,13 +84,8 @@ const PromotionProduct: React.FC<PromotionProductProps> = ({
       ],
     },
     syncWithLocation: false,
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const filters: CrudFilters = [];
-      filters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       filters.push({
         field: "q",
@@ -169,16 +158,6 @@ const PromotionProduct: React.FC<PromotionProductProps> = ({
         render: (_, record) => (
           <ColorPicker defaultValue={record.color.code} showText disabled />
         ),
-      },
-      {
-        title: t("products.fields.status"),
-        key: "status",
-        dataIndex: "status",
-        width: "10%",
-        align: "center",
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        render: (_, { status }) => <ProductStatus status={status} />,
       },
     ],
     [t, sorters, current, pageSize, tableProps]
@@ -267,14 +246,6 @@ const PromotionProduct: React.FC<PromotionProductProps> = ({
             name: "q",
             type: "input",
             placeholder: t(`promotions.filters.search.placeholder`),
-            width: "200px",
-          },
-          {
-            label: t(`promotions.fields.status`),
-            name: "status",
-            placeholder: t(`promotions.filters.status.placeholder`),
-            type: "select",
-            options: getPromotionStatusOptions(t),
             width: "200px",
           },
         ]}

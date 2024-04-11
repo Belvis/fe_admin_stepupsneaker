@@ -67,7 +67,6 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
     record?.status === "WAIT_FOR_CONFIRMATION" ||
     record?.status === "WAIT_FOR_DELIVERY" ||
     record?.status === "DELIVERING" ||
-    record?.status === "CANCELED" ||
     record?.status === "EXCHANGED";
   const canRevertOrder = record?.status === "WAIT_FOR_DELIVERY";
 

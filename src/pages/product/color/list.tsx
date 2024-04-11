@@ -18,9 +18,7 @@ import { EditColor } from "./edit";
 
 import { useMemo } from "react";
 import CommonSearchForm from "../../../components/form/CommonSearchForm";
-import { ProductStatus } from "../../../components/product/ProductStatus";
 import ColumnActions from "../../../components/table/ColumnActions";
-import { getProductStatusOptions } from "../../../constants/status";
 import { tablePaginationSettings } from "../../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../../helpers/confirm";
 import {
@@ -42,14 +40,8 @@ export const ColorList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const colorFilters: CrudFilters = [];
-
-      colorFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       colorFilters.push({
         field: "q",
@@ -122,15 +114,6 @@ export const ColorList: React.FC<IResourceComponentsProps> = () => {
         key: "name",
       },
       {
-        title: t("colors.fields.status"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        key: "status",
-        dataIndex: "status",
-        align: "center",
-        render: (_, { status }) => <ProductStatus status={status} />,
-      },
-      {
         title: t("table.actions"),
         dataIndex: "actions",
         key: "actions",
@@ -184,14 +167,6 @@ export const ColorList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`colors.filters.search.placeholder`),
                   width: "400px",
-                },
-                {
-                  label: t(`colors.fields.status`),
-                  name: "status",
-                  placeholder: t(`colors.filters.status.placeholder`),
-                  type: "select",
-                  options: getProductStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

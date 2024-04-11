@@ -17,7 +17,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { getCustomerStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
@@ -66,13 +65,8 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
       ],
     },
     syncWithLocation: false,
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const customerFilters: CrudFilters = [];
-      customerFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       customerFilters.push({
         field: "q",
@@ -233,14 +227,6 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
             name: "q",
             type: "input",
             placeholder: t(`customers.filters.search.placeholder`),
-            width: "200px",
-          },
-          {
-            label: t(`customers.fields.status`),
-            name: "status",
-            placeholder: t(`customers.filters.status.placeholder`),
-            type: "select",
-            options: getCustomerStatusOptions(t),
             width: "200px",
           },
         ]}

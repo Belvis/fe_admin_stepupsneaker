@@ -1,5 +1,5 @@
-import { List, getDefaultSortOrder, useTable } from "@refinedev/antd";
 import { SyncOutlined } from "@ant-design/icons";
+import { List, getDefaultSortOrder, useTable } from "@refinedev/antd";
 import {
   CrudFilters,
   HttpError,
@@ -9,27 +9,25 @@ import {
 } from "@refinedev/core";
 import {
   Avatar,
+  Button,
   Card,
   Col,
   Row,
   Space,
   Table,
-  Typography,
   Tooltip,
-  Button,
+  Typography,
 } from "antd";
 
 import { ColumnsType } from "antd/es/table";
-import { CustomerStatus } from "../../components/customer/CustomerStatus";
+import { useMemo, useState } from "react";
+import { ChangePassword } from "../../components/employee/ModalEditPassword";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import ColumnActions from "../../components/table/ColumnActions";
-import { getCustomerStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { IEmployeeFilterVariables, IEmployeeResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
-import { useMemo, useState } from "react";
-import { ChangePassword } from "../../components/employee/ModalEditPassword";
 const { Text } = Typography;
 
 export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
@@ -45,14 +43,8 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const employeeFilters: CrudFilters = [];
-
-      employeeFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       employeeFilters.push({
         field: "q",
@@ -159,16 +151,6 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
         key: "address",
       },
       {
-        title: t("employees.fields.status"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        key: "status",
-        dataIndex: "status",
-        width: "0.5rem",
-        align: "center",
-        render: (_, { status }) => <CustomerStatus status={status} />,
-      },
-      {
         title: t("table.actions"),
         dataIndex: "actions",
         key: "actions",
@@ -213,14 +195,6 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`employees.filters.search.placeholder`),
                   width: "400px",
-                },
-                {
-                  label: t(`employees.fields.status`),
-                  name: "status",
-                  placeholder: t(`employees.filters.status.placeholder`),
-                  type: "select",
-                  options: getCustomerStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

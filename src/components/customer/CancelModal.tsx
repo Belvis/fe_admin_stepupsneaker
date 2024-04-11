@@ -84,7 +84,7 @@ const CancelReasonModal: React.FC<CancelReasonModalProps> = ({
                 return {
                   message: t("common.error") + error?.message,
                   description: "Oops!..",
-                  type: "success",
+                  type: "error",
                 };
               },
             },

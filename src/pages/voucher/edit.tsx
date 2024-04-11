@@ -9,7 +9,6 @@ import {
   InputNumber,
   Radio,
   Row,
-  Select,
   Space,
 } from "antd";
 
@@ -23,7 +22,6 @@ import {
   LENGTH_NAME,
   LIMIT_VOUCHER_VALUE,
 } from "../../constants/common";
-import { getVoucherStatusOptions } from "../../constants/status";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { validateCommon } from "../../helpers/validate";
 import { IVoucherResponse } from "../../interfaces";
@@ -45,7 +43,6 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
     const data = {
       code: `${values.code}`,
       name: `${values.name}`,
-      status: `${values.status}`,
       type: `${values.type}`,
       value: `${values.value}`,
       constraint: `${values.constraint}`,
@@ -272,18 +269,6 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
                       </Radio>
                       <Radio value={"CASH"}>{t("vouchers.type.CASH")}</Radio>
                     </Radio.Group>
-                  </Form.Item>
-                  <Form.Item
-                    label={t("vouchers.fields.status")}
-                    name="status"
-                    rules={[
-                      {
-                        validator: (_, value) =>
-                          validateCommon(_, value, t, "status"),
-                      },
-                    ]}
-                  >
-                    <Select options={getVoucherStatusOptions(t)} />
                   </Form.Item>
                   <Form.Item hidden name="startDate">
                     <Input />

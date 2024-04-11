@@ -21,16 +21,14 @@ import {
 
 import { ColumnsType } from "antd/es/table";
 import { useMemo, useState } from "react";
-import { CustomerStatus } from "../../components/customer/CustomerStatus";
+import { AddressModal } from "../../components/address/AddressModal";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import ColumnActions from "../../components/table/ColumnActions";
-import { getCustomerStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
-import { AddressModal } from "../../components/address/AddressModal";
 
 const { Text } = Typography;
 
@@ -61,14 +59,8 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const customerFilters: CrudFilters = [];
-
-      customerFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       customerFilters.push({
         field: "q",
@@ -166,16 +158,6 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        title: t("customers.fields.status"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        key: "status",
-        dataIndex: "status",
-        width: "0.5rem",
-        align: "center",
-        render: (_, { status }) => <CustomerStatus status={status} />,
-      },
-      {
         title: t("table.actions"),
         dataIndex: "actions",
         key: "actions",
@@ -219,14 +201,6 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`customers.filters.search.placeholder`),
                   width: "400px",
-                },
-                {
-                  label: t(`customers.fields.status`),
-                  name: "status",
-                  placeholder: t(`customers.filters.status.placeholder`),
-                  type: "select",
-                  options: getCustomerStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

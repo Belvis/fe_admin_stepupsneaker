@@ -10,9 +10,7 @@ import { Avatar, Card, Col, Row, Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import CommonSearchForm from "../../components/form/CommonSearchForm";
-import { PromotionStatus } from "../../components/promotion/PromotionStatus";
 import ColumnActions from "../../components/table/ColumnActions";
-import { getProductStatusOptions } from "../../constants/status";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
@@ -36,14 +34,8 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const promotionFilter: CrudFilters = [];
-
-      promotionFilter.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       promotionFilter.push({
         field: "q",
@@ -115,16 +107,6 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
       },
     },
     {
-      title: t("promotions.fields.status"),
-      sorter: {},
-      defaultSortOrder: getDefaultSortOrder("status", sorters),
-      key: "status",
-      dataIndex: "status",
-      width: "0.5rem",
-      align: "center",
-      render: (_, { status }) => <PromotionStatus status={status} />,
-    },
-    {
       title: t("table.actions"),
       dataIndex: "actions",
       key: "actions",
@@ -170,14 +152,6 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`promotions.filters.search.placeholder`),
                   width: "400px",
-                },
-                {
-                  label: t(`promotions.fields.status`),
-                  name: "status",
-                  placeholder: t(`promotions.filters.status.placeholder`),
-                  type: "select",
-                  options: getProductStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

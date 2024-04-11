@@ -67,7 +67,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({
               style={{ color: "#52c41a", fontSize: 17, fontWeight: 500 }}
             />
           }
-          onClick={() => handleAction(record.status)}
+          onClick={() => handleAction("CANCELED")}
         >
           {hideText ? null : t("buttons.accept")}
         </Button>

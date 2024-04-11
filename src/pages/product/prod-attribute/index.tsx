@@ -18,9 +18,8 @@ import type { ColumnsType } from "antd/es/table";
 import { useMemo } from "react";
 import CommonSearchForm from "../../../components/form/CommonSearchForm";
 import { CreateProdAttribute } from "../../../components/product/CreateProdAttribute";
-import { ProductStatus } from "../../../components/product/ProductStatus";
+import { EditProdAttribute } from "../../../components/product/EditProdAttribute";
 import ColumnActions from "../../../components/table/ColumnActions";
-import { getProductStatusOptions } from "../../../constants/status";
 import { tablePaginationSettings } from "../../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../../helpers/confirm";
 import {
@@ -28,7 +27,6 @@ import {
   IProdAttributeResponse,
 } from "../../../interfaces";
 import { calculateIndex } from "../../../utils/common/calculator";
-import { EditProdAttribute } from "../../../components/product/EditProdAttribute";
 
 export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -44,14 +42,8 @@ export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q }) => {
       const ProdAttributeFilters: CrudFilters = [];
-
-      ProdAttributeFilters.push({
-        field: "status",
-        operator: "eq",
-        value: status ? status : undefined,
-      });
 
       ProdAttributeFilters.push({
         field: "q",
@@ -105,15 +97,6 @@ export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {
         defaultSortOrder: getDefaultSortOrder("name", sorters),
         dataIndex: "name",
         key: "name",
-      },
-      {
-        title: t(`${resource?.name}.fields.status`),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        key: "status",
-        dataIndex: "status",
-        align: "center",
-        render: (_, { status }) => <ProductStatus status={status} />,
       },
       {
         title: t("table.actions"),
@@ -173,16 +156,6 @@ export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {
                     `${resource?.name}.filters.search.placeholder`
                   ),
                   width: "400px",
-                },
-                {
-                  label: t(`${resource?.name}.fields.status`),
-                  name: "status",
-                  placeholder: t(
-                    `${resource?.name}.filters.status.placeholder`
-                  ),
-                  type: "select",
-                  options: getProductStatusOptions(t),
-                  width: "200px",
                 },
               ]}
             />

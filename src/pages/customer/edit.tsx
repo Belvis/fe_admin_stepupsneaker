@@ -140,46 +140,22 @@ export const CustomerEdit: React.FC<IResourceComponentsProps> = () => {
                   >
                     <DatePicker className="w-100" disabledDate={disabledDate} />
                   </Form.Item>
-                  <Row gutter={10}>
-                    <Col span={12}>
-                      <Form.Item
-                        label={t("customers.fields.gender.label")}
-                        name="gender"
-                        required
-                        rules={[
-                          {
-                            validator: (_, value) =>
-                              validateCommon(_, value, t, "gender"),
-                          },
-                        ]}
-                      >
-                        <Select
-                          placeholder={t("customers.fields.gender.placeholder")}
-                          options={getCustomerGenderOptions(t)}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        label={t("customers.fields.status")}
-                        name="status"
-                        required
-                        rules={[
-                          {
-                            validator: (_, value) =>
-                              validateCommon(_, value, t, "status"),
-                          },
-                        ]}
-                      >
-                        <Select
-                          placeholder={t(
-                            "customers.fields.status.statusPlaceholder"
-                          )}
-                          options={getCustomerStatusOptions(t)}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                  <Form.Item
+                    label={t("customers.fields.gender.label")}
+                    name="gender"
+                    required
+                    rules={[
+                      {
+                        validator: (_, value) =>
+                          validateCommon(_, value, t, "gender"),
+                      },
+                    ]}
+                  >
+                    <Select
+                      placeholder={t("customers.fields.gender.placeholder")}
+                      options={getCustomerGenderOptions(t)}
+                    />
+                  </Form.Item>
                 </Col>
               </Row>
               <Divider orientation="left">

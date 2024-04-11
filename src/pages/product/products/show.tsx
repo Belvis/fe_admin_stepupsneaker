@@ -366,15 +366,6 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       ),
     },
     {
-      title: t("products.fields.status"),
-      key: "status",
-      dataIndex: "status",
-      width: "10%",
-      align: "center",
-      sorter: (a, b) => a.status.localeCompare(b.status),
-      render: (_, { status }) => <ProductStatus status={status} />,
-    },
-    {
       title: t("table.actions"),
       dataIndex: "actions",
       key: "actions",

@@ -8,7 +8,6 @@ import {
   Input,
   InputNumber,
   Row,
-  Select,
   Space,
 } from "antd";
 
@@ -22,7 +21,6 @@ import {
   LENGTH_NAME,
   LIMIT_VOUCHER_VALUE,
 } from "../../constants/common";
-import { getPromotionStatusOptions } from "../../constants/status";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { validateCommon } from "../../helpers/validate";
 import { IPromotionResponse } from "../../interfaces";
@@ -43,7 +41,6 @@ export const PromotionEdit: React.FC<IResourceComponentsProps> = () => {
     const data = {
       code: `${values.code}`,
       name: `${values.name}`,
-      status: `${values.status}`,
       value: `${values.value}`,
       startDate: `${startDate}`,
       endDate: `${endDate}`,
@@ -197,18 +194,6 @@ export const PromotionEdit: React.FC<IResourceComponentsProps> = () => {
                         }
                       }}
                     />
-                  </Form.Item>
-                  <Form.Item
-                    label={t("promotions.fields.status")}
-                    name="status"
-                    rules={[
-                      {
-                        validator: (_, value) =>
-                          validateCommon(_, value, t, "status"),
-                      },
-                    ]}
-                  >
-                    <Select options={getPromotionStatusOptions(t)} />
                   </Form.Item>
                   <Form.Item hidden name="startDate">
                     <Input />

@@ -13,8 +13,9 @@ import {
   Select,
 } from "antd";
 import dayjs from "dayjs";
+import { useEffect } from "react";
+import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
 import { getCustomerGenderOptions } from "../../constants/gender";
-import { getCustomerStatusOptions } from "../../constants/status";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import {
   validateCommon,
@@ -23,10 +24,8 @@ import {
 } from "../../helpers/validate";
 import { IAddressResponse, ICustomerResponse } from "../../interfaces";
 import { AddressForm } from "../form/AddressForm";
-import ImageUpload from "../form/ImageUpload";
-import { useEffect } from "react";
 import { FieldLabel } from "../form/FieldLabel";
-import { LENGTH_EMAIL, LENGTH_NAME } from "../../constants/common";
+import ImageUpload from "../form/ImageUpload";
 
 type CustomerEditModalProps = {
   modalProps: ModalProps;
@@ -102,7 +101,6 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
       fullName: `${values.fullName}`,
       email: `${values.email}`,
       dateOfBirth: `${values.dob.valueOf()}`,
-      status: values.status,
       gender: `${values.gender}`,
       image: `${values.image}`,
       address: {
@@ -226,26 +224,6 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                       <Select
                         placeholder={t("customers.fields.gender.placeholder")}
                         options={getCustomerGenderOptions(t)}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      required
-                      label={t("customers.fields.status")}
-                      name="status"
-                      rules={[
-                        {
-                          validator: (_, value) =>
-                            validateCommon(_, value, t, "status"),
-                        },
-                      ]}
-                    >
-                      <Select
-                        placeholder={t(
-                          "customers.fields.status.statusPlaceholder"
-                        )}
-                        options={getCustomerStatusOptions(t)}
                       />
                     </Form.Item>
                   </Col>

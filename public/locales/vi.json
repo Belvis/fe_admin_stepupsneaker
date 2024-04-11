@@ -142,7 +142,7 @@
     "placeholder": {
       "products": "Tìm kiếm sản phẩm theo từ khóa",
       "customers": "Tìm kiếm khách hàng theo từ khóa",
-      "brands": "Tìm kiếm theo tên thương hiệu",
+      "brands": "Tìm kiếm theo tên nhãn hiệu",
       "materials": "Tìm kiếm theo tên chất liệu",
       "soles": "Tìm kiếm theo tên đế giày",
       "styles": "Tìm kiếm theo tên kiểu dáng",
@@ -265,11 +265,11 @@
     }
   },
   "trade-marks": {
-    "trade-marks": "Nhãn hiệu",
+    "trade-marks": "Thương Hiệu",
     "titles": {
-      "create": "Tạo Nhãn hiệu",
-      "list": "Nhãn hiệu",
-      "edit": "Chỉnh sửa Nhãn hiệu"
+      "create": "Tạo Thương Hiệu",
+      "list": "Thương Hiệu",
+      "edit": "Chỉnh sửa Thương Hiệu"
     },
     "fields": {
       "id": "ID",
@@ -1351,11 +1351,11 @@
   },
   "userSelect": {
     "product": {
-      "brands": "Thương hiệu",
+      "brands": "Nhãn hiệu",
       "materials": "Chất liệu",
       "soles": "Đế",
       "styles": "Kiểu dáng",
-      "trade-marks": "Nhãn hiệu",
+      "trade-marks": "Thương hiệu",
       "sizes": "Kích cỡ",
       "colors": "Màu sắc"
     }

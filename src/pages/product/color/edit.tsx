@@ -7,16 +7,14 @@ import {
   Input,
   Modal,
   ModalProps,
-  Select,
 } from "antd";
 import type { Color } from "antd/es/color-picker";
 import { FieldLabel } from "../../../components/form/FieldLabel";
-import { getProductStatusOptions } from "../../../constants/status";
+import { LENGTH_NAME } from "../../../constants/common";
 import { showWarningConfirmDialog } from "../../../helpers/confirm";
 import { validateCommon } from "../../../helpers/validate";
-import { colorPickerStyles } from "./style";
 import { IColorResponse } from "../../../interfaces";
-import { LENGTH_NAME } from "../../../constants/common";
+import { colorPickerStyles } from "./style";
 
 type EditColorProps = {
   modalProps: ModalProps;
@@ -92,18 +90,6 @@ export const EditColor: React.FC<EditColorProps> = ({
           ]}
         >
           <Input maxLength={LENGTH_NAME} showCount />
-        </Form.Item>
-        <Form.Item
-          label={t("colors.fields.status")}
-          name="status"
-          required
-          rules={[
-            {
-              validator: (_, value) => validateCommon(_, value, t, "status"),
-            },
-          ]}
-        >
-          <Select options={getProductStatusOptions(t)} />
         </Form.Item>
       </Form>
     </Modal>

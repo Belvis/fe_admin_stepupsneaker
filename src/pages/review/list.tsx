@@ -137,15 +137,6 @@ export const ReviewList: React.FC<IResourceComponentsProps> = () => {
         render: (value) => <Image src={value} width={100} />,
       },
       {
-        title: t("product/reviews.fields.status.label"),
-        sorter: {},
-        defaultSortOrder: getDefaultSortOrder("status", sorters),
-        dataIndex: "status",
-        key: "status",
-        align: "center",
-        render: (_, { status }) => <ReviewStatus status={status} />,
-      },
-      {
         title: t("table.actions"),
         dataIndex: "actions",
         key: "actions",

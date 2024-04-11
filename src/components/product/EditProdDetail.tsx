@@ -1,5 +1,5 @@
 import { useSelect } from "@refinedev/antd";
-import { useParsed, useTranslate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import {
   Col,
   Form,
@@ -12,8 +12,6 @@ import {
   Row,
   Select,
 } from "antd";
-import { useEffect } from "react";
-import { getProductStatusOptions } from "../../constants/status";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { productDetailToRequest } from "../../helpers/mapper";
 import { validateCommon } from "../../helpers/validate";
@@ -141,18 +139,6 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
               <InputNumber min={1} width={100} className="w-100" />
             </Form.Item>
 
-            <Form.Item
-              label={t("products.fields.status")}
-              name="status"
-              rules={[
-                {
-                  validator: (_, value) =>
-                    validateCommon(_, value, t, "status"),
-                },
-              ]}
-            >
-              <Select options={getProductStatusOptions(t)} />
-            </Form.Item>
             <Form.Item name={["product", "id"]} hidden>
               <Input />
             </Form.Item>
