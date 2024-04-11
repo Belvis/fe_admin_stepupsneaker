@@ -15,15 +15,15 @@
  * @returns Đối tượng AuthBindings cung cấp các phương thức liên quan đến xác thực.
  */
 
-import { AuthBindings } from "@refinedev/core";
+import { AuthBindings, AuthProvider } from "@refinedev/core";
 import { notification } from "antd";
 import { AxiosInstance } from "axios";
-import { axiosInstance } from "../utils/data-provider/axios";
 import { TOKEN_KEY } from "../helpers/token";
+import { axiosInstance } from "../utils/data-provider/axios";
 
 const httpClient: AxiosInstance = axiosInstance;
 
-export const authProvider = (url: string): AuthBindings => ({
+export const authProvider = (url: string): AuthProvider => ({
   login: async ({ email, password, remember }) => {
     try {
       const token = await httpClient

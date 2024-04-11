@@ -96,7 +96,8 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
 
         const updatedOrderDetails = prev.orderDetails.map((existingItem) => {
           const itemToUpdate = payLoad.find(
-            (newItem) => newItem.id === existingItem.id
+            (newItem) =>
+              newItem.productDetail.id === existingItem.productDetail.id
           );
 
           if (itemToUpdate) {
@@ -116,7 +117,8 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
         const newItemsToAdd = payLoad.filter(
           (newItem) =>
             !prev.orderDetails.some(
-              (existingItem) => existingItem.id === newItem.id
+              (existingItem) =>
+                existingItem.productDetail.id === newItem.productDetail.id
             )
         );
         addition += newItemsToAdd.reduce(
