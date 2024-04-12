@@ -61,11 +61,6 @@ import {
 import { DashboardContextProvider } from "./contexts/dashboard";
 import { POSContextProvider } from "./contexts/point-of-sales";
 import { ReturnFormContextProvider } from "./contexts/return";
-import {
-  decodeToken,
-  getRoleFromDecodedToken,
-  getToken,
-} from "./helpers/token";
 import { Header } from "./layouts/header";
 import { ThemedSiderV2 } from "./layouts/sider";
 import { ThemedTitleV2 } from "./layouts/title";
@@ -157,10 +152,6 @@ function App() {
       return "SUNS";
     }
   };
-
-  const userToken = getToken();
-  const decodedToken = decodeToken(userToken);
-  const role = getRoleFromDecodedToken(decodedToken);
 
   return (
     <BrowserRouter>
