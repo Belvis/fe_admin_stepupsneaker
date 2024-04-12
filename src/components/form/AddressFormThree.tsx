@@ -336,7 +336,7 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
       <Form.Item name="wardName" hidden>
         <Input />
       </Form.Item>
-      {!hideChooseAddress && order && (
+      {!hideChooseAddress && order?.customer && (
         <AddressModal
           customer={order.customer}
           setAddresses={setAddresses}
