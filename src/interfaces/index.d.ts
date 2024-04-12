@@ -342,6 +342,7 @@ export interface IOrderResponse {
   voucher?: IVoucherResponse;
   address: IAddressResponse;
   phoneNumber: string;
+  email: string;
   fullName: string;
   totalMoney: number;
   shippingMoney: number;

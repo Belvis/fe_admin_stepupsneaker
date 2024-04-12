@@ -492,7 +492,7 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
               line: viewOrder.address?.more,
               fullName: viewOrder.fullName,
               phoneNumber: viewOrder.phoneNumber,
-              email: viewOrder.customer?.email,
+              email: viewOrder.email,
               orderNote: viewOrder.note,
             }}
           >
