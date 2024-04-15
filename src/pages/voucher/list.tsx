@@ -23,6 +23,7 @@ import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { IVoucherFilterVariables, IVoucherResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
+import { VoucherStatus } from "../../components/voucher/VoucherStatus";
 
 const { Text } = Typography;
 
@@ -167,6 +168,16 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
         key: "endDate",
         render: (_, record) => {
           return <>{formatTimestamp(record.endDate).dateTimeFormat}</>;
+        },
+      },
+      {
+        title: t("vouchers.fields.status"),
+        sorter: {},
+        defaultSortOrder: getDefaultSortOrder("status", sorters),
+        dataIndex: "status",
+        key: "status",
+        render: (value) => {
+          return <VoucherStatus status={value} />;
         },
       },
       {

@@ -144,11 +144,15 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
       const newItems = createTabsFromOrders(fetchedPendingOrder);
 
       setItems(newItems);
-      setActiveKey((prevActiveKey) =>
-        prevActiveKey === "1"
-          ? newItems[0].key
-          : newItems[newItems.length - 1].key
-      );
+      setActiveKey((prevActiveKey) => {
+        console.log("prevActiveKey", prevActiveKey);
+
+        if (prevActiveKey === "1" || !prevActiveKey) {
+          return newItems[newItems.length - 1].key;
+        }
+
+        return prevActiveKey;
+      });
     } else {
       setItems(initialItems);
       setActiveKey("1");

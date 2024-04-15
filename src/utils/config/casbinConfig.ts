@@ -35,4 +35,7 @@ p, ROLE_STAFF, payments, (list)
 p, ROLE_STAFF, return-forms, (list)|(create)
 p, ROLE_STAFF, return-forms/*, (edit)
 
+p, ROLE_STAFF, product/reviews, (list)|(create)
+p, ROLE_STAFF, product/reviews/*, (edit)
+
 `);

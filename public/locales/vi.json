@@ -774,7 +774,8 @@
       "ACTIVE": "Đang hoạt động",
       "EXPIRED": "Hết hạn",
       "CANCELLED": "Đã hủy",
-      "UP_COMING": "Sắp diễn ra"
+      "UP_COMING": "Sắp diễn ra",
+      "null": "Unknown"
     }
   },
   "orders": {

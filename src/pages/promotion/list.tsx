@@ -19,6 +19,7 @@ import {
   IPromotionResponse,
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
+import { PromotionStatus } from "../../components/promotion/PromotionStatus";
 
 const { Text } = Typography;
 
@@ -104,6 +105,16 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
       key: "endDate",
       render: (_, record) => {
         return <>{formatTimestamp(record.endDate).dateTimeFormat}</>;
+      },
+    },
+    {
+      title: t("promotions.fields.status"),
+      sorter: {},
+      defaultSortOrder: getDefaultSortOrder("status", sorters),
+      dataIndex: "status",
+      key: "status",
+      render: (value) => {
+        return <PromotionStatus status={value} />;
       },
     },
     {

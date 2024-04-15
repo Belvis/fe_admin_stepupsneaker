@@ -423,9 +423,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         },
       }}
     >
-      <Card>
+      {/* <Card>
         <ProductSearchForm formProps={searchFormProps} />
-      </Card>
+      </Card> */}
       <Card
         extra={
           <Button

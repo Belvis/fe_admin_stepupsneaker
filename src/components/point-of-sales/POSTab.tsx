@@ -173,7 +173,7 @@ export const POSTab: React.FC = () => {
             setItems(initialItems);
             setActiveKey("1");
           } else {
-            setActiveKey(items[lastIndex].key);
+            setActiveKey(items[items.length - 1].key);
           }
           message.success(t("orders.notification.tab.remove.success"));
         },

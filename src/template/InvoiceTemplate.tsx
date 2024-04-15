@@ -93,7 +93,7 @@ export const InvoiceTemplate = React.forwardRef<
               </p>
             )}
             <p className="m-0">
-              {t("employees.employees")}: {order.employee.fullName ?? "N/A"}
+              {t("employees.employees")}: {order.employee?.fullName ?? "N/A"}
             </p>
           </div>
           <div className="col-6 text-end">
