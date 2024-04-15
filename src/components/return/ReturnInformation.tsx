@@ -60,7 +60,9 @@ export const ReturnInformation: React.FC<IResourceComponentsProps> = () => {
         customer: {
           name: customer,
         },
-        code: selectedOrder.code,
+        order: {
+          code: selectedOrder.code,
+        },
       });
     }
   }, [selectedOrder]);

@@ -58,9 +58,9 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ record }) => {
                 : "N/A"}
             </Text>
             <Text>
-              Role:{" "}
+              {t("employees.fields.role")}:{" "}
               {record && record.employee && record.employee.role
-                ? record.employee.role.name
+                ? t(`roles.${record.employee.role.name}`)
                 : "N/A"}
             </Text>
           </EmployeeInfoText>

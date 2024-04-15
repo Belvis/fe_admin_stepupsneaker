@@ -77,7 +77,7 @@ export const RecentOrders: React.FC = () => {
               show("orders", record.id);
             }}
           >
-            #{record.code.toUpperCase()}
+            #{record.code}
           </OrderId>
         </TitleWrapper>
       ),

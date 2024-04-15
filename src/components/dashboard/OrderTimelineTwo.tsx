@@ -139,7 +139,7 @@ export const OrderTimelineTwo: React.FC<OrderTimelineTwoProps> = ({}) => {
                         onClick={() => navigateShow("orders", orderId)}
                         strong
                       >
-                        #{orderCode.toUpperCase()}
+                        #{orderCode}
                       </Number>
                     </TimelineContent>
                   </TimelineItem>

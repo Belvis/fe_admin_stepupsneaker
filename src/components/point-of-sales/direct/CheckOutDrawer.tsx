@@ -286,9 +286,16 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
   }
 
   const handleSubmitOrder = () => {
-    if (payments && payments?.length > 1) {
-      show();
-      return;
+    if (payments) {
+      if (payments?.length > 1) {
+        show();
+        return;
+      }
+
+      if (calculatePayment(payments, "PENDING") <= 0) {
+        message.error(t("orders.notification.tab.checkoutDrawer.error"));
+        return;
+      }
     }
 
     const hasEmptyTransactionCode = payments

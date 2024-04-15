@@ -79,7 +79,7 @@ export const PaymentList: React.FC<IResourceComponentsProps> = () => {
         defaultSortOrder: getDefaultSortOrder("order.code", sorters),
         dataIndex: ["order", "code"],
         key: "order",
-        render: (_, { order }) => <Text>{order?.code.toUpperCase()}</Text>,
+        render: (_, { order }) => <Text>{order?.code}</Text>,
       },
       {
         title: t("payments.fields.totalMoney"),

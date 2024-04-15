@@ -107,7 +107,7 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
           ghost={false}
           onBack={() => window.history.back()}
           title={t("orders.fields.code")}
-          subTitle={`#${record?.code.toUpperCase() ?? ""}`}
+          subTitle={`#${record?.code ?? ""}`}
           extra={[
             <Button
               key="print"

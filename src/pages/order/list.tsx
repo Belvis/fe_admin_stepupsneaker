@@ -102,7 +102,7 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
         render: (_, { code }) => {
           return (
             <Text strong style={{ color: "#fb5231" }}>
-              {code ? code.toUpperCase() : "N/A"}
+              {code ? code : "N/A"}
             </Text>
           );
         },
