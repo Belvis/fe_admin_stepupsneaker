@@ -62,8 +62,17 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
     pagination: {
       pageSize: 5,
     },
+    filters: {
+      permanent: [
+        {
+          field: "minQuantity",
+          operator: "eq",
+          value: 1,
+        },
+      ],
+    },
     sorters: {
-      initial: [
+      permanent: [
         {
           field: "id",
           order: "desc",

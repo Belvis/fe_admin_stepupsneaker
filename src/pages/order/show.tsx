@@ -1,6 +1,9 @@
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  EditOutlined,
+  FieldTimeOutlined,
+  FileSearchOutlined,
   PrinterOutlined,
   RollbackOutlined,
 } from "@ant-design/icons";
@@ -25,6 +28,7 @@ import { OrderSteps } from "../../components/order/OrderSteps";
 import { IOrderResponse, OrderStatus } from "../../interfaces";
 import { useReactToPrint } from "react-to-print";
 import { InvoiceTemplate } from "../../template/InvoiceTemplate";
+import { OrderTimelineThree } from "../../components/dashboard/OrderTimelineThree";
 
 const { Text } = Typography;
 
@@ -86,6 +90,12 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
     show: showReason,
     close: closeReason,
     modalProps: { visible: vi2, ...restPropsReason },
+  } = useModal();
+
+  const {
+    show: showStatusHistories,
+    close: closeStatusHistories,
+    modalProps: { visible: vi3, ...restPropsStatusHistories },
   } = useModal();
 
   const showModal = () => {
@@ -193,10 +203,22 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
                 ghost
                 disabled={record && record?.status !== "WAIT_FOR_CONFIRMATION"}
                 onClick={show}
+                icon={<EditOutlined />}
               >
                 {t("orders.titles.edit")}
               </Button>
-              <Button type="primary" onClick={showModal}>
+              <Button
+                type="primary"
+                onClick={showStatusHistories}
+                icon={<FieldTimeOutlined />}
+              >
+                Chi tiết lịch sử trạng thái
+              </Button>
+              <Button
+                type="primary"
+                onClick={showModal}
+                icon={<FileSearchOutlined />}
+              >
                 {t("buttons.viewHistory")}
               </Button>
             </>
@@ -210,6 +232,11 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
           {record && <OrderDescription record={record} />}
         </Skeleton>
       </Space>
+      <OrderTimelineThree
+        modalProps={restPropsStatusHistories}
+        close={closeStatusHistories}
+        id={id}
+      />
       <OrderHistoryTimeLine
         id={id as string}
         open={isModalVisible}

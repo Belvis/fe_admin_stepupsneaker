@@ -122,6 +122,18 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
                     <Input maxLength={LENGTH_CODE} showCount />
                   </Form.Item>
                   <Form.Item
+                    label={t("vouchers.fields.type")}
+                    name="type"
+                    required
+                  >
+                    <Radio.Group>
+                      <Radio value={"PERCENTAGE"}>
+                        {t("vouchers.type.PERCENTAGE")}
+                      </Radio>
+                      <Radio value={"CASH"}>{t("vouchers.type.CASH")}</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                  <Form.Item
                     label={t("vouchers.fields.value")}
                     name="value"
                     required
@@ -257,18 +269,6 @@ export const VoucherEdit: React.FC<IResourceComponentsProps> = () => {
                         }
                       }}
                     />
-                  </Form.Item>
-                  <Form.Item
-                    label={t("vouchers.fields.type")}
-                    name="type"
-                    required
-                  >
-                    <Radio.Group>
-                      <Radio value={"PERCENTAGE"}>
-                        {t("vouchers.type.PERCENTAGE")}
-                      </Radio>
-                      <Radio value={"CASH"}>{t("vouchers.type.CASH")}</Radio>
-                    </Radio.Group>
                   </Form.Item>
                   <Form.Item hidden name="startDate">
                     <Input />

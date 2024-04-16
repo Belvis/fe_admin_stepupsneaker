@@ -132,7 +132,7 @@ export const OrderDescription: React.FC<OrderDescriptionProps> = ({
       span: 3,
       children: (
         <>
-          {record.payments &&
+          {record.payments ? (
             record.payments.map((payment) => (
               <div key={payment.id}>
                 {payment.paymentStatus === "PENDING" ? (
@@ -163,7 +163,10 @@ export const OrderDescription: React.FC<OrderDescriptionProps> = ({
                       value={dayjs(new Date(payment.updatedAt))}
                       format="LLL"
                     />
-                    {payment.transactionCode !== "CASH" && (
+                    {!(
+                      payment.transactionCode === "Cash" ||
+                      payment.transactionCode === "CASH"
+                    ) && (
                       <>
                         {" - "}
                         {t("payments.fields.transactionCode")}
@@ -173,7 +176,10 @@ export const OrderDescription: React.FC<OrderDescriptionProps> = ({
                   </>
                 )}
               </div>
-            ))}
+            ))
+          ) : (
+            <span>Chưa thanh toán</span>
+          )}
         </>
       ),
     },

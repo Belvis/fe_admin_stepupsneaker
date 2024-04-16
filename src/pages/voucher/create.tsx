@@ -110,6 +110,59 @@ export const VoucherCreate: React.FC<IResourceComponentsProps> = () => {
               <Input maxLength={LENGTH_CODE} showCount />
             </Form.Item>
             <Form.Item
+              label={t("vouchers.fields.quantity")}
+              name="quantity"
+              required
+              rules={[
+                {
+                  validator: (_, value) =>
+                    validateCommon(_, value, t, "quantity"),
+                },
+              ]}
+            >
+              <InputNumber className="w-100" min={1} width={100} />
+            </Form.Item>
+            <Form.Item
+              label={t("vouchers.fields.voucherRange")}
+              name="voucherRange"
+              required
+              rules={[
+                {
+                  validator: (_, value) =>
+                    validateCommon(_, value, t, "voucherRange"),
+                },
+              ]}
+            >
+              <RangePicker
+                showTime={{ format: "HH:mm:ss" }}
+                format="YYYY-MM-DD HH:mm"
+                className="w-100"
+                disabledDate={(current) =>
+                  dayjs(current).isBefore(dayjs().startOf("day"))
+                }
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} lg={12}>
+            <Form.Item
+              label={t("vouchers.fields.type")}
+              name="type"
+              initialValue={"CASH"}
+              required
+              rules={[
+                {
+                  validator: (_, value) => validateCommon(_, value, t, "type"),
+                },
+              ]}
+            >
+              <Radio.Group>
+                <Radio value={"PERCENTAGE"}>
+                  {t("vouchers.type.PERCENTAGE")}
+                </Radio>
+                <Radio value={"CASH"}>{t("vouchers.type.CASH")}</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
               label={t("vouchers.fields.value")}
               required
               name="value"
@@ -186,59 +239,6 @@ export const VoucherCreate: React.FC<IResourceComponentsProps> = () => {
                   return newValue;
                 }}
               />
-            </Form.Item>
-          </Col>
-          <Col xs={24} lg={12}>
-            <Form.Item
-              label={t("vouchers.fields.quantity")}
-              name="quantity"
-              required
-              rules={[
-                {
-                  validator: (_, value) =>
-                    validateCommon(_, value, t, "quantity"),
-                },
-              ]}
-            >
-              <InputNumber className="w-100" min={1} width={100} />
-            </Form.Item>
-            <Form.Item
-              label={t("vouchers.fields.voucherRange")}
-              name="voucherRange"
-              required
-              rules={[
-                {
-                  validator: (_, value) =>
-                    validateCommon(_, value, t, "voucherRange"),
-                },
-              ]}
-            >
-              <RangePicker
-                showTime={{ format: "HH:mm:ss" }}
-                format="YYYY-MM-DD HH:mm"
-                className="w-100"
-                disabledDate={(current) =>
-                  dayjs(current).isBefore(dayjs().startOf("day"))
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label={t("vouchers.fields.type")}
-              name="type"
-              initialValue={"CASH"}
-              required
-              rules={[
-                {
-                  validator: (_, value) => validateCommon(_, value, t, "type"),
-                },
-              ]}
-            >
-              <Radio.Group>
-                <Radio value={"PERCENTAGE"}>
-                  {t("vouchers.type.PERCENTAGE")}
-                </Radio>
-                <Radio value={"CASH"}>{t("vouchers.type.CASH")}</Radio>
-              </Radio.Group>
             </Form.Item>
           </Col>
         </Row>
