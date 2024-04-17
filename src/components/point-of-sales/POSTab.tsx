@@ -92,7 +92,7 @@ export const POSTab: React.FC = () => {
 
   const handleScanSuccess = async (result: string) => {
     try {
-      const { data } = await getOne({ resource: "products", id: result });
+      const { data } = await getOne({ resource: "products/code", id: result });
       if (data) {
         setSelectedProduct(data as IProductResponse);
         productShow();
