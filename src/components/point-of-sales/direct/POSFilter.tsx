@@ -20,9 +20,11 @@ import {
   Tag,
   Typography,
 } from "antd";
+import { AnimatePresence, motion } from "framer-motion";
+import _ from "lodash";
 import { useContext, useEffect, useState } from "react";
+import { POSContext } from "../../../contexts/point-of-sales";
 import {
-  DirectSalesContext,
   FilterType,
   blankFilters,
 } from "../../../contexts/point-of-sales/direct-sales";
@@ -35,8 +37,6 @@ import {
   StyleIcon,
   TradeMarkIcon,
 } from "../../icons";
-import _ from "lodash";
-import { AnimatePresence, motion } from "framer-motion";
 
 const { Title } = Typography;
 
@@ -49,8 +49,7 @@ export const POSFilter: React.FC<POSFilterProps> = ({ open, onClose }) => {
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
 
-  const { filters: initialFilters, setFilters } =
-    useContext(DirectSalesContext);
+  const { filters: initialFilters, setFilters } = useContext(POSContext);
 
   const [tempFilters, setTempFilters] = useState<FilterType>(blankFilters);
 

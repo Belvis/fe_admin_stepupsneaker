@@ -10,9 +10,9 @@ type DirectSalesRightContentProps = {};
 const DirectSalesRightContent: React.FC<
   DirectSalesRightContentProps
 > = ({}) => {
-  const { setSelectedProduct, productShow } = useContext(POSContext);
-  const { pLayout, products, isLoadingProduct } =
-    useContext(DirectSalesContext);
+  const { setSelectedProduct, productShow, products, isLoadingProduct } =
+    useContext(POSContext);
+  const { pLayout } = useContext(DirectSalesContext);
 
   const handleProductClick = (product: IProductResponse) => {
     setSelectedProduct(product);

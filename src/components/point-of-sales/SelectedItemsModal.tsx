@@ -53,7 +53,7 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
   const { mutate } = useCreateMany();
   const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
-  const { refetchOrder, activeKey } = useContext(POSContext);
+  const { refetchOrder, activeKey, refetchProducts } = useContext(POSContext);
 
   const [copiedItems, setCopiedItems] =
     useState<IProductDetailResponse[]>(items);
@@ -164,6 +164,7 @@ export const SelectedItemsModal: React.FC<SelectedItemsModalProps> = ({
           onSuccess: () => {
             message.success(t("orders.notification.product.add.success"));
             refetchOrder();
+            refetchProducts();
             parentClose();
           },
         }

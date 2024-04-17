@@ -1,7 +1,7 @@
 import { useTranslate } from "@refinedev/core";
 import { Button, Col, Pagination, PaginationProps, Row, Tooltip } from "antd";
 import React, { ReactNode, useContext, useState } from "react";
-import { DirectSalesContext } from "../../../contexts/point-of-sales/direct-sales";
+import { POSContext } from "../../../contexts/point-of-sales";
 import { IOrderResponse } from "../../../interfaces";
 import { CheckOutDrawer } from "./CheckOutDrawer";
 
@@ -14,7 +14,7 @@ const DirectSalesRightFooter: React.FC<DirectSalesRightFooterProps> = ({
 }) => {
   const t = useTranslate();
 
-  const { pagination, setPagination } = useContext(DirectSalesContext);
+  const { pagination, setPagination } = useContext(POSContext);
 
   const [checkOutDrawerOpen, setCheckOutDrawerOpen] = useState(false);
 

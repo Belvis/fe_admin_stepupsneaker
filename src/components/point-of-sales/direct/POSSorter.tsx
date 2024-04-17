@@ -10,7 +10,6 @@ import {
   Drawer,
   Flex,
   Grid,
-  RadioChangeEvent,
   Row,
   Select,
   Space,
@@ -19,8 +18,8 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import _ from "lodash";
 import { useContext, useEffect, useState } from "react";
+import { POSContext } from "../../../contexts/point-of-sales";
 import {
-  DirectSalesContext,
   SorterType,
   initialSorters,
 } from "../../../contexts/point-of-sales/direct-sales";
@@ -36,7 +35,7 @@ export const POSSorter: React.FC<POSSorterProps> = ({ open, onClose }) => {
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
 
-  const { sorters: initialSorter, setSorters } = useContext(DirectSalesContext);
+  const { sorters: initialSorter, setSorters } = useContext(POSContext);
 
   const [tempSorter, setTempSorter] = useState<SorterType>(initialSorter);
 

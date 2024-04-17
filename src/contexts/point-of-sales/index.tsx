@@ -5,7 +5,7 @@ import {
   useList,
   useTranslate,
 } from "@refinedev/core";
-import { Flex } from "antd";
+import { Flex, TablePaginationConfig } from "antd";
 import React, {
   PropsWithChildren,
   createContext,
@@ -22,6 +22,12 @@ import {
   IProductResponse,
   QueryObserverResult,
 } from "../../interfaces";
+import {
+  FilterType,
+  SorterType,
+  blankFilters,
+  initialSorters,
+} from "./direct-sales";
 
 type POSContextType = {
   selectedProduct: IProductResponse;
@@ -44,6 +50,17 @@ type POSContextType = {
   setPaymentMethods: React.Dispatch<
     React.SetStateAction<IPaymentMethodResponse[] | undefined>
   >;
+  filters: FilterType;
+  setFilters: React.Dispatch<React.SetStateAction<FilterType>>;
+  sorters: SorterType;
+  products: IProductResponse[];
+  setSorters: React.Dispatch<React.SetStateAction<SorterType>>;
+  isLoadingProduct: boolean;
+  refetchProducts: () => Promise<
+    QueryObserverResult<GetListResponse<IProductResponse>, HttpError>
+  >;
+  pagination: TablePaginationConfig;
+  setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
 };
 type Tab = {
   label: string;
@@ -173,6 +190,85 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
     return items;
   };
 
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
+    current: 1,
+    pageSize: 6,
+    total: 0,
+  });
+
+  const [filters, setFilters] = useState<FilterType>(blankFilters);
+  const [sorters, setSorters] = useState<SorterType>(initialSorters);
+
+  const {
+    data: dataProduct,
+    isLoading: isLoadingProduct,
+    refetch: refetchProducts,
+  } = useList<IProductResponse, HttpError>({
+    resource: "products",
+    filters: [
+      {
+        field: "minQuantity",
+        operator: "eq",
+        value: 1,
+      },
+      {
+        field: "brands",
+        operator: "eq",
+        value: filters.brands,
+      },
+      {
+        field: "materials",
+        operator: "eq",
+        value: filters.materials,
+      },
+      {
+        field: "soles",
+        operator: "eq",
+        value: filters.soles,
+      },
+      {
+        field: "styles",
+        operator: "eq",
+        value: filters.styles,
+      },
+      {
+        field: "tradeMarks",
+        operator: "eq",
+        value: filters.tradeMarks,
+      },
+      {
+        field: "colors",
+        operator: "eq",
+        value: filters.colors,
+      },
+      {
+        field: "sizes",
+        operator: "eq",
+        value: filters.sizes,
+      },
+    ],
+    sorters: [
+      {
+        field: sorters.field,
+        order: sorters.order,
+      },
+    ],
+    pagination: pagination,
+  });
+
+  const [products, setProducts] = useState<IProductResponse[]>([]);
+
+  useEffect(() => {
+    if (dataProduct && dataProduct.data) {
+      const fetchedProduct: IProductResponse[] = [...dataProduct.data];
+      setProducts(fetchedProduct);
+      setPagination((prevPagination) => ({
+        ...prevPagination,
+        total: dataProduct.total,
+      }));
+    }
+  }, [dataProduct]);
+
   return (
     <POSContext.Provider
       value={{
@@ -190,6 +286,15 @@ export const POSContextProvider: React.FC<PropsWithChildren> = ({
         setPayments,
         paymentMethods,
         setPaymentMethods,
+        filters,
+        setFilters,
+        sorters,
+        setSorters,
+        products,
+        refetchProducts,
+        isLoadingProduct,
+        pagination,
+        setPagination,
       }}
     >
       {children}
