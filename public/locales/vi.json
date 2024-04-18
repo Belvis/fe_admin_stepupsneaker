@@ -390,8 +390,8 @@
   "voucherHistories": {
     "voucherHistories": "Lịch sử áp dụng Voucher",
     "fields": {
-      "voucherCode": "Mã voucher",
-      "orderCode": "Mã hoá đơn",
+      "voucherCode": "Mã",
+      "orderCode": "Mã HĐ",
       "moneyReduction": "Tiền được giảm",
       "moneyBeforeReduction": "Tiền trước khi giảm",
       "moneyAfterReduction": "Tiền sau khi giảm",

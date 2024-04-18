@@ -1,4 +1,4 @@
-import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Create, useForm, useModal, useSelect } from "@refinedev/antd";
 import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
 import { Button, Col, Divider, Flex, Form, Input, Row, Select } from "antd";
 
@@ -46,15 +46,11 @@ export const EmployeeCreate: React.FC<IResourceComponentsProps> = () => {
     }));
   };
 
-  const [isScanOpen, setScanOpen] = useState(false);
-
-  const handleScanOpen = () => {
-    setScanOpen(!isScanOpen);
-  };
-
-  const handleScanClose = () => {
-    setScanOpen(false);
-  };
+  const {
+    show: scanShow,
+    close: scanClose,
+    modalProps: scanModalProps,
+  } = useModal();
 
   const handleScanSuccess = (result: string) => {
     const qrResult = parseQRCodeResult(result);
@@ -98,7 +94,7 @@ export const EmployeeCreate: React.FC<IResourceComponentsProps> = () => {
             <Button
               type="primary"
               onClick={() => {
-                handleScanOpen();
+                scanShow();
               }}
             >
               {t("buttons.scanQR")}
@@ -239,11 +235,10 @@ export const EmployeeCreate: React.FC<IResourceComponentsProps> = () => {
             </Col>
           </Row>
         </Form>
-        {isScanOpen && (
+        {scanModalProps.open && (
           <QRScannerModal
-            isScanOpen={isScanOpen}
-            handleScanOpen={handleScanOpen}
-            handleScanClose={handleScanClose}
+            modalProps={scanModalProps}
+            close={scanClose}
             onScanSuccess={handleScanSuccess}
           />
         )}

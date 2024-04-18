@@ -23,6 +23,7 @@ import {
 import ImageUpload from "../form/ImageUpload";
 import { ProdAttributeSelectTwo } from "./ProdAttributeSelectTwo";
 import { renderColor } from "./ProductSearchForm";
+import { useEffect } from "react";
 
 type EditProdDetailProps = {
   modalProps: ModalProps;
@@ -39,7 +40,7 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
   const breakpoint = Grid.useBreakpoint();
 
   const { selectProps: colorSelectProps } = useSelect<IColorResponse>({
-    resource: "colors?pageSize=10&",
+    resource: "colors?pageSize=1000&",
     optionLabel: "code",
     optionValue: "id",
     debounce: 500,
@@ -71,6 +72,7 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
       {...modalProps}
       width={breakpoint.sm ? "1000px" : "100%"}
       zIndex={1001}
+      title="Chỉnh sửa sản phẩm chi tiết"
     >
       <Form {...formProps} layout="vertical" onFinish={onFinishHandler}>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -84,26 +86,29 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
             <ProdAttributeSelectTwo attributeName="trade-mark" />
             <ProdAttributeSelectTwo attributeName="sole" />
             <ProdAttributeSelectTwo attributeName="size" />
-            <Form.Item
-              label={t("productDetails.fields.color")}
-              name={["color", "id"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Select
-                {...colorSelectProps}
-                options={colorSelectProps.options?.map((item) =>
-                  renderColor(item.value as string, item.label as string)
-                )}
-              />
-            </Form.Item>
+            {colorSelectProps.options && (
+              <Form.Item
+                label={t("productDetails.fields.color")}
+                name={["color", "id"]}
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
+              >
+                <Select
+                  {...colorSelectProps}
+                  options={colorSelectProps.options.map((item) =>
+                    renderColor(item.value as string, item.label as string)
+                  )}
+                />
+              </Form.Item>
+            )}
 
             <Form.Item
               label={t("productDetails.fields.price")}
               name="price"
+              required
               rules={[
                 {
                   validator: (_, value) => validateCommon(_, value, t, "price"),
@@ -129,6 +134,7 @@ export const EditProdDetail: React.FC<EditProdDetailProps> = ({
             <Form.Item
               label={t("productDetails.fields.quantity")}
               name="quantity"
+              required
               rules={[
                 {
                   validator: (_, value) =>

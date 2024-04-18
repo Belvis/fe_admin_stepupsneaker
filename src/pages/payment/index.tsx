@@ -2,6 +2,7 @@ import {
   List,
   NumberField,
   getDefaultSortOrder,
+  useSelect,
   useTable,
 } from "@refinedev/antd";
 import {
@@ -17,7 +18,11 @@ import { useMemo } from "react";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { formatTimestamp } from "../../helpers/timestamp";
-import { IPaymentFilterVariables, IPaymentResponse } from "../../interfaces";
+import {
+  IPaymentFilterVariables,
+  IPaymentMethodResponse,
+  IPaymentResponse,
+} from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
 
 const { Text } = Typography;
@@ -33,13 +38,31 @@ export const PaymentList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q }) => {
+    onSearch: ({ q, paymentMethod, priceMin, priceMax }) => {
       const customerFilters: CrudFilters = [];
 
       customerFilters.push({
         field: "q",
         operator: "eq",
         value: q ? q : undefined,
+      });
+
+      customerFilters.push({
+        field: "paymentMethod",
+        operator: "eq",
+        value: paymentMethod ? paymentMethod : undefined,
+      });
+
+      customerFilters.push({
+        field: "priceMin",
+        operator: "eq",
+        value: priceMin ? priceMin : undefined,
+      });
+
+      customerFilters.push({
+        field: "priceMax",
+        operator: "eq",
+        value: priceMax ? priceMax : undefined,
       });
 
       return customerFilters;
@@ -137,6 +160,22 @@ export const PaymentList: React.FC<IResourceComponentsProps> = () => {
     [t, sorters, current, pageSize]
   );
 
+  const { selectProps: paymentMethodSelectProps } =
+    useSelect<IPaymentMethodResponse>({
+      resource: "payment-methods",
+      optionLabel: "name",
+      optionValue: "id",
+    });
+
+  const renderOptions = () => {
+    if (!paymentMethodSelectProps.options) return [];
+
+    return paymentMethodSelectProps.options.map((option) => ({
+      ...option,
+      label: t(`paymentMethods.options.${option.label}`),
+    }));
+  };
+
   return (
     <List canCreate={false}>
       <Row gutter={[8, 12]} align="middle" justify="center">
@@ -152,6 +191,26 @@ export const PaymentList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`payments.filters.search.placeholder`),
                   width: "400px",
+                },
+                {
+                  label: "",
+                  name: "paymentMethod",
+                  type: "select",
+                  placeholder: "Tìm kiếm theo phương thức thanh toán",
+                  options: renderOptions(),
+                  width: "400px",
+                },
+                {
+                  label: t(`productDetails.filters.priceMin.label`),
+                  name: "priceMin",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: t(`productDetails.filters.priceMax.label`),
+                  name: "priceMax",
+                  type: "input-number",
+                  showLabel: true,
                 },
               ]}
             />

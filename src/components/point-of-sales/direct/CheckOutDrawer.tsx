@@ -501,9 +501,9 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       return null;
     }
 
-    const paymentMethodNames = payments.map(
-      (payment) => payment.paymentMethod.name
-    );
+    const paymentMethodNames = payments.map((payment) => {
+      return t(`paymentMethods.options.${payment.paymentMethod.name}`);
+    });
     const methodsString = paymentMethodNames.join(", ");
 
     return (

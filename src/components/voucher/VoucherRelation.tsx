@@ -7,15 +7,24 @@ import {
   Input,
   Typography,
   FormProps,
+  DatePicker,
+  Select,
+  Button,
+  Card,
 } from "antd";
 import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
-import { HttpError, useTranslate } from "@refinedev/core";
+import { CrudFilters, HttpError, useTranslate } from "@refinedev/core";
 import { debounce } from "lodash";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { formatTimestamp } from "../../helpers/timestamp";
+import dayjs from "dayjs";
+import { getCustomerGenderOptions } from "../../constants/gender";
+import { UndoOutlined } from "@ant-design/icons";
+import CommonSearchForm from "../form/CommonSearchForm";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
+const { RangePicker } = DatePicker;
 
 type VoucherRelationProps = {
   formProps: FormProps;
@@ -24,7 +33,7 @@ type VoucherRelationProps = {
 const VoucherRelation: React.FC<VoucherRelationProps> = ({ formProps }) => {
   const t = useTranslate();
   const { mode } = useContext(ColorModeContext);
-  const { listProps, setFilters } = useSimpleList<
+  const { listProps, searchFormProps } = useSimpleList<
     ICustomerResponse,
     HttpError,
     ICustomerFilterVariables
@@ -32,6 +41,41 @@ const VoucherRelation: React.FC<VoucherRelationProps> = ({ formProps }) => {
     resource: "customers",
     pagination: {
       pageSize: 5,
+    },
+    syncWithLocation: false,
+    onSearch: ({ q, gender, dateRange }) => {
+      const customerFilters: CrudFilters = [];
+
+      customerFilters.push({
+        field: "q",
+        operator: "eq",
+        value: q ? q : undefined,
+      });
+
+      customerFilters.push({
+        field: "gender",
+        operator: "eq",
+        value: gender ? gender : undefined,
+      });
+
+      customerFilters.push({
+        field: "startDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[0].valueOf()
+            : undefined,
+      });
+      customerFilters.push({
+        field: "endDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[1].valueOf()
+            : undefined,
+      });
+
+      return customerFilters;
     },
   });
   const [selectedCustomerIds, setselectedCustomerIds] = useState<string[]>([]);
@@ -48,26 +92,41 @@ const VoucherRelation: React.FC<VoucherRelationProps> = ({ formProps }) => {
     }
   };
 
-  const handleSearch = debounce((value) => {
-    setFilters([
-      {
-        field: "q",
-        operator: "eq",
-        value: value,
-      },
-    ]);
-  }, 500);
-
   return (
     <Fragment>
       <Col span={24}>
         <Title level={5}>{t("vouchers.steps.message")}</Title>
       </Col>
       <Col span={24}>
-        <Input.Search
-          placeholder={t("vouchers.filters.search.placeholder")}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
+        <Card>
+          <CommonSearchForm
+            title={t(`customers.filters.title`)}
+            formProps={searchFormProps}
+            fields={[
+              {
+                label: "",
+                name: "q",
+                type: "input",
+                placeholder: t(`customers.filters.search.placeholder`),
+                width: "300px",
+              },
+              {
+                label: "",
+                name: "gender",
+                placeholder: t(`customers.filters.gender.placeholder`),
+                type: "select",
+                options: getCustomerGenderOptions(t),
+                width: "100%",
+              },
+              {
+                label: "",
+                name: "dateRange",
+                type: "range",
+                width: "100%",
+              },
+            ]}
+          />
+        </Card>
       </Col>
       <Col span={24}>
         <AntdList
@@ -94,7 +153,9 @@ const VoucherRelation: React.FC<VoucherRelationProps> = ({ formProps }) => {
               >
                 <AntdList.Item.Meta
                   avatar={<Avatar src={image} />}
-                  title={`${fullName} - ${gender}`}
+                  title={`${fullName} - ${t(
+                    `customers.fields.gender.options.${gender}`
+                  )}`}
                   description={`${email} | ${formattedDateOfBirth}`}
                 />
               </AntdList.Item>

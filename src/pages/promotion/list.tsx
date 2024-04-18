@@ -20,6 +20,7 @@ import {
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
 import { PromotionStatus } from "../../components/promotion/PromotionStatus";
+import { getProductStatusOptions } from "../../constants/status";
 
 const { Text } = Typography;
 
@@ -35,13 +36,44 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q }) => {
+    onSearch: ({ q, dateRange, priceMax, priceMin, status }) => {
       const promotionFilter: CrudFilters = [];
 
       promotionFilter.push({
         field: "q",
         operator: "eq",
         value: q ? q : undefined,
+      });
+      promotionFilter.push({
+        field: "startDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[0].valueOf()
+            : undefined,
+      });
+      promotionFilter.push({
+        field: "endDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[1].valueOf()
+            : undefined,
+      });
+      promotionFilter.push({
+        field: "priceMin",
+        operator: "eq",
+        value: priceMin ? priceMin : undefined,
+      });
+      promotionFilter.push({
+        field: "priceMax",
+        operator: "eq",
+        value: priceMax ? priceMax : undefined,
+      });
+      promotionFilter.push({
+        field: "status",
+        operator: "eq",
+        value: status ? status : undefined,
       });
 
       return promotionFilter;
@@ -163,6 +195,32 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`promotions.filters.search.placeholder`),
                   width: "400px",
+                },
+                {
+                  label: "",
+                  name: "dateRange",
+                  type: "range",
+                  width: "400px",
+                },
+                {
+                  label: "",
+                  name: "status",
+                  type: "select",
+                  placeholder: t(`vouchers.filters.status.placeholder`),
+                  options: getProductStatusOptions(t),
+                  width: "200px",
+                },
+                {
+                  label: "Giá trị tối thiểu",
+                  name: "priceMin",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: "Giá trị tối đa",
+                  name: "priceMax",
+                  type: "input-number",
+                  showLabel: true,
                 },
               ]}
             />

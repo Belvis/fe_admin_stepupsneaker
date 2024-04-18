@@ -298,6 +298,7 @@ const ChangeDetail: React.FC<ChangeDetailProps> = ({
       zIndex={2000}
       centered
       onOk={handleOk}
+      footer={<></>}
     >
       {changes && keys && (
         <Space direction="vertical" style={{ width: "100%" }}>

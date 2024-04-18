@@ -3,19 +3,23 @@ import { useTranslate } from "@refinedev/core";
 import {
   Button,
   Col,
+  DatePicker,
   Form,
   FormProps,
   Grid,
   Input,
   InputNumber,
+  Rate,
   Row,
   Select,
   Space,
   Typography,
 } from "antd";
 import { DefaultOptionType, SelectProps } from "antd/es/select";
+import dayjs from "dayjs";
 import { debounce } from "lodash";
 import React, { useCallback } from "react";
+const { RangePicker } = DatePicker;
 
 const { Text } = Typography;
 
@@ -28,13 +32,14 @@ interface CommonSearchFormProps {
     label: string;
     name: string;
     mode?: "multiple" | "tags";
-    type: "input" | "select" | "input-number";
+    type: "input" | "select" | "input-number" | "range" | "rate";
     props?: SelectProps;
     showLabel?: boolean;
     placeholder?: string;
     hidden?: boolean;
     width?: string;
     options?: DefaultOptionType[] | undefined;
+    useFormatterAndParser?: boolean;
   }[];
   columnRatio?: [number, number, number];
 }
@@ -65,14 +70,17 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
   const renderInput = (field: {
     label: string;
     name: string;
-    type: "input" | "select" | "input-number";
+    type: "input" | "select" | "input-number" | "range" | "rate";
     mode?: "multiple" | "tags";
     props?: SelectProps;
     placeholder?: string;
     hidden?: boolean;
     width?: string;
     options?: DefaultOptionType[] | undefined;
+    useFormatterAndParser?: boolean;
   }) => {
+    const shouldUseFormatterAndParser = field.useFormatterAndParser ?? true;
+
     if (field.type === "input") {
       return (
         <Input
@@ -83,10 +91,10 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
           suffix={<SearchOutlined />}
         />
       );
-    } else if (field.type === "input-number") {
+    } else if (field.type === "input-number" && shouldUseFormatterAndParser) {
       return (
         <InputNumber
-          min={1}
+          min={0}
           formatter={(value) =>
             `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
@@ -100,6 +108,28 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
           }}
         />
       );
+    } else if (field.type === "input-number" && !shouldUseFormatterAndParser) {
+      return (
+        <InputNumber
+          min={0}
+          style={{
+            width: field.width ?? "100%",
+          }}
+        />
+      );
+    } else if (field.type === "range") {
+      return (
+        <RangePicker
+          style={{
+            width: field.width ?? "100%",
+          }}
+          disabledDate={(current) =>
+            dayjs(current).isBefore(dayjs().startOf("day"))
+          }
+        />
+      );
+    } else if (field.type === "rate") {
+      return <Rate allowHalf />;
     } else {
       return null;
     }

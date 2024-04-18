@@ -9,6 +9,7 @@ import {
 } from "@refinedev/core";
 import {
   IEmployeeFilterVariables,
+  IReviewFilterVariables,
   IReviewResponse,
   ReviewStatus as IReviewStatus,
 } from "../../interfaces";
@@ -75,17 +76,27 @@ export const ReviewList: React.FC<IResourceComponentsProps> = () => {
     pageSize,
     sorters,
     tableQueryResult: { refetch },
-  } = useTable<IReviewResponse, HttpError, IEmployeeFilterVariables>({
+  } = useTable<IReviewResponse, HttpError, IReviewFilterVariables>({
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, status }) => {
+    onSearch: ({ q, hasMedia, rating }) => {
       const filters: CrudFilters = [];
 
       filters.push({
         field: "q",
         operator: "eq",
         value: q ? q : undefined,
+      });
+      filters.push({
+        field: "hasMedia",
+        operator: "eq",
+        value: hasMedia ? hasMedia : undefined,
+      });
+      filters.push({
+        field: "rating",
+        operator: "eq",
+        value: rating ? rating : undefined,
       });
 
       return filters;
@@ -191,7 +202,30 @@ export const ReviewList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`product/reviews.filters.search.placeholder`),
-                  width: "400px",
+                  width: "300px",
+                },
+                {
+                  label: "",
+                  name: "hasMedia",
+                  type: "select",
+                  placeholder: "Tìm kiếm theo tệp đính kèm",
+                  options: [
+                    {
+                      value: "false",
+                      label: "Không có đính kèm",
+                    },
+                    {
+                      value: "true",
+                      label: "Có đính kèm",
+                    },
+                  ],
+                  width: "200px",
+                },
+                {
+                  label: "Đánh giá",
+                  name: "rating",
+                  type: "rate",
+                  showLabel: true,
                 },
               ]}
             />

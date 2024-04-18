@@ -64,11 +64,16 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     IProductDetailResponse[]
   >([]);
 
+  useEffect(() => {
+    if (productDetailsSave) {
+      console.log("productDetailsSave", productDetailsSave);
+    }
+  }, [productDetailsSave]);
+
   const {
     modalProps: editModalProps,
     formProps: editFormProps,
     show: editModalShow,
-    id: editId,
     onFinish: editOnFinish,
     close,
   } = useModalForm<IProductDetailResponse>({
@@ -80,7 +85,13 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     resource: "product-details",
   });
 
-  const { tableProps, searchFormProps, current, pageSize } = useTable<
+  const {
+    tableProps,
+    searchFormProps,
+    current,
+    pageSize,
+    tableQueryResult: { data },
+  } = useTable<
     IProductDetailResponse,
     HttpError,
     IProductDetailFilterVariables
@@ -113,6 +124,10 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       sole,
       style,
       tradeMark,
+      q,
+      hasPromotion,
+      quantityMax,
+      quantityMin,
     }) => {
       const productDetailFilters: CrudFilters = [];
 
@@ -121,9 +136,19 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         operator: "eq",
         value: status ? status : undefined,
       });
+      productDetailFilters.push({
+        field: "hasPromotion",
+        operator: "eq",
+        value: hasPromotion ? hasPromotion : undefined,
+      });
+      productDetailFilters.push({
+        field: "q",
+        operator: "eq",
+        value: q ? q : undefined,
+      });
 
       productDetailFilters.push({
-        field: "brand",
+        field: "brands",
         operator: "eq",
         value: brand ? brand : undefined,
       });
@@ -168,6 +193,16 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         value: priceMax ? priceMax : undefined,
       });
       productDetailFilters.push({
+        field: "quantityMax",
+        operator: "eq",
+        value: quantityMax ? quantityMax : undefined,
+      });
+      productDetailFilters.push({
+        field: "quantityMin",
+        operator: "eq",
+        value: quantityMin ? quantityMin : undefined,
+      });
+      productDetailFilters.push({
         field: "quantity",
         operator: "eq",
         value: quantity ? quantity : undefined,
@@ -178,6 +213,11 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   });
 
   useEffect(() => {
+    if (data) {
+      setProductDetails(data.data);
+    }
+  }, [data]);
+  useEffect(() => {
     if (tableProps && tableProps.dataSource) {
       const fetchedProductDetails: IProductDetailResponse[] = [
         ...tableProps.dataSource,
@@ -187,18 +227,22 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   }, [tableProps.dataSource]);
 
   const updateProductDetailsSaveQuantity = (
-    record: IProductDetailResponse,
+    records: IProductDetailResponse[],
     value: number
   ) => {
-    const existingIndex = productDetailsSave.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
     const updatedDetails = [...productDetailsSave];
-    if (existingIndex !== -1) {
-      updatedDetails[existingIndex].quantity = value;
-    } else {
-      updatedDetails.push({ ...record, quantity: value });
-    }
+
+    records.forEach((record) => {
+      const existingIndex = productDetailsSave.findIndex(
+        (productDetail) => productDetail.id === record.id
+      );
+      if (existingIndex !== -1) {
+        updatedDetails[existingIndex].quantity = value;
+      } else {
+        updatedDetails.push({ ...record, quantity: value });
+      }
+    });
+
     setProductDetailsSave(updatedDetails);
   };
 
@@ -212,28 +256,57 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
     value: number,
     record: IProductDetailResponse
   ) => {
-    const index = productDetails.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
+    if (hasSelected) {
+      const updatedProductDetails = productDetails.map((productDetail) => {
+        if (
+          selectedRowKeys.includes(productDetail.id) ||
+          productDetail.id === record.id
+        ) {
+          return {
+            ...productDetail,
+            quantity: value,
+          };
+        }
+        return productDetail;
+      });
 
-    updateProductDetailsSaveQuantity(record, value);
+      setProductDetails(updatedProductDetails);
 
-    updateProductDetailsQuantity(index, value);
+      const updatedProductDetailsFiltered = updatedProductDetails.filter(
+        (productDetail) =>
+          selectedRowKeys.includes(productDetail.id) ||
+          productDetail.id === record.id
+      );
+
+      updateProductDetailsSaveQuantity(updatedProductDetailsFiltered, value);
+    } else {
+      const index = productDetails.findIndex(
+        (productDetail) => productDetail.id === record.id
+      );
+
+      updateProductDetailsSaveQuantity([record], value);
+
+      updateProductDetailsQuantity(index, value);
+    }
   };
 
   const updateProductDetailsSavePrice = (
-    record: IProductDetailResponse,
+    records: IProductDetailResponse[],
     value: number
   ) => {
-    const existingIndex = productDetailsSave.findIndex(
-      (productDetail) => productDetail.id === record.id
-    );
     const updatedDetails = [...productDetailsSave];
-    if (existingIndex !== -1) {
-      updatedDetails[existingIndex].price = value;
-    } else {
-      updatedDetails.push({ ...record, price: value });
-    }
+
+    records.forEach((record) => {
+      const existingIndex = productDetailsSave.findIndex(
+        (productDetail) => productDetail.id === record.id
+      );
+      if (existingIndex !== -1) {
+        updatedDetails[existingIndex].price = value;
+      } else {
+        updatedDetails.push({ ...record, price: value });
+      }
+    });
+
     setProductDetailsSave(updatedDetails);
   };
 
@@ -245,16 +318,61 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
 
   const handlePriceChange = debounce(
     (value: number, record: IProductDetailResponse) => {
-      const index = productDetails.findIndex(
-        (productDetail) => productDetail.id === record.id
-      );
+      if (hasSelected) {
+        const updatedProductDetails = productDetails.map((productDetail) => {
+          if (
+            selectedRowKeys.includes(productDetail.id) ||
+            productDetail.id === record.id
+          ) {
+            return {
+              ...productDetail,
+              price: value,
+            };
+          }
+          return productDetail;
+        });
+        setProductDetails(updatedProductDetails);
 
-      updateProductDetailsSavePrice(record, value);
+        const updatedProductDetailsFiltered = updatedProductDetails.filter(
+          (productDetail) =>
+            selectedRowKeys.includes(productDetail.id) ||
+            productDetail.id === record.id
+        );
 
-      updateProductDetailsPrice(index, value);
+        updateProductDetailsSavePrice(updatedProductDetailsFiltered, value);
+      } else {
+        const index = productDetails.findIndex(
+          (productDetail) => productDetail.id === record.id
+        );
+
+        updateProductDetailsSavePrice([record], value);
+
+        updateProductDetailsPrice(index, value);
+      }
     },
     500
   );
+
+  const [selectedRows, setSelectedRows] = useState<IProductDetailResponse[]>(
+    []
+  );
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const onSelectChange = (
+    newSelectedRowKeys: React.Key[],
+    selectedRows: IProductDetailResponse[]
+  ) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRows(selectedRows);
+  };
+
+  const rowSelection = {
+    preserveSelectedRowKeys: true,
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
+  const hasSelected = selectedRows.length > 0;
 
   const columns: ColumnsType<IProductDetailResponse> = [
     {
@@ -392,15 +510,15 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         values: convertedPayload,
         successNotification: () => {
           return {
-            message: `Successfully update ${convertedPayload.length} product details.`,
-            description: "Success with no errors",
+            message: `Cập nhật thành công ${convertedPayload.length} sản phẩm chi tiết.`,
+            description: "Thành công",
             type: "success",
           };
         },
-        errorNotification: () => {
+        errorNotification: (error) => {
           return {
-            message: `Something went wrong when updating product details`,
-            description: "Error",
+            message: t("common.error") + error?.message,
+            description: "Oops...",
             type: "error",
           };
         },
@@ -408,6 +526,8 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       {
         onSuccess: (data, variables, context) => {
           setProductDetailsSave([]);
+          setSelectedRowKeys([]);
+          setSelectedRows([]);
         },
       }
     );
@@ -423,9 +543,9 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
         },
       }}
     >
-      {/* <Card>
+      <Card>
         <ProductSearchForm formProps={searchFormProps} />
-      </Card> */}
+      </Card>
       <Card
         extra={
           <Button
@@ -454,6 +574,8 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
             ...tableProps.pagination,
             ...tablePaginationSettings,
           }}
+          rowSelection={rowSelection}
+          loading={tableProps.loading}
           dataSource={productDetails}
           rowKey="id"
           columns={columns}

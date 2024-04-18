@@ -5,6 +5,7 @@
  */
 
 /* Start Types */
+import dayjs from "dayjs";
 export type QueryObserverResult<TData = unknown, TError = unknown> =
   | DefinedQueryObserverResult<TData, TError>
   | QueryObserverLoadingErrorResult<TData, TError>
@@ -539,21 +540,22 @@ export interface IProdAttributeFilterVariables {
 export interface IVoucherFilterVariables {
   q?: string;
   status: VoucherStatus;
-  customer: string;
   type: VoucherType;
-  value: number;
-  constraint: number;
-  quantity: number;
-  startDate: number;
-  endDate: number;
+  constraintMin: number;
+  constraintMax: number;
+  priceMin: number;
+  priceMax: number;
+  quantityMin: number;
+  quantityMax: number;
+  dateRange: [dayjs.Dayjs, dayjs.Dayjs];
 }
 
 export interface IPromotionFilterVariables {
   q?: string;
   status: PromotionStatus;
-  value: number;
-  startDate: number;
-  endDate: number;
+  dateRange: [dayjs.Dayjs, dayjs.Dayjs];
+  priceMin: number;
+  priceMax: number;
 }
 
 export interface IProductDetailFilterVariables {
@@ -565,6 +567,9 @@ export interface IProductDetailFilterVariables {
   color: string;
   brand: string;
   sole: string;
+  hasPromotion: string;
+  quantityMin: number;
+  quantityMax: number;
   priceMin: number;
   priceMax: number;
   quantity: number;
@@ -590,15 +595,14 @@ export interface IOrderFilterVariables {
 
 export interface ICustomerFilterVariables {
   q?: string;
-  dateOfBirth: number;
+  dateRange: [dayjs.Dayjs, dayjs.Dayjs];
   status: UserStatus;
   gender: string;
 }
 
 export interface IEmployeeFilterVariables {
   q?: string;
-  dateOfBirth: number;
-  status: UserStatus;
+  role: UserStatus;
   gender: string;
 }
 
@@ -612,6 +616,9 @@ export interface IPaymentMethodFilterVariables {
 
 export interface IPaymentFilterVariables {
   q?: string;
+  paymentMethod: string;
+  priceMin: number;
+  priceMax: number;
 }
 
 export interface IAddressFilterVariables {
@@ -623,10 +630,30 @@ export interface IAddressFilterVariables {
 }
 export interface IProductFilterVariables {
   q?: string;
+  tradeMark: string;
+  style: string;
+  size: string;
+  material: string;
+  color: string;
+  brand: string;
+  sole: string;
+  hasPromotion: string;
+  quantityMin: number;
+  quantityMax: number;
+  priceMin: number;
+  priceMax: number;
+  quantity: number;
   status: ProductStatus;
 }
 export interface IReturnFormFilterVariables {
   q?: string;
   paymentType: string;
+  priceMin: number;
+  priceMax: number;
+}
+export interface IReviewFilterVariables {
+  q?: string;
+  rating: number;
+  hasMedia: string;
 }
 /* End Filter Variables */

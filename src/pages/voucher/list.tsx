@@ -24,6 +24,7 @@ import { formatTimestamp } from "../../helpers/timestamp";
 import { IVoucherFilterVariables, IVoucherResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
 import { VoucherStatus } from "../../components/voucher/VoucherStatus";
+import { getVoucherStatusOptions } from "../../constants/status";
 
 const { Text } = Typography;
 
@@ -39,13 +40,80 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q }) => {
+    onSearch: ({
+      q,
+      dateRange,
+      priceMax,
+      priceMin,
+      quantityMax,
+      quantityMin,
+      status,
+      type,
+      constraintMin,
+      constraintMax,
+    }) => {
       const voucherFilters: CrudFilters = [];
 
       voucherFilters.push({
         field: "q",
         operator: "eq",
         value: q ? q : undefined,
+      });
+      voucherFilters.push({
+        field: "status",
+        operator: "eq",
+        value: status ? status : undefined,
+      });
+      voucherFilters.push({
+        field: "type",
+        operator: "eq",
+        value: type ? type : undefined,
+      });
+      voucherFilters.push({
+        field: "startDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[0].valueOf()
+            : undefined,
+      });
+      voucherFilters.push({
+        field: "endDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[1].valueOf()
+            : undefined,
+      });
+      voucherFilters.push({
+        field: "priceMin",
+        operator: "eq",
+        value: priceMin ? priceMin : undefined,
+      });
+      voucherFilters.push({
+        field: "priceMax",
+        operator: "eq",
+        value: priceMax ? priceMax : undefined,
+      });
+      voucherFilters.push({
+        field: "constraintMin",
+        operator: "eq",
+        value: constraintMin ? constraintMin : undefined,
+      });
+      voucherFilters.push({
+        field: "constraintMax",
+        operator: "eq",
+        value: constraintMax ? constraintMax : undefined,
+      });
+      voucherFilters.push({
+        field: "quantityMin",
+        operator: "eq",
+        value: quantityMin ? quantityMin : undefined,
+      });
+      voucherFilters.push({
+        field: "quantityMax",
+        operator: "eq",
+        value: quantityMax ? quantityMax : undefined,
       });
 
       return voucherFilters;
@@ -228,6 +296,75 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                   type: "input",
                   placeholder: t(`vouchers.filters.search.placeholder`),
                   width: "400px",
+                },
+                {
+                  label: "",
+                  name: "dateRange",
+                  type: "range",
+                  width: "400px",
+                },
+                {
+                  label: "",
+                  name: "status",
+                  type: "select",
+                  placeholder: t(`vouchers.filters.status.placeholder`),
+                  options: getVoucherStatusOptions(t),
+                  width: "200px",
+                },
+                {
+                  label: "Giá trị tối thiểu",
+                  name: "priceMin",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: "Giá trị tối đa",
+                  name: "priceMax",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: "",
+                  name: "type",
+                  type: "select",
+                  placeholder: "Tìm kiếm theo loại giảm giá",
+                  options: [
+                    {
+                      value: "PERCENTAGE",
+                      label: t("vouchers.type.PERCENTAGE"),
+                    },
+                    {
+                      value: "CASH",
+                      label: t("vouchers.type.CASH"),
+                    },
+                  ],
+                  width: "200px",
+                },
+                {
+                  label: "Điều kiện tối thiểu",
+                  name: "constraintMin",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: "Điều kiện tối đa",
+                  name: "constraintMax",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: "Số lượng tối thiểu",
+                  name: "quantityMin",
+                  type: "input-number",
+                  showLabel: true,
+                  useFormatterAndParser: false,
+                },
+                {
+                  label: "Số lượng tối đa",
+                  name: "quantityMax",
+                  type: "input-number",
+                  showLabel: true,
+                  useFormatterAndParser: false,
                 },
               ]}
             />

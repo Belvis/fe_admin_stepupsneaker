@@ -20,7 +20,7 @@ export const ProdAttributeSelectTwo: React.FC<ProdAttributeSelectTwoProps> = ({
     selectProps,
     queryResult: { refetch },
   } = useSelect<IProdAttributeResponse>({
-    resource: `${attributeName}s?pageSize=10&`,
+    resource: `${attributeName}s?pageSize=1000&`,
     optionLabel,
     optionValue,
     debounce: 500,

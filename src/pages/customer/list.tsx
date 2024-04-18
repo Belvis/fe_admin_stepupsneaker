@@ -29,6 +29,7 @@ import { showDangerConfirmDialog } from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
+import { getCustomerGenderOptions } from "../../constants/gender";
 
 const { Text } = Typography;
 
@@ -59,13 +60,36 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q }) => {
+    onSearch: ({ q, gender, dateRange }) => {
       const customerFilters: CrudFilters = [];
 
       customerFilters.push({
         field: "q",
         operator: "eq",
         value: q ? q : undefined,
+      });
+
+      customerFilters.push({
+        field: "gender",
+        operator: "eq",
+        value: gender ? gender : undefined,
+      });
+
+      customerFilters.push({
+        field: "startDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[0].valueOf()
+            : undefined,
+      });
+      customerFilters.push({
+        field: "endDate",
+        operator: "eq",
+        value:
+          dateRange && dateRange.length > 0
+            ? dateRange[1].valueOf()
+            : undefined,
       });
 
       return customerFilters;
@@ -200,7 +224,21 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`customers.filters.search.placeholder`),
-                  width: "400px",
+                  width: "300px",
+                },
+                {
+                  label: "",
+                  name: "gender",
+                  placeholder: t(`customers.filters.gender.placeholder`),
+                  type: "select",
+                  options: getCustomerGenderOptions(t),
+                  width: "100%",
+                },
+                {
+                  label: "",
+                  name: "dateRange",
+                  type: "range",
+                  width: "100%",
                 },
               ]}
             />

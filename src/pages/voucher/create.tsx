@@ -244,7 +244,7 @@ export const VoucherCreate: React.FC<IResourceComponentsProps> = () => {
         </Row>
       </Col>
     </Row>,
-    <Row key="relations" gutter={[16, 24]}>
+    <Row key="relations" gutter={[16, 24]} align="middle">
       <VoucherRelation formProps={formProps} />
     </Row>,
   ];

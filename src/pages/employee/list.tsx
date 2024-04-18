@@ -1,5 +1,10 @@
 import { SyncOutlined } from "@ant-design/icons";
-import { List, getDefaultSortOrder, useTable } from "@refinedev/antd";
+import {
+  List,
+  getDefaultSortOrder,
+  useSelect,
+  useTable,
+} from "@refinedev/antd";
 import {
   CrudFilters,
   HttpError,
@@ -26,8 +31,13 @@ import CommonSearchForm from "../../components/form/CommonSearchForm";
 import ColumnActions from "../../components/table/ColumnActions";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showDangerConfirmDialog } from "../../helpers/confirm";
-import { IEmployeeFilterVariables, IEmployeeResponse } from "../../interfaces";
+import {
+  IEmployeeFilterVariables,
+  IEmployeeResponse,
+  IRoleResponse,
+} from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
+import { getCustomerGenderOptions } from "../../constants/gender";
 const { Text } = Typography;
 
 export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
@@ -43,9 +53,19 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q }) => {
+    onSearch: ({ q, gender, role }) => {
       const employeeFilters: CrudFilters = [];
 
+      employeeFilters.push({
+        field: "gender",
+        operator: "eq",
+        value: gender ? gender : undefined,
+      });
+      employeeFilters.push({
+        field: "role",
+        operator: "eq",
+        value: role ? role : undefined,
+      });
       employeeFilters.push({
         field: "q",
         operator: "eq",
@@ -180,6 +200,21 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
     [t, sorters, current, pageSize]
   );
 
+  const { selectProps: roleSelectProps } = useSelect<IRoleResponse>({
+    resource: "roles",
+    optionLabel: "name",
+    optionValue: "id",
+  });
+
+  const renderOptions = () => {
+    if (!roleSelectProps.options) return [];
+
+    return roleSelectProps.options.map((option) => ({
+      ...option,
+      label: t(`roles.${option.label}`),
+    }));
+  };
+
   return (
     <List>
       <Row gutter={[8, 12]}>
@@ -194,7 +229,23 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`employees.filters.search.placeholder`),
-                  width: "400px",
+                  width: "300px",
+                },
+                {
+                  label: "",
+                  name: "gender",
+                  placeholder: t(`customers.filters.gender.placeholder`),
+                  type: "select",
+                  options: getCustomerGenderOptions(t),
+                  width: "100%",
+                },
+                {
+                  label: "",
+                  name: "role",
+                  placeholder: "Tìm kiếm theo chức vụ",
+                  type: "select",
+                  options: renderOptions(),
+                  width: "100%",
                 },
               ]}
             />

@@ -78,7 +78,7 @@ export const PaymentMethodList: React.FC<IResourceComponentsProps> = () => {
                   label: "",
                   name: "q",
                   type: "input",
-                  placeholder: t(`payments.filters.search.placeholder`),
+                  placeholder: "Tìm kiếm theo từ khoá",
                   width: "400px",
                 },
               ]}

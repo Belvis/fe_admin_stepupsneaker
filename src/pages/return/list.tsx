@@ -37,7 +37,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
     pagination: {
       pageSize: 5,
     },
-    onSearch: ({ q, paymentType }) => {
+    onSearch: ({ q, paymentType, priceMax, priceMin }) => {
       const filters: CrudFilters = [];
 
       filters.push({
@@ -49,6 +49,16 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
         field: "paymentType",
         operator: "eq",
         value: paymentType ? paymentType : undefined,
+      });
+      filters.push({
+        field: "priceMax",
+        operator: "eq",
+        value: priceMax ? priceMax : undefined,
+      });
+      filters.push({
+        field: "priceMin",
+        operator: "eq",
+        value: priceMin ? priceMin : undefined,
       });
 
       return filters;
@@ -151,7 +161,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`return-forms.filters.search.placeholder`),
-                  width: "200px",
+                  width: "150px",
                 },
                 {
                   label: t(`return-forms.filters.paymentType.label`),
@@ -161,7 +171,19 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
                   ),
                   type: "select",
                   options: getReturnPaymentTypeOptions(t),
-                  width: "300px",
+                  width: "150px",
+                },
+                {
+                  label: "Giá trị tối thiểu",
+                  name: "priceMin",
+                  type: "input-number",
+                  showLabel: true,
+                },
+                {
+                  label: "Giá trị tối đa",
+                  name: "priceMax",
+                  type: "input-number",
+                  showLabel: true,
                 },
               ]}
             />
