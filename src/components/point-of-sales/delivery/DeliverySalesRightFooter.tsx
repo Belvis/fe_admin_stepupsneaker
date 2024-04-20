@@ -1,6 +1,6 @@
 import { useModal } from "@refinedev/antd";
 import { useNavigation, useTranslate, useUpdate } from "@refinedev/core";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { POSContext } from "../../../contexts/point-of-sales";
 import { DeliverySalesContext } from "../../../contexts/point-of-sales/delivery-sales";
@@ -108,6 +108,9 @@ export const DeliverySalesRightFooter: React.FC<
   } = useModal();
 
   const handlePayButtonClick = () => {
+    if (shippingMoney <= 0) {
+      return message.error("Vui lòng tính phí vận chuyển trước");
+    }
     form
       .validateFields()
       .then((values: any) => {

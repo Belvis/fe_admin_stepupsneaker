@@ -58,13 +58,19 @@ export const OrderTimelineTwo: React.FC<OrderTimelineTwoProps> = ({}) => {
         return {
           indicatorColor: "cyan",
           backgroundColor: "#e6fffb",
-          text: "ready",
+          text: "waiting",
+        };
+      case "DELIVERING":
+        return {
+          indicatorColor: "green",
+          backgroundColor: "#e6f7ff",
+          text: "on the way",
         };
       case "WAIT_FOR_DELIVERY":
         return {
           indicatorColor: "green",
           backgroundColor: "#e6f7ff",
-          text: "on the way",
+          text: "ready",
         };
       case "COMPLETED":
         return {

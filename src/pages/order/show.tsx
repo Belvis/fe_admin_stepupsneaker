@@ -69,6 +69,10 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
   const canRejectOrder =
     record?.status === "PENDING" ||
     record?.status === "WAIT_FOR_CONFIRMATION" ||
+    record?.status === "WAIT_FOR_DELIVERY";
+  const canForceConfirmOrder =
+    record?.status === "PENDING" ||
+    record?.status === "WAIT_FOR_CONFIRMATION" ||
     record?.status === "WAIT_FOR_DELIVERY" ||
     record?.status === "DELIVERING" ||
     record?.status === "EXCHANGED";
@@ -145,7 +149,7 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
               {t("buttons.backToPrevious")}
             </Button>,
             <Button
-              disabled={!canRejectOrder}
+              disabled={!canForceConfirmOrder}
               key="force-confirm"
               icon={<CheckCircleOutlined />}
               type="primary"

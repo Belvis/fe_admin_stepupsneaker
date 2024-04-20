@@ -167,6 +167,20 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
             voucher: id,
             customers: selectedIds,
           },
+          successNotification: (data, values, resource) => {
+            return {
+              message: t("common.update.success"),
+              description: t("common.success"),
+              type: "success",
+            };
+          },
+          errorNotification(error) {
+            return {
+              message: t("common.error") + error?.message,
+              description: "Oops!..",
+              type: "error",
+            };
+          },
         },
         {
           onSuccess: () => {
@@ -191,6 +205,20 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
               customers: selectedIds,
             },
             id: id,
+            successNotification: (data, values, resource) => {
+              return {
+                message: t("common.update.success"),
+                description: t("common.success"),
+                type: "success",
+              };
+            },
+            errorNotification(error) {
+              return {
+                message: t("common.error") + error?.message,
+                description: "Oops!..",
+                type: "error",
+              };
+            },
           },
           {
             onSuccess: () => {

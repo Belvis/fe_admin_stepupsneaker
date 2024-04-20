@@ -127,7 +127,6 @@ const CancelReasonModal: React.FC<CancelReasonModalProps> = ({
           </Radio>
           <Radio value={3}>Tìm thấy giá rẻ hơn ở chỗ khác</Radio>
           <Radio value={4}>Đổi ý, không muốn mua nữa</Radio>
-          <Radio value={5}>Ngứa tay</Radio>
           <Radio value={6}>
             Khác
             {value === 6 ? (

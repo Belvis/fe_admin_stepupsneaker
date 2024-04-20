@@ -31,7 +31,7 @@ export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
   const handleScanSuccess = async (result: string) => {
     try {
       const { data } = await getOne({
-        resource: "orders/tracking",
+        resource: "return-forms/tracking",
         id: result,
       });
       if (data) {
@@ -54,7 +54,7 @@ export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
     try {
       const orderCode = values.orderCode;
       const { data } = await getOne({
-        resource: "orders/tracking",
+        resource: "return-forms/tracking",
         id: orderCode,
       });
 
@@ -64,8 +64,8 @@ export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
       }
     } catch (error: any) {
       notification.error({
-        message: t("common.error") + error?.message,
-        description: "Oops!..",
+        message: "Oops!..",
+        description: t("common.error") + error?.message,
       });
     }
   };

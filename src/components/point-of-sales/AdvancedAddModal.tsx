@@ -74,7 +74,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
     sorters: {
       permanent: [
         {
-          field: "id",
+          field: "updatedAt",
           order: "desc",
         },
       ],

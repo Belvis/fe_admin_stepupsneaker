@@ -695,9 +695,10 @@
       },
       "orderStatuses": {
         "pending": "Đang chuẩn bị đơn hàng",
+        "waiting": "Đang chờ xử lý",
         "ready": "Đơn hàng đã sẵn sàng",
         "on the way": "Đơn hàng đang trên đường tới",
-        "delivered": "Đơn hàng được giao",
+        "delivered": "Đơn hàng đã được giao",
         "cancelled": "Đơn hàng bị hủy",
         "returned": "Đơn hàng bị trả lại",
         "undefined": "Unknown",

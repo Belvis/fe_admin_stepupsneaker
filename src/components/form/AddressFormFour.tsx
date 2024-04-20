@@ -1,5 +1,11 @@
-import { useCustom, useCustomMutation, useTranslate } from "@refinedev/core";
 import {
+  useCustom,
+  useCustomMutation,
+  useTranslate,
+  useUpdate,
+} from "@refinedev/core";
+import {
+  App,
   Button,
   Col,
   Form,
@@ -22,6 +28,7 @@ import {
   IProvinceResponse,
   IWardResponse,
 } from "../../interfaces";
+import { POSContext } from "../../contexts/point-of-sales";
 
 const { useToken } = theme;
 const { Text } = Typography;
@@ -43,12 +50,16 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
   const { token } = useToken();
   const { mutate: calculateFeeMutate } = useCustomMutation<any>();
 
+  const { mutate: mutateUpdate, isLoading } = useUpdate();
+  const { message } = App.useApp();
+
   const [provinces, setProvinces] = useState<IProvinceResponse[]>([]);
   const [districts, setDistricts] = useState<IDistrictResponse[]>([]);
   const [wards, setWards] = useState<IWardResponse[]>([]);
   const provinceId = Form.useWatch("provinceId", form);
   const districtId = Form.useWatch("districtId", form);
 
+  const { activeKey, refetchOrder } = useContext(POSContext);
   const { setShippingMoney } = useContext(DeliverySalesContext);
 
   const { isLoading: isLoadingProvince, refetch: refetchProvince } = useCustom<
@@ -134,6 +145,48 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
     form?.setFieldValue("provinceName", option.label);
   };
 
+  function editOrderShippingMoney(value: string): void {
+    const shippingMoney = Number(value);
+
+    if (isNaN(shippingMoney)) {
+      message.error(t("orders.notification.shippingMoney.edit.invalid"));
+      return;
+    }
+    mutateUpdate(
+      {
+        resource: "orders/apply-shipping",
+        values: {
+          addressShipping: {
+            phoneNumber: form.getFieldValue("phoneNumber"),
+            districtId: form.getFieldValue("districtId"),
+            districtName: form.getFieldValue("districtName"),
+            provinceId: form.getFieldValue("provinceId"),
+            provinceName: form.getFieldValue("provinceName"),
+            wardCode: form.getFieldValue("wardCode"),
+            wardName: form.getFieldValue("wardName"),
+          },
+          shippingMoney: shippingMoney,
+        },
+        id: activeKey,
+        successNotification: () => {
+          return false;
+        },
+        errorNotification: () => {
+          return false;
+        },
+      },
+      {
+        onError: (error, variables, context) => {
+          message.error(t("orders.notification.shippingMoney.edit.error"));
+        },
+        onSuccess: (data, variables, context) => {
+          refetchOrder();
+          message.success(t("orders.notification.shippingMoney.edit.success"));
+        },
+      }
+    );
+  }
+
   const handleDistrictChange = (value: number, option: any) => {
     form?.setFieldValue("districtName", option.label);
   };
@@ -177,36 +230,8 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
                 ShopId: GHN_SHOP_ID,
               },
             },
-            successNotification: (data: any, values) => {
-              const shippingMoney = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-                currencyDisplay: "symbol",
-              }).format(data?.response.data.total as number);
-
-              return {
-                message:
-                  "Chi phí vận chuyển của bạn được ước tính là " +
-                  shippingMoney,
-                description: "Thành công",
-                type: "success",
-              };
-            },
-            errorNotification: (data, values) => {
-              const shippingMoney = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-                currencyDisplay: "symbol",
-              }).format(36500);
-
-              return {
-                message:
-                  "Chi phí vận chuyển của bạn được ước tính là " +
-                  shippingMoney,
-                description: "Thành công",
-                type: "success",
-              };
-            },
+            successNotification: false,
+            errorNotification: false,
           },
           {
             onError: (error, variables, context) => {
@@ -214,11 +239,13 @@ export const AddressFormFour: React.FC<AddressFormFourProps> = ({ form }) => {
 
               const shippingMoney = 36500;
               setShippingMoney(shippingMoney);
+              editOrderShippingMoney(shippingMoney + "");
             },
             onSuccess: (data: any, variables, context) => {
               const shippingMoney = data?.response.data.total as number;
 
               setShippingMoney(shippingMoney);
+              editOrderShippingMoney(shippingMoney + "");
             },
           }
         );

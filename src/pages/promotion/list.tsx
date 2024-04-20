@@ -5,14 +5,28 @@ import {
   IResourceComponentsProps,
   useDelete,
   useTranslate,
+  useUpdate,
 } from "@refinedev/core";
-import { Avatar, Card, Col, Row, Space, Table, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Row,
+  Space,
+  Table,
+  Tooltip,
+  Typography,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import ColumnActions from "../../components/table/ColumnActions";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
-import { showDangerConfirmDialog } from "../../helpers/confirm";
+import {
+  showDangerConfirmDialog,
+  showWarningConfirmDialog,
+} from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import {
   IPromotionFilterVariables,
@@ -21,18 +35,23 @@ import {
 import { calculateIndex } from "../../utils/common/calculator";
 import { PromotionStatus } from "../../components/promotion/PromotionStatus";
 import { getProductStatusOptions } from "../../constants/status";
+import { StopOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
 export const PromotionList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { mutate: mutateDelete } = useDelete();
+  const { mutate: mutateUpdate, isLoading } = useUpdate();
 
-  const { tableProps, searchFormProps, current, pageSize, sorters } = useTable<
-    IPromotionResponse,
-    HttpError,
-    IPromotionFilterVariables
-  >({
+  const {
+    tableProps,
+    searchFormProps,
+    current,
+    pageSize,
+    sorters,
+    tableQueryResult: { refetch },
+  } = useTable<IPromotionResponse, HttpError, IPromotionFilterVariables>({
     pagination: {
       pageSize: 5,
     },
@@ -160,6 +179,33 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
           hideShow
           record={record}
           onDeleteClick={() => handleDelete(record.id)}
+          customButtons={[
+            <Tooltip title="Vô hiệu hoá giảm giá">
+              <Button
+                disabled={
+                  record.status === "CANCELLED" ||
+                  record.status === "IN_ACTIVE" ||
+                  record.status === "EXPIRED"
+                }
+                loading={isLoading}
+                color="purple"
+                style={{ color: "#800080", borderColor: "#800080" }}
+                size="small"
+                icon={<StopOutlined />}
+                onClick={() => {
+                  showWarningConfirmDialog({
+                    options: {
+                      accept: () => {
+                        deactivate(record.id);
+                      },
+                      reject: () => {},
+                    },
+                    t: t,
+                  });
+                }}
+              />
+            </Tooltip>,
+          ]}
         />
       ),
     },
@@ -178,6 +224,32 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
       },
       t: t,
     });
+  }
+
+  function deactivate(id: string): void {
+    mutateUpdate(
+      {
+        resource: "promotions/deactivate-discount",
+        values: {},
+        id,
+        successNotification: () => {
+          return {
+            message: "Vô hiệu hoá giảm giá thành công",
+            description: t("common.success"),
+            type: "success",
+          };
+        },
+        errorNotification: () => {
+          return false;
+        },
+      },
+      {
+        onError: (error, variables, context) => {},
+        onSuccess: (data, variables, context) => {
+          refetch();
+        },
+      }
+    );
   }
 
   return (

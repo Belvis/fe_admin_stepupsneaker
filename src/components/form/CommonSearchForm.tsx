@@ -123,9 +123,6 @@ const CommonSearchForm: React.FC<CommonSearchFormProps> = ({
           style={{
             width: field.width ?? "100%",
           }}
-          disabledDate={(current) =>
-            dayjs(current).isBefore(dayjs().startOf("day"))
-          }
         />
       );
     } else if (field.type === "rate") {

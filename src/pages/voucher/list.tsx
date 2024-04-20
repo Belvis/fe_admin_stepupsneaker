@@ -1,4 +1,8 @@
-import { DollarOutlined, PercentageOutlined } from "@ant-design/icons";
+import {
+  DollarOutlined,
+  PercentageOutlined,
+  StopOutlined,
+} from "@ant-design/icons";
 import {
   List,
   NumberField,
@@ -11,15 +15,29 @@ import {
   IResourceComponentsProps,
   useDelete,
   useTranslate,
+  useUpdate,
 } from "@refinedev/core";
-import { Avatar, Card, Col, Row, Space, Table, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Row,
+  Space,
+  Table,
+  Tooltip,
+  Typography,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import { useMemo } from "react";
 import CommonSearchForm from "../../components/form/CommonSearchForm";
 import ColumnActions from "../../components/table/ColumnActions";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
-import { showDangerConfirmDialog } from "../../helpers/confirm";
+import {
+  showDangerConfirmDialog,
+  showWarningConfirmDialog,
+} from "../../helpers/confirm";
 import { formatTimestamp } from "../../helpers/timestamp";
 import { IVoucherFilterVariables, IVoucherResponse } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
@@ -31,12 +49,16 @@ const { Text } = Typography;
 export const VoucherList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { mutate: mutateDelete } = useDelete();
+  const { mutate: mutateUpdate, isLoading } = useUpdate();
 
-  const { tableProps, searchFormProps, current, pageSize, sorters } = useTable<
-    IVoucherResponse,
-    HttpError,
-    IVoucherFilterVariables
-  >({
+  const {
+    tableProps,
+    searchFormProps,
+    current,
+    pageSize,
+    sorters,
+    tableQueryResult: { refetch },
+  } = useTable<IVoucherResponse, HttpError, IVoucherFilterVariables>({
     pagination: {
       pageSize: 5,
     },
@@ -259,6 +281,33 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
             hideShow
             record={record}
             onDeleteClick={() => handleDelete(record.id)}
+            customButtons={[
+              <Tooltip title="Vô hiệu hoá giảm giá">
+                <Button
+                  loading={isLoading}
+                  disabled={
+                    record.status === "CANCELLED" ||
+                    record.status === "IN_ACTIVE" ||
+                    record.status === "EXPIRED"
+                  }
+                  color="purple"
+                  style={{ color: "#800080", borderColor: "#800080" }}
+                  size="small"
+                  icon={<StopOutlined />}
+                  onClick={() => {
+                    showWarningConfirmDialog({
+                      options: {
+                        accept: () => {
+                          deactivate(record.id);
+                        },
+                        reject: () => {},
+                      },
+                      t: t,
+                    });
+                  }}
+                />
+              </Tooltip>,
+            ]}
           />
         ),
       },
@@ -279,6 +328,32 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
       },
       t: t,
     });
+  }
+
+  function deactivate(id: string): void {
+    mutateUpdate(
+      {
+        resource: "vouchers/deactivate-discount",
+        values: {},
+        id,
+        successNotification: () => {
+          return {
+            message: "Vô hiệu hoá giảm giá thành công",
+            description: t("common.success"),
+            type: "success",
+          };
+        },
+        errorNotification: () => {
+          return false;
+        },
+      },
+      {
+        onError: (error, variables, context) => {},
+        onSuccess: (data, variables, context) => {
+          refetch();
+        },
+      }
+    );
   }
 
   return (

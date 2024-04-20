@@ -15,7 +15,7 @@ export const RecentOrders: React.FC = () => {
     resource: "orders",
     initialSorter: [
       {
-        field: "createdAt",
+        field: "updatedAt",
         order: "desc",
       },
     ],

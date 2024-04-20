@@ -12,7 +12,7 @@ import {
 import dayjs from "dayjs";
 
 import { useSimpleList } from "@refinedev/antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { IOrderHistoryResponse, OrderStatus } from "../../interfaces";
 import {
   CreatedAt,
@@ -37,14 +37,11 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
   const t = useTranslate();
   const breakpoint = Grid.useBreakpoint();
 
-  const { listProps, queryResult } = useSimpleList<IOrderHistoryResponse>({
+  const {
+    listProps,
+    queryResult: { refetch, data },
+  } = useSimpleList<IOrderHistoryResponse>({
     resource: "order-histories",
-    initialSorter: [
-      {
-        field: "createdAt",
-        order: "desc",
-      },
-    ],
     filters: {
       permanent: [
         {
@@ -54,13 +51,21 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
         },
       ],
     },
+    sorters: {
+      permanent: [
+        {
+          field: "createdAt",
+          order: "asc",
+        },
+      ],
+    },
     pagination: {
       pageSize: 4,
     },
     syncWithLocation: false,
   });
 
-  const histories = queryResult.data?.data;
+  const histories = data?.data;
 
   const getStatusColor = (
     status: OrderStatus
@@ -78,13 +83,19 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
         return {
           indicatorColor: "cyan",
           backgroundColor: "#e6fffb",
-          text: "ready",
+          text: "waiting",
         };
-      case "WAIT_FOR_DELIVERY":
+      case "DELIVERING":
         return {
           indicatorColor: "green",
           backgroundColor: "#e6f7ff",
           text: "on the way",
+        };
+      case "WAIT_FOR_DELIVERY":
+        return {
+          indicatorColor: "gray",
+          backgroundColor: "#f1f1f1",
+          text: "ready",
         };
       case "COMPLETED":
         return {
@@ -111,6 +122,12 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (modalProps.open) {
+      refetch();
+    }
+  }, [modalProps.open]);
+
   return (
     <Modal
       {...modalProps}
@@ -120,6 +137,7 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
       footer={<></>}
     >
       <AntdList
+        className="mt-3"
         {...listProps}
         pagination={{
           ...listProps.pagination,
@@ -133,7 +151,14 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
             {histories &&
               histories.length > 0 &&
               histories.map(
-                ({ id, actionStatus, createdAt, orderId, orderCode }) => {
+                ({
+                  id,
+                  actionStatus,
+                  createdAt,
+                  orderId,
+                  orderCode,
+                  createdBy,
+                }) => {
                   return (
                     <TimelineItem
                       key={id}
@@ -163,6 +188,7 @@ export const OrderTimelineThree: React.FC<OrderTimelineThreeProps> = ({
                           )}
                         </Text>
                         <Number strong>#{orderCode}</Number>
+                        <Text strong>Bởi: {createdBy}</Text>
                       </TimelineContent>
                     </TimelineItem>
                   );

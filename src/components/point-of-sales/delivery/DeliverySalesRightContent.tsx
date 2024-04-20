@@ -120,6 +120,8 @@ export const DeliverySalesRightContent: React.FC<
       });
     }
     form.setFieldValue("email", order.customer.email);
+  } else {
+    form.resetFields();
   }
 
   const handleModalOk = () => {

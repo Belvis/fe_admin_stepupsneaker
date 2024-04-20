@@ -245,8 +245,8 @@ const PromotionProduct: React.FC<PromotionProductProps> = ({
             label: "",
             name: "q",
             type: "input",
-            placeholder: t(`promotions.filters.search.placeholder`),
-            width: "200px",
+            placeholder: "Tìm kiếm theo từ khoá",
+            width: "400px",
           },
         ]}
         columnRatio={[3, 16, 5]}
