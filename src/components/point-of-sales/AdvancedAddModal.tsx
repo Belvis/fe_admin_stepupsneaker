@@ -19,11 +19,7 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
-import {
-  IOrderResponse,
-  IProductDetailFilterVariables,
-  IProductDetailResponse,
-} from "../../interfaces";
+import { IOrderResponse, IProductDetailFilterVariables, IProductDetailResponse } from "../../interfaces";
 import { ProductSearchForm } from "../product/ProductSearchForm";
 import { SelectedItemsModal } from "./SelectedItemsModal";
 import { getDiscountPrice } from "../../helpers/money";
@@ -52,11 +48,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
     current,
     pageSize,
     tableQueryResult: { refetch },
-  } = useTable<
-    IProductDetailResponse,
-    HttpError,
-    IProductDetailFilterVariables
-  >({
+  } = useTable<IProductDetailResponse, HttpError, IProductDetailFilterVariables>({
     resource: `product-details`,
     syncWithLocation: false,
     pagination: {
@@ -92,6 +84,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       sole,
       style,
       tradeMark,
+      hasPromotion,
     }) => {
       const productDetailFilters: CrudFilters = [];
 
@@ -157,30 +150,27 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
         operator: "eq",
         value: quantity ? quantity : undefined,
       });
+      productDetailFilters.push({
+        field: "hasPromotion",
+        operator: "eq",
+        value: hasPromotion ? hasPromotion : undefined,
+      });
 
       return productDetailFilters;
     },
   });
 
   const [showAddAndGoButton, setShowAddAndGoButton] = useState(false);
-  const {
-    show: showItem,
-    close: closeItem,
-    modalProps: itemModalProps,
-  } = useModal();
+  const { show: showItem, close: closeItem, modalProps: itemModalProps } = useModal();
 
-  const [selectedProductDetails, setSelectedProductDetails] = useState<
-    IProductDetailResponse[]
-  >([]);
+  const [selectedProductDetails, setSelectedProductDetails] = useState<IProductDetailResponse[]>([]);
 
   useEffect(() => {
     setSelectedProductDetails([]);
     refetch();
   }, [modalProps.open]);
 
-  const addProductDetails = (
-    productDetails: IProductDetailResponse | IProductDetailResponse[]
-  ) => {
+  const addProductDetails = (productDetails: IProductDetailResponse | IProductDetailResponse[]) => {
     setSelectedProductDetails((prevSelectedProductDetails) => {
       const updatedDetails = Array.isArray(productDetails)
         ? productDetails.map((detail) => ({ ...detail, quantity: 1 }))
@@ -208,15 +198,10 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
     setSelectedRowKeys([]);
   };
 
-  const [selectedRows, setSelectedRows] = useState<IProductDetailResponse[]>(
-    []
-  );
+  const [selectedRows, setSelectedRows] = useState<IProductDetailResponse[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  const onSelectChange = (
-    newSelectedRowKeys: React.Key[],
-    selectedRows: IProductDetailResponse[]
-  ) => {
+  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: IProductDetailResponse[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
     setSelectedRows(selectedRows);
   };
@@ -248,18 +233,13 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       dataIndex: "name",
       key: "name",
       render: (_, { image, product, size, color, promotionProductDetails }) => {
-        const promotionProductDetailsActive = (
-          promotionProductDetails ?? []
-        ).filter((productDetail) => productDetail.promotion.status == "ACTIVE");
-
-        const maxPromotionProductDetail = promotionProductDetailsActive.reduce(
-          (maxProduct, currentProduct) => {
-            return currentProduct.promotion.value > maxProduct.promotion.value
-              ? currentProduct
-              : maxProduct;
-          },
-          promotionProductDetailsActive[0]
+        const promotionProductDetailsActive = (promotionProductDetails ?? []).filter(
+          (productDetail) => productDetail.promotion.status == "ACTIVE"
         );
+
+        const maxPromotionProductDetail = promotionProductDetailsActive.reduce((maxProduct, currentProduct) => {
+          return currentProduct.promotion.value > maxProduct.promotion.value ? currentProduct : maxProduct;
+        }, promotionProductDetailsActive[0]);
 
         if (promotionProductDetailsActive.length > 0) {
           const value = maxPromotionProductDetail.promotion.value;
@@ -307,23 +287,15 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       dataIndex: "price",
       align: "center",
       render: (_, productDetail) => {
-        const promotionProductDetailsActive = (
-          productDetail.promotionProductDetails ?? []
-        ).filter((productDetail) => productDetail.promotion.status == "ACTIVE");
-
-        const maxPromotionProductDetail = promotionProductDetailsActive.reduce(
-          (maxProduct, currentProduct) => {
-            return currentProduct.promotion.value > maxProduct.promotion.value
-              ? currentProduct
-              : maxProduct;
-          },
-          promotionProductDetailsActive[0]
+        const promotionProductDetailsActive = (productDetail.promotionProductDetails ?? []).filter(
+          (productDetail) => productDetail.promotion.status == "ACTIVE"
         );
 
-        const discount =
-          promotionProductDetailsActive.length > 0
-            ? maxPromotionProductDetail.promotion.value
-            : 0;
+        const maxPromotionProductDetail = promotionProductDetailsActive.reduce((maxProduct, currentProduct) => {
+          return currentProduct.promotion.value > maxProduct.promotion.value ? currentProduct : maxProduct;
+        }, promotionProductDetailsActive[0]);
+
+        const discount = promotionProductDetailsActive.length > 0 ? maxPromotionProductDetail.promotion.value : 0;
 
         const discountedPrice = getDiscountPrice(productDetail.price, discount);
 
@@ -336,11 +308,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
               style: "currency",
             }}
             locale={"vi"}
-            value={
-              discountedPrice !== null
-                ? finalDiscountedPrice
-                : finalProductPrice
-            }
+            value={discountedPrice !== null ? finalDiscountedPrice : finalProductPrice}
           />
         );
       },
@@ -351,9 +319,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       dataIndex: "size",
       sorter: {},
       align: "center",
-      render: (_, record) => (
-        <Text style={{ width: "100%" }}>{record.size.name}</Text>
-      ),
+      render: (_, record) => <Text style={{ width: "100%" }}>{record.size.name}</Text>,
     },
     {
       title: t("productDetails.fields.color"),
@@ -361,9 +327,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       dataIndex: "color",
       sorter: {},
       align: "center",
-      render: (_, record) => (
-        <ColorPicker defaultValue={record.color.code} showText disabled />
-      ),
+      render: (_, record) => <ColorPicker defaultValue={record.color.code} showText disabled />,
     },
   ];
 
@@ -408,12 +372,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
                 >
                   {t("buttons.checkSelected")}
                 </Button>
-                <Button
-                  disabled={!hasSelected}
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={handleAddProductDetail}
-                >
+                <Button disabled={!hasSelected} type="primary" icon={<PlusOutlined />} onClick={handleAddProductDetail}>
                   {t("actions.add")}
                 </Button>
               </Space>
