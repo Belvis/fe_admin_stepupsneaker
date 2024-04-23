@@ -1,5 +1,6 @@
 import {
   DollarOutlined,
+  LinkOutlined,
   PercentageOutlined,
   StopOutlined,
 } from "@ant-design/icons";
@@ -96,7 +97,7 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
         operator: "eq",
         value:
           dateRange && dateRange.length > 0
-            ? dateRange[0].valueOf()
+            ? dateRange[0].startOf("day").valueOf()
             : undefined,
       });
       voucherFilters.push({
@@ -104,7 +105,7 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
         operator: "eq",
         value:
           dateRange && dateRange.length > 0
-            ? dateRange[1].valueOf()
+            ? dateRange[1].endOf("day").valueOf()
             : undefined,
       });
       voucherFilters.push({
@@ -282,18 +283,30 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
             record={record}
             onDeleteClick={() => handleDelete(record.id)}
             customButtons={[
-              <Tooltip title="Vô hiệu hoá giảm giá">
+              <Tooltip
+                title={
+                  record.status === "CANCELLED"
+                    ? "Kích hoạt giảm giá"
+                    : "Vô hiệu hoá giảm giá"
+                }
+              >
                 <Button
                   loading={isLoading}
                   disabled={
-                    record.status === "CANCELLED" ||
-                    record.status === "IN_ACTIVE" ||
-                    record.status === "EXPIRED"
+                    record.status === "IN_ACTIVE" || record.status === "EXPIRED"
                   }
-                  color="purple"
-                  style={{ color: "#800080", borderColor: "#800080" }}
+                  style={{
+                    color: "#800080",
+                    borderColor: "#800080",
+                  }}
                   size="small"
-                  icon={<StopOutlined />}
+                  icon={
+                    record.status === "CANCELLED" ? (
+                      <LinkOutlined />
+                    ) : (
+                      <StopOutlined />
+                    )
+                  }
                   onClick={() => {
                     showWarningConfirmDialog({
                       options: {
@@ -338,7 +351,7 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
         id,
         successNotification: () => {
           return {
-            message: "Vô hiệu hoá giảm giá thành công",
+            message: t("common.update.success"),
             description: t("common.success"),
             type: "success",
           };

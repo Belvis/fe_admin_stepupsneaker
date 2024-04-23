@@ -1,14 +1,12 @@
 import { useTranslate } from "@refinedev/core";
 import { Tag } from "antd";
-import { RefundStatus } from "../../interfaces";
+import { PaymentStatus as IPaymentType } from "../../interfaces";
 
-type ReturnRefundStatusProps = {
-  status: RefundStatus;
+type PaymentStatusProps = {
+  status: IPaymentType;
 };
 
-export const ReturnRefundStatus: React.FC<ReturnRefundStatusProps> = ({
-  status,
-}) => {
+export const PaymentStatus: React.FC<PaymentStatusProps> = ({ status }) => {
   const t = useTranslate();
   let color;
 

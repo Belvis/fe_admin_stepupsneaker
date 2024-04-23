@@ -1,30 +1,22 @@
 import { useSimpleList } from "@refinedev/antd";
+import { CrudFilters, HttpError, useTranslate } from "@refinedev/core";
 import {
   List as AntdList,
-  Checkbox,
   Avatar,
-  Col,
-  Input,
-  Typography,
-  FormProps,
-  DatePicker,
-  Select,
-  Button,
   Card,
+  Checkbox,
+  Col,
+  FormProps,
+  Typography,
 } from "antd";
-import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
-import { CrudFilters, HttpError, useTranslate } from "@refinedev/core";
-import { debounce } from "lodash";
 import { Fragment, useContext, useEffect, useState } from "react";
+import { getCustomerGenderOptions } from "../../constants/gender";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { formatTimestamp } from "../../helpers/timestamp";
-import dayjs from "dayjs";
-import { getCustomerGenderOptions } from "../../constants/gender";
-import { UndoOutlined } from "@ant-design/icons";
+import { ICustomerFilterVariables, ICustomerResponse } from "../../interfaces";
 import CommonSearchForm from "../form/CommonSearchForm";
 
-const { Title, Text } = Typography;
-const { RangePicker } = DatePicker;
+const { Title } = Typography;
 
 type VoucherRelationProps = {
   formProps: FormProps;
@@ -63,7 +55,7 @@ const VoucherRelation: React.FC<VoucherRelationProps> = ({ formProps }) => {
         operator: "eq",
         value:
           dateRange && dateRange.length > 0
-            ? dateRange[0].valueOf()
+            ? dateRange[0].startOf("day").valueOf()
             : undefined,
       });
       customerFilters.push({
@@ -71,7 +63,7 @@ const VoucherRelation: React.FC<VoucherRelationProps> = ({ formProps }) => {
         operator: "eq",
         value:
           dateRange && dateRange.length > 0
-            ? dateRange[1].valueOf()
+            ? dateRange[1].endOf("day").valueOf()
             : undefined,
       });
 

@@ -24,6 +24,7 @@ import {
   IPaymentResponse,
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
+import { PaymentStatus } from "../../components/payment/PaymentStatus";
 
 const { Text } = Typography;
 
@@ -145,6 +146,15 @@ export const PaymentList: React.FC<IResourceComponentsProps> = () => {
             {value == "PENDING" ? t("payments.pending") : value}
           </Text>
         ),
+      },
+      {
+        title: t("orders.fields.status"),
+        sorter: {},
+        defaultSortOrder: getDefaultSortOrder("paymentStatus", sorters),
+        dataIndex: "paymentStatus",
+        align: "center",
+        key: "paymentStatus",
+        render: (value) => <PaymentStatus status={value} />,
       },
       {
         title: t("payments.fields.createdAt"),

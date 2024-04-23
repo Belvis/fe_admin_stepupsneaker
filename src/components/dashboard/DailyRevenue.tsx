@@ -116,7 +116,10 @@ export const DailyRevenue: React.FC = () => {
           value={[dayjs(new Date(dateRange[0])), dayjs(new Date(dateRange[1]))]}
           onChange={(values: any) => {
             if (values && values[0] && values[1]) {
-              setDateRange([values[0].valueOf(), values[1].valueOf()]);
+              setDateRange([
+                values[0].startOf("day").valueOf(),
+                values[1].endOf("day").valueOf(),
+              ]);
             }
           }}
           disabledDate={disabledDate}

@@ -71,6 +71,7 @@ const CancelReasonModal: React.FC<CancelReasonModalProps> = ({
               resource: `orders/confirmation-order`,
               values: {
                 status: "CANCELED",
+                orderHistoryNote: selectedReason,
               },
               id: order.id,
               successNotification: (data, values, resource) => {

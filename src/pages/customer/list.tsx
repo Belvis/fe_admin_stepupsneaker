@@ -80,7 +80,7 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
         operator: "eq",
         value:
           dateRange && dateRange.length > 0
-            ? dateRange[0].valueOf()
+            ? dateRange[0].startOf("day").valueOf()
             : undefined,
       });
       customerFilters.push({
@@ -88,7 +88,7 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
         operator: "eq",
         value:
           dateRange && dateRange.length > 0
-            ? dateRange[1].valueOf()
+            ? dateRange[1].endOf("day").valueOf()
             : undefined,
       });
 
