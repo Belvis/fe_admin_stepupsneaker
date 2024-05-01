@@ -11,14 +11,9 @@ type OrderSegmentedProps = {
   callBack: any;
 };
 
-const API_SSE_URL = `${window.location.protocol}//${window.location.hostname}:${
-  import.meta.env.VITE_BACKEND_API_SSE_PATH
-}`;
+const API_SSE_URL = `${import.meta.env.VITE_BACKEND_API_SSE_PATH}`;
 
-export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
-  formProps,
-  callBack,
-}) => {
+export const OrderSegmented: React.FC<OrderSegmentedProps> = ({ formProps, callBack }) => {
   const t = useTranslate();
 
   const [allStatusCount, setAllStatusCount] = useState<number>(0);
@@ -33,9 +28,7 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
     callBack();
   }, [confirmStatusCount]);
 
-  const updateStatusCounts = (
-    newNotifications: IOrderNotificationResponse[]
-  ) => {
+  const updateStatusCounts = (newNotifications: IOrderNotificationResponse[]) => {
     let confirmCount = 0;
     let deliveryCount = 0;
     let deliveringCount = 0;
@@ -74,14 +67,7 @@ export const OrderSegmented: React.FC<OrderSegmentedProps> = ({
     setCompletedStatusCount(completedCount);
     setCanceledStatusCount(canceledCount);
     retReturnedStatusCount(returnedCount);
-    setAllStatusCount(
-      confirmCount +
-        deliveringCount +
-        deliveryCount +
-        completedCount +
-        canceledCount +
-        returnedCount
-    );
+    setAllStatusCount(confirmCount + deliveringCount + deliveryCount + completedCount + canceledCount + returnedCount);
   };
 
   useEffect(() => {

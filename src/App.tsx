@@ -1,17 +1,7 @@
-import {
-  Action,
-  Authenticated,
-  CanAccess,
-  IResourceItem,
-  Refine,
-} from "@refinedev/core";
+import { Action, Authenticated, CanAccess, IResourceItem, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
-import {
-  ErrorComponent,
-  ThemedLayoutV2,
-  useNotificationProvider,
-} from "@refinedev/antd";
+import { ErrorComponent, ThemedLayoutV2, useNotificationProvider } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
 import routerBindings, {
@@ -40,11 +30,7 @@ import {
   WalletOutlined,
 } from "@ant-design/icons";
 
-import {
-  MdOutlineAssignmentReturn,
-  MdOutlineReviews,
-  MdSecurity,
-} from "react-icons/md";
+import { MdOutlineAssignmentReturn, MdOutlineReviews, MdSecurity } from "react-icons/md";
 import { PointOfSaleIcon } from "./components/icons/icon-pos";
 
 import {
@@ -65,12 +51,7 @@ import { Header } from "./layouts/header";
 import { ThemedSiderV2 } from "./layouts/sider";
 import { ThemedTitleV2 } from "./layouts/title";
 import { AuthPage } from "./pages/auth";
-import {
-  CustomerCreate,
-  CustomerEdit,
-  CustomerList,
-  CustomerShow,
-} from "./pages/customer";
+import { CustomerCreate, CustomerEdit, CustomerList, CustomerShow } from "./pages/customer";
 import { DashboardPage } from "./pages/dashboard";
 import { EmployeeCreate, EmployeeEdit, EmployeeList } from "./pages/employee";
 import { OrderList, OrderShow } from "./pages/order";
@@ -79,16 +60,8 @@ import { PaymentMethodList } from "./pages/payment-method";
 import { PointOfSales } from "./pages/point-of-sales";
 import { ProdAttributeList } from "./pages/product";
 import { ColorList } from "./pages/product/color";
-import {
-  ProductCreate,
-  ProductList,
-  ProductShow,
-} from "./pages/product/products";
-import {
-  PromotionCreate,
-  PromotionEdit,
-  PromotionList,
-} from "./pages/promotion";
+import { ProductCreate, ProductList, ProductShow } from "./pages/product/products";
+import { PromotionCreate, PromotionEdit, PromotionList } from "./pages/promotion";
 import { ReturnCreate } from "./pages/return/create";
 import { ReturnList } from "./pages/return/list";
 import { ReturnShow } from "./pages/return/show";
@@ -98,13 +71,9 @@ import { VoucherCreate, VoucherEdit, VoucherList } from "./pages/voucher";
 import { accessControlProvider } from "./providers/accessControlProvider";
 import { authProvider } from "./providers/authProvider";
 
-const API_BASE_URL = `${window.location.protocol}//${
-  window.location.hostname
-}:${import.meta.env.VITE_BACKEND_API_BASE_PATH}`;
+const API_BASE_URL = `${import.meta.env.VITE_BACKEND_API_BASE_PATH}`;
 
-const AUTH_API_URL = `${window.location.protocol}//${
-  window.location.hostname
-}:${import.meta.env.VITE_BACKEND_API_AUTH_PATH}`;
+const AUTH_API_URL = `${import.meta.env.VITE_BACKEND_API_AUTH_PATH}`;
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -130,21 +99,13 @@ function App() {
         case "list":
           return `${t(`${resourceName}.${resourceName}`)} | SUNS`;
         case "edit":
-          return `${t(`actions.edit`)} ${t(
-            `${resourceName}.${resourceName}`
-          )} | SUNS`;
+          return `${t(`actions.edit`)} ${t(`${resourceName}.${resourceName}`)} | SUNS`;
         case "show":
-          return `${t(`actions.show`)} ${t(
-            `${resourceName}.${resourceName}`
-          )} | SUNS`;
+          return `${t(`actions.show`)} ${t(`${resourceName}.${resourceName}`)} | SUNS`;
         case "create":
-          return `${t(`actions.create`)} ${t(
-            `${resourceName}.${resourceName}`
-          )} | SUNS`;
+          return `${t(`actions.create`)} ${t(`${resourceName}.${resourceName}`)} | SUNS`;
         case "clone":
-          return `${t(`actions.clone`)} ${t(
-            `${resourceName}.${resourceName}`
-          )} | SUNS`;
+          return `${t(`actions.clone`)} ${t(`${resourceName}.${resourceName}`)} | SUNS`;
         default:
           return "SUNS";
       }
@@ -405,16 +366,11 @@ function App() {
                 <Route
                   path="/"
                   element={
-                    <Authenticated
-                      key="dashboard"
-                      fallback={<CatchAllNavigate to="/login" />}
-                    >
+                    <Authenticated key="dashboard" fallback={<CatchAllNavigate to="/login" />}>
                       <ThemedLayoutV2
                         Header={() => <Header sticky />}
                         Sider={(props) => <ThemedSiderV2 {...props} fixed />}
-                        Title={({ collapsed }) => (
-                          <ThemedTitleV2 collapsed={collapsed} />
-                        )}
+                        Title={({ collapsed }) => <ThemedTitleV2 collapsed={collapsed} />}
                       >
                         <Outlet />
                       </ThemedLayoutV2>
@@ -556,8 +512,7 @@ function App() {
                         formProps={{
                           initialValues: {
                             email: localStorage.getItem("suns-email") || "",
-                            password:
-                              localStorage.getItem("suns-password") || "",
+                            password: localStorage.getItem("suns-password") || "",
                           },
                         }}
                       />

@@ -1,26 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  BellOutlined,
-  CheckOutlined,
-  MoreOutlined,
-  SelectOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import {
-  Badge,
-  Button,
-  Col,
-  Divider,
-  Flex,
-  Popover,
-  Row,
-  Segmented,
-  Skeleton,
-  Space,
-  Spin,
-  Typography,
-} from "antd";
+import { BellOutlined, CheckOutlined, MoreOutlined, SelectOutlined, SettingOutlined } from "@ant-design/icons";
+import { Badge, Button, Col, Divider, Flex, Popover, Row, Segmented, Skeleton, Space, Spin, Typography } from "antd";
 import dayjs from "dayjs";
 
 const { Text } = Typography;
@@ -30,26 +11,18 @@ import styled from "styled-components";
 import { BellIcon } from "../icons/icon-bell";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { INotificationResponse } from "../../interfaces";
-import {
-  getAllNotifications,
-  markNotificationAsRead,
-  readAllNotifications,
-} from "../../services/notificationService";
+import { getAllNotifications, markNotificationAsRead, readAllNotifications } from "../../services/notificationService";
 import { CustomAvatar } from "./CustomAvatar";
 import { NotificationMessage } from "./NotificationMessage";
 
-const API_SSE_URL = `${window.location.protocol}//${window.location.hostname}:${
-  import.meta.env.VITE_BACKEND_API_SSE_PATH
-}`;
+const API_SSE_URL = `${import.meta.env.VITE_BACKEND_API_SSE_PATH}`;
 
 export const Notifications: React.FC = () => {
   const { mode } = useContext(ColorModeContext);
 
   const [open, setOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [notifications, setNotifications] = useState<INotificationResponse[]>(
-    []
-  );
+  const [notifications, setNotifications] = useState<INotificationResponse[]>([]);
   const [uneadCount, setUnreadCount] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
 
@@ -114,9 +87,7 @@ export const Notifications: React.FC = () => {
 
   const onLoadMore = () => {
     setLoading(true);
-    setNotifications((prev) =>
-      prev.concat([...new Array(3)].map(() => ({} as INotificationResponse)))
-    );
+    setNotifications((prev) => prev.concat([...new Array(3)].map(() => ({} as INotificationResponse))));
     query.pageSize += 5;
     fetchNotifications().then(() => {
       setLoading(false);
@@ -140,9 +111,7 @@ export const Notifications: React.FC = () => {
 
   useEffect(() => {
     if (notifications) {
-      const unreadNotifications = notifications.filter(
-        (notification) => !notification.read && notification.id
-      );
+      const unreadNotifications = notifications.filter((notification) => !notification.read && notification.id);
       setUnreadCount(unreadNotifications.length);
     }
   }, [notifications]);
@@ -208,9 +177,7 @@ export const Notifications: React.FC = () => {
               setMoreOpen(newOpen);
             }}
             overlayStyle={{ width: 250 }}
-            getPopupContainer={(triggerNode) =>
-              triggerNode.parentNode as HTMLElement
-            }
+            getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
           >
             <Button
               shape="circle"
@@ -223,17 +190,10 @@ export const Notifications: React.FC = () => {
           </Popover>
         </Row>
         <Row style={{ marginTop: "0.25rem" }}>
-          <Segmented
-            onChange={handleSegmentChange}
-            options={["Tất cả", "Chưa đọc"]}
-          />
+          <Segmented onChange={handleSegmentChange} options={["Tất cả", "Chưa đọc"]} />
         </Row>
       </div>
-      <Space
-        direction="vertical"
-        split={<Divider style={{ margin: 0 }} />}
-        style={{ width: "100%" }}
-      >
+      <Space direction="vertical" split={<Divider style={{ margin: 0 }} />} style={{ width: "100%" }}>
         {notifications && notifications.length <= 0 && (
           <div style={{ textAlign: "center" }}>
             <BellIcon style={{ fontSize: "72px" }} />
@@ -252,13 +212,7 @@ export const Notifications: React.FC = () => {
               }}
               key={index}
             >
-              <Skeleton
-                avatar
-                title={false}
-                loading={!noti.id}
-                active
-                key={index}
-              >
+              <Skeleton avatar title={false} loading={!noti.id} active key={index}>
                 <Flex justify="space-between" align="center" key={index}>
                   <Space key={index}>
                     <CustomAvatar
@@ -272,13 +226,8 @@ export const Notifications: React.FC = () => {
                       name={noti.content}
                     />
                     <Space direction="vertical" size={0}>
-                      <NotificationMessage
-                        content={noti.content}
-                        type={noti.notificationType}
-                      />
-                      <Text type="secondary">
-                        {dayjs(new Date(noti.createdAt)).fromNow()}
-                      </Text>
+                      <NotificationMessage content={noti.content} type={noti.notificationType} />
+                      <Text type="secondary">{dayjs(new Date(noti.createdAt)).fromNow()}</Text>
                     </Space>
                   </Space>
                   <div>{!noti.read && <Badge status="processing" />}</div>

@@ -3,9 +3,7 @@ import { stringify } from "query-string";
 import { axiosInstance } from "../utils/data-provider/axios";
 import { INotificationResponse } from "../interfaces";
 
-const API_BASE_URL = `${window.location.protocol}//${
-  window.location.hostname
-}:${import.meta.env.VITE_BACKEND_API_BASE_PATH}/notifications`;
+const API_BASE_URL = `${import.meta.env.VITE_BACKEND_API_BASE_PATH}/notifications`;
 
 const httpClient: AxiosInstance = axiosInstance;
 
