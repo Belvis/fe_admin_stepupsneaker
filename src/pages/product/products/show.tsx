@@ -5,6 +5,7 @@ import {
   HttpError,
   IResourceComponentsProps,
   useApiUrl,
+  useCan,
   useCustomMutation,
   useDelete,
   useParsed,
@@ -48,6 +49,10 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const { id } = useParsed();
   const API_URL = useApiUrl();
   const { message } = App.useApp();
+  const { data: canEdit } = useCan({
+    resource: "product-details",
+    action: "edit",
+  });
 
   const { mutate: mutateUpdateMany, isLoading } =
     useCustomMutation<IProductDetailResponse>();
@@ -58,7 +63,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       options: {
         accept: () => {
           mutateDelete({
-            resource: "products/details",
+            resource: "product-details",
             id: id,
           });
         },
@@ -574,6 +579,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           <Button
             loading={isLoading}
             type="primary"
+            disabled={!canEdit?.can}
             icon={<CheckSquareOutlined />}
             onClick={() => {
               const hasZeroQuantityOrPrice = productDetails.some(
