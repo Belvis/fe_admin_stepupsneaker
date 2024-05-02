@@ -1224,7 +1224,8 @@
         "label": "Trạng thái hoàn tiền",
         "placeholder": "Chọn trạng thái hoàn tiền",
         "PENDING": "Chờ giải quyết",
-        "COMPLETED": "Hoàn thành"
+        "COMPLETED": "Hoàn thành",
+        "null": "Unknown"
       }
     },
     "message": {
