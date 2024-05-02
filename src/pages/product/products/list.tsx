@@ -365,13 +365,6 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
             }}
             rowKey="id"
             columns={columns}
-            onRow={(record) => {
-              return {
-                onDoubleClick: () => {
-                  show("products", record.id);
-                },
-              };
-            }}
           />
         </Col>
       </Row>

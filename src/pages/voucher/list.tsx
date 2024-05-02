@@ -425,16 +425,18 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                   width: "200px",
                 },
                 {
-                  label: "Giá trị tối thiểu",
-                  name: "priceMin",
+                  label: "Số lượng tối thiểu",
+                  name: "quantityMin",
                   type: "input-number",
                   showLabel: true,
+                  useFormatterAndParser: false,
                 },
                 {
-                  label: "Giá trị tối đa",
-                  name: "priceMax",
+                  label: "Số lượng tối đa",
+                  name: "quantityMax",
                   type: "input-number",
                   showLabel: true,
+                  useFormatterAndParser: false,
                 },
                 {
                   label: "",
@@ -464,20 +466,6 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                   name: "constraintMax",
                   type: "input-number",
                   showLabel: true,
-                },
-                {
-                  label: "Số lượng tối thiểu",
-                  name: "quantityMin",
-                  type: "input-number",
-                  showLabel: true,
-                  useFormatterAndParser: false,
-                },
-                {
-                  label: "Số lượng tối đa",
-                  name: "quantityMax",
-                  type: "input-number",
-                  showLabel: true,
-                  useFormatterAndParser: false,
                 },
               ]}
             />

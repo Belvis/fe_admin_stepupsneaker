@@ -300,13 +300,7 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`promotions.filters.search.placeholder`),
-                  width: "400px",
-                },
-                {
-                  label: "",
-                  name: "dateRange",
-                  type: "range",
-                  width: "400px",
+                  width: "200px",
                 },
                 {
                   label: "",
@@ -317,16 +311,10 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   width: "200px",
                 },
                 {
-                  label: "Giá trị tối thiểu",
-                  name: "priceMin",
-                  type: "input-number",
-                  showLabel: true,
-                },
-                {
-                  label: "Giá trị tối đa",
-                  name: "priceMax",
-                  type: "input-number",
-                  showLabel: true,
+                  label: "",
+                  name: "dateRange",
+                  type: "range",
+                  width: "400px",
                 },
               ]}
             />

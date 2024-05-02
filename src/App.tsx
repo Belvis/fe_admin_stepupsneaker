@@ -424,9 +424,16 @@ function App() {
                   <Route
                     index
                     element={
-                      <DashboardContextProvider>
-                        <DashboardPage />
-                      </DashboardContextProvider>
+                      <CanAccess
+                        resource="dashboard"
+                        action="list"
+                        key="dashboard-author"
+                        fallback={<NavigateToResource resource="pos" />}
+                      >
+                        <DashboardContextProvider>
+                          <DashboardPage />
+                        </DashboardContextProvider>
+                      </CanAccess>
                     }
                   />
 
@@ -500,23 +507,7 @@ function App() {
                     </Route>
                   </Route>
                   <Route path="/return-forms">
-                    <Route
-                      index
-                      element={
-                        <CanAccess
-                          resource="return-forms"
-                          action="show"
-                          key="return-forms-author"
-                          fallback={
-                            <ReturnFormContextProvider>
-                              <ReturnCreate />
-                            </ReturnFormContextProvider>
-                          }
-                        >
-                          <ReturnList />
-                        </CanAccess>
-                      }
-                    />
+                    <Route index element={<ReturnList />} />
                     <Route
                       path="create"
                       element={

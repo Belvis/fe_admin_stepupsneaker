@@ -28,9 +28,7 @@ p, ROLE_STAFF, orders/*, (edit)|(show)
 
 p, ROLE_STAFF, pos, (list)
 
-p, ROLE_STAFF, dashboard, (list)
-
-p, ROLE_STAFF, return-forms, (list)|(create)
+p, ROLE_STAFF, return-forms, (list)|(create)|(show)
 p, ROLE_STAFF, return-forms/*, (edit)
 
 p, ROLE_STAFF, product/reviews, (list)|(create)
