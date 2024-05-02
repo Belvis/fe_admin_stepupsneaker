@@ -1216,7 +1216,8 @@
                 "label": "Refund Status",
                 "placeholder": "Select refund status",
                 "PENDING": "Pending",
-                "COMPLETED": "Completed"
+                "COMPLETED": "Completed",
+                "null": "Unknown"
             }
         },
         "message": {
