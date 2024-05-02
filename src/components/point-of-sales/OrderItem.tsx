@@ -1,4 +1,5 @@
 import { DeleteOutlined } from "@ant-design/icons";
+import { NumberField } from "@refinedev/antd";
 import { useDelete, useTranslate, useUpdate } from "@refinedev/core";
 import {
   App,
@@ -10,17 +11,15 @@ import {
   InputNumber,
   Row,
   Typography,
-  message,
   theme,
 } from "antd";
-import { NumberField } from "@refinedev/antd";
+import { motion } from "framer-motion";
 import { debounce, isNumber } from "lodash";
-import { IOrderDetailResponse } from "../../interfaces";
-import { orderDetailToRequest } from "../../helpers/mapper";
-import { POSContext } from "../../contexts/point-of-sales";
 import { useContext } from "react";
+import { POSContext } from "../../contexts/point-of-sales";
+import { orderDetailToRequest } from "../../helpers/mapper";
 import { getDiscountPrice } from "../../helpers/money";
-import { Variants, motion } from "framer-motion";
+import { IOrderDetailResponse } from "../../interfaces";
 const { useToken } = theme;
 const { Text } = Typography;
 
@@ -38,7 +37,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
   const { mutate } = useDelete();
   const { mutate: updateQuantity } = useUpdate();
 
-  const { refetchOrder, activeKey } = useContext(POSContext);
+  const { refetchOrder, activeKey, refetchProducts } = useContext(POSContext);
 
   function handleDelete() {
     mutate(
@@ -61,6 +60,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ orderDetail, count }) => {
           );
         },
         onSuccess: (data, variables, context) => {
+          refetchProducts();
           refetchOrder();
           message.success(t("orders.notification.orderDetail.remove.success"));
         },

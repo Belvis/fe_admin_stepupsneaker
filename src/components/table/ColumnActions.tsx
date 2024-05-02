@@ -1,6 +1,6 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { DeleteButton, EditButton, ShowButton } from "@refinedev/antd";
-import { useTranslate } from "@refinedev/core";
+import { CanAccess, useTranslate } from "@refinedev/core";
 import { Button, Space, Tooltip } from "antd";
 import React, { useCallback } from "react";
 
@@ -67,13 +67,21 @@ const ColumnActions: React.FC<ColumnActionsProps> = ({
       )}
       {!hideDelete && (
         <Tooltip title={t("actions.delete")}>
-          <DeleteButton
-            hideText
-            danger
-            size="small"
-            icon={<DeleteOutlined />}
-            onClick={handleDeleteClick}
-          />
+          <CanAccess
+            resource="dashboard"
+            action="list"
+            key="dashboard-author"
+            fallback={
+              <Button danger disabled size="small" icon={<DeleteOutlined />} />
+            }
+          >
+            <Button
+              danger
+              size="small"
+              icon={<DeleteOutlined />}
+              onClick={handleDeleteClick}
+            />
+          </CanAccess>
         </Tooltip>
       )}
       {customButtons.map((button, index) => (

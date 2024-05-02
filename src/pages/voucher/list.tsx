@@ -381,8 +381,12 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
             type: "success",
           };
         },
-        errorNotification: () => {
-          return false;
+        errorNotification(error) {
+          return {
+            message: t("common.error") + error?.message,
+            description: "Oops!..",
+            type: "error",
+          };
         },
       },
       {

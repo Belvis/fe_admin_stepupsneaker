@@ -35,7 +35,7 @@ import {
 } from "../../interfaces";
 import { calculateIndex } from "../../utils/common/calculator";
 import { PromotionStatus } from "../../components/promotion/PromotionStatus";
-import { getProductStatusOptions } from "../../constants/status";
+import { getPromotionStatusOptions } from "../../constants/status";
 import { LinkOutlined, StopOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
@@ -273,8 +273,12 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
             type: "success",
           };
         },
-        errorNotification: () => {
-          return false;
+        errorNotification(error) {
+          return {
+            message: t("common.error") + error?.message,
+            description: "Oops!..",
+            type: "error",
+          };
         },
       },
       {
@@ -307,7 +311,7 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   name: "status",
                   type: "select",
                   placeholder: t(`vouchers.filters.status.placeholder`),
-                  options: getProductStatusOptions(t),
+                  options: getPromotionStatusOptions(t),
                   width: "200px",
                 },
                 {
