@@ -19,6 +19,7 @@ import { Dispatch, SetStateAction } from "react";
 import {
   IColorResponse,
   IProdAttributeResponse,
+  IProductDetailResponse,
   IUserSelected,
 } from "../../interfaces";
 import { CreateProdAttribute } from "./CreateProdAttribute";
@@ -29,11 +30,15 @@ const { Title, Text } = Typography;
 type CreateProdSizeSectionProps = {
   userSelected: IUserSelected;
   setUserSelected: Dispatch<SetStateAction<IUserSelected>>;
+  productDetails: IProductDetailResponse[];
+  setProductDetails: Dispatch<SetStateAction<IProductDetailResponse[]>>;
 };
 
 export const CreateProdSizeSection: React.FC<CreateProdSizeSectionProps> = ({
   userSelected,
   setUserSelected,
+  productDetails,
+  setProductDetails,
 }) => {
   const t = useTranslate();
   const { message } = App.useApp();
@@ -85,6 +90,13 @@ export const CreateProdSizeSection: React.FC<CreateProdSizeSectionProps> = ({
         return { ...prevUserSelected, size: updatedSizes };
       }
       return prevUserSelected;
+    });
+
+    setProductDetails((prevProductDetails) => {
+      const updatedProductDetails = prevProductDetails.filter(
+        (detail) => detail.size !== size
+      );
+      return updatedProductDetails;
     });
   };
 

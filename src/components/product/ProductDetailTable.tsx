@@ -17,7 +17,7 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { RcFile } from "antd/es/upload";
 import { debounce } from "lodash";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 import { showWarningConfirmDialog } from "../../helpers/confirm";
 import { getBase64 } from "../../helpers/image";
@@ -39,10 +39,14 @@ interface IColorFileLists {
 
 type ProductDetailTableProps = {
   userSelected: IUserSelected;
+  productDetails: IProductDetailResponse[];
+  setProductDetails: Dispatch<SetStateAction<IProductDetailResponse[]>>;
 };
 
 export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
   userSelected,
+  productDetails,
+  setProductDetails,
 }) => {
   const t = useTranslate();
   const { mutate, isLoading } = useCreateMany();
@@ -55,9 +59,7 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
     showQuickJumper: true,
     showSizeChanger: true,
   });
-  const [productDetails, setProductDetails] = useState<
-    IProductDetailResponse[]
-  >([]);
+
   const [fileLists, setFileLists] = useState<IColorFileLists>({});
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -482,7 +484,12 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
                 (detail) => detail.quantity === 0 || detail.price === 0
               );
 
-              if (!isValid || !productDetails || hasZeroQuantityOrPrice) {
+              if (
+                !isValid ||
+                !productDetails ||
+                hasZeroQuantityOrPrice ||
+                productDetails.length === 0
+              ) {
                 message.info(t("products.messages.invalid"));
                 return;
               }

@@ -63,7 +63,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       pageSize: 5,
     },
     filters: {
-      permanent: [
+      initial: [
         {
           field: "minQuantity",
           operator: "eq",
@@ -72,7 +72,7 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       ],
     },
     sorters: {
-      permanent: [
+      initial: [
         {
           field: "updatedAt",
           order: "desc",
@@ -88,6 +88,8 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
       priceMax,
       priceMin,
       quantity,
+      quantityMax,
+      quantityMin,
       size,
       sole,
       style,
@@ -154,9 +156,14 @@ export const AdvancedAddModal: React.FC<AdvancedAddModalProps> = ({
         value: priceMax ? priceMax : undefined,
       });
       productDetailFilters.push({
-        field: "quantity",
+        field: "quantityMax",
         operator: "eq",
-        value: quantity ? quantity : undefined,
+        value: quantityMax ? quantityMax : undefined,
+      });
+      productDetailFilters.push({
+        field: "quantityMin",
+        operator: "eq",
+        value: quantityMin ? quantityMin : undefined,
       });
       productDetailFilters.push({
         field: "hasPromotion",
