@@ -37,8 +37,6 @@ export const ReviewList: React.FC<IResourceComponentsProps> = () => {
   const { mutate, isLoading } = useUpdate();
   const { resource, resources } = useResource();
 
-  console.log("resources", resources);
-
   const handleAction = (record: IReviewResponse, status: IReviewStatus) => {
     mutate(
       {
@@ -88,7 +86,7 @@ export const ReviewList: React.FC<IResourceComponentsProps> = () => {
       filters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
       filters.push({
         field: "hasMedia",

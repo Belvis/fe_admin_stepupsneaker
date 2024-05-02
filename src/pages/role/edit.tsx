@@ -49,6 +49,9 @@ export const EditRole: React.FC<EditRoleProps> = ({
             {
               validator: (_, value) => validateCommon(_, value, t, "name"),
             },
+            {
+              whitespace: true,
+            },
           ]}
         >
           <Input maxLength={LENGTH_NAME} showCount />

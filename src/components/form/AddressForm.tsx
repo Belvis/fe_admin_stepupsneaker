@@ -149,6 +149,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ formProps }) => {
             {
               validator: validatePhoneNumber,
             },
+            {
+              whitespace: true,
+            },
           ]}
         >
           <Input maxLength={LENGTH_PHONE} showCount />

@@ -90,6 +90,9 @@ export const CreateColor: React.FC<CreateColorProps> = ({
             {
               validator: (_, value) => validateCommon(_, value, t, "name"),
             },
+            {
+              whitespace: true,
+            },
           ]}
         >
           <Input maxLength={LENGTH_NAME} showCount />

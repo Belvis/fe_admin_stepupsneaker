@@ -478,7 +478,11 @@ export const ProductDetailTable: React.FC<ProductDetailTableProps> = ({
                 (value) => value !== "" && value !== undefined
               );
 
-              if (!isValid || !productDetails) {
+              const hasZeroQuantityOrPrice = productDetails.some(
+                (detail) => detail.quantity === 0 || detail.price === 0
+              );
+
+              if (!isValid || !productDetails || hasZeroQuantityOrPrice) {
                 message.info(t("products.messages.invalid"));
                 return;
               }

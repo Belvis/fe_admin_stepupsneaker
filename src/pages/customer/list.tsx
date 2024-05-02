@@ -66,7 +66,7 @@ export const CustomerList: React.FC<IResourceComponentsProps> = () => {
       customerFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       customerFilters.push({

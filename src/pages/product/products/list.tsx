@@ -98,7 +98,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
       productDetailFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       productDetailFilters.push({

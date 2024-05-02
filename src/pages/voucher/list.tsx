@@ -81,7 +81,7 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
       voucherFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
       voucherFilters.push({
         field: "status",

@@ -76,6 +76,9 @@ export const EditProduct: React.FC<EditProductProps> = ({
                 {
                   validator: (_, value) => validateCommon(_, value, t, "code"),
                 },
+                {
+                  whitespace: true,
+                },
               ]}
             >
               <Input maxLength={LENGTH_CODE} showCount />
@@ -93,6 +96,9 @@ export const EditProduct: React.FC<EditProductProps> = ({
               rules={[
                 {
                   validator: (_, value) => validateCommon(_, value, t, "name"),
+                },
+                {
+                  whitespace: true,
                 },
               ]}
             >

@@ -506,6 +506,9 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
                 {
                   validator: validateFullName,
                 },
+                {
+                  whitespace: true,
+                },
               ]}
             >
               <Input />
@@ -517,6 +520,9 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
                 {
                   validator: validateEmail,
                 },
+                {
+                  whitespace: true,
+                },
               ]}
             >
               <Input />
@@ -527,6 +533,9 @@ const MyOrderModal: React.FC<MyOrderModalProps> = ({
               rules={[
                 {
                   validator: validatePhoneNumber,
+                },
+                {
+                  whitespace: true,
                 },
               ]}
             >

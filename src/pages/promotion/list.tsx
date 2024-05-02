@@ -62,7 +62,7 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
       promotionFilter.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
       promotionFilter.push({
         field: "startDate",

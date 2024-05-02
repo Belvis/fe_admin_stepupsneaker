@@ -71,7 +71,7 @@ const PromotionRelation: React.FC<PromotionRelationProps> = ({ formProps }) => {
       productDetailFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       productDetailFilters.push({

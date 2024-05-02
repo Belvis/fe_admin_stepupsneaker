@@ -96,6 +96,9 @@ export const EmployeeEdit: React.FC<IResourceComponentsProps> = () => {
                       {
                         validator: validateFullName,
                       },
+                      {
+                        whitespace: true,
+                      },
                     ]}
                   >
                     <Input maxLength={LENGTH_NAME} showCount />
@@ -113,6 +116,9 @@ export const EmployeeEdit: React.FC<IResourceComponentsProps> = () => {
                     rules={[
                       {
                         validator: validateEmail,
+                      },
+                      {
+                        whitespace: true,
                       },
                     ]}
                   >
@@ -133,6 +139,9 @@ export const EmployeeEdit: React.FC<IResourceComponentsProps> = () => {
                     rules={[
                       {
                         validator: validatePhoneNumber,
+                      },
+                      {
+                        whitespace: true,
                       },
                     ]}
                   >

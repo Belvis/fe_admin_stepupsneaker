@@ -46,7 +46,7 @@ export const ColorList: React.FC<IResourceComponentsProps> = () => {
       colorFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return colorFilters;
