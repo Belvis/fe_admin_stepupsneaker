@@ -33,6 +33,7 @@ interface IImageUploadProps {
   required?: boolean;
   hidden?: boolean;
   raw?: boolean;
+  disabled?: boolean;
 }
 
 const ImageUpload: React.FC<IImageUploadProps> = ({
@@ -42,6 +43,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
   required = false,
   hidden = false,
   raw = false,
+  disabled,
 }) => {
   const t = useTranslate();
   const { message } = App.useApp();
@@ -107,6 +109,7 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
       >
         <Upload.Dragger
           name="file"
+          disabled={disabled}
           beforeUpload={beforeUpload}
           onChange={handleChange}
           showUploadList={false}

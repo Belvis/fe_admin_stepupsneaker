@@ -32,7 +32,7 @@ import { ReturnInspectionModal } from "./ReturnInspectionModal";
 
 const { Title, Text } = Typography;
 type ReturnFormProps = {
-  action: "create" | "edit";
+  action: "create" | "edit" | "show";
   formProps: FormProps<{}>;
   handleOnFinish: (values: any) => void;
   returnFormDetails: IReturnFormDetailRequest[];
@@ -191,7 +191,11 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                   },
                 ]}
               >
-                <Input maxLength={LENGTH_PHONE} showCount />
+                <Input
+                  disabled={action === "show"}
+                  maxLength={LENGTH_PHONE}
+                  showCount
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -235,6 +239,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 name="paymentType"
               >
                 <Select
+                  disabled={action === "show"}
                   placeholder={t("return-forms.fields.paymentType.placeholder")}
                   options={getReturnPaymentTypeOptions(t)}
                 />
@@ -255,7 +260,7 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                 ]}
               >
                 <Input
-                  disabled={paymentType === "Cash"}
+                  disabled={paymentType === "Cash" || action === "show"}
                   placeholder={t("return-forms.fields.paymentInfo.placeholder")}
                   maxLength={LENGTH_DESCRIPTION / 2}
                   showCount

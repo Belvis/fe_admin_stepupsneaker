@@ -17,7 +17,7 @@ import ImageUpload from "../form/ImageUpload";
 
 type ReturnInspectionModalProps = {
   modalProps: ModalProps;
-  action: "create" | "edit";
+  action: "create" | "edit" | "show";
   close: () => void;
   returnDetail: IReturnFormDetailRequest;
   setReturnFormDetails: Dispatch<
@@ -140,7 +140,11 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
             },
           ]}
         >
-          <InputNumber style={{ width: "100%" }} min={1} />
+          <InputNumber
+            disabled={action === "show"}
+            style={{ width: "100%" }}
+            min={1}
+          />
         </Form.Item>
         <Form.Item
           label={t("return-form-details.fields.unitPrice")}
@@ -178,6 +182,7 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           ]}
         >
           <Input
+            disabled={action === "show"}
             placeholder={t("return-form-details.fields.reason.placeholder")}
             maxLength={LENGTH_DESCRIPTION / 4}
             showCount
@@ -194,12 +199,14 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
           ]}
         >
           <Input
+            disabled={action === "show"}
             placeholder={t("return-form-details.fields.feedback.placeholder")}
             maxLength={LENGTH_DESCRIPTION / 4}
             showCount
           />
         </Form.Item>
         <ImageUpload
+          disabled={action === "show"}
           formProps={formProps}
           label={t("return-form-details.fields.evidence.label")}
           tooltip={t("return-form-details.fields.evidence.tooltip")}
