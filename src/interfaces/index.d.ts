@@ -332,6 +332,7 @@ export interface IProductDetailResponse {
   image: string;
   price: number;
   quantity: number;
+  returnQuantity: number;
   saleCount: number;
   status: ProductStatus;
   promotionProductDetails?: IPromotionProductDetailResponse[];

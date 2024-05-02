@@ -130,7 +130,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
       >
         {returnFormDetails && (
           <ReturnForm
-            action="edit"
+            action="show"
             formProps={formProps}
             handleOnFinish={handleOnFinish}
             returnFormDetails={returnFormDetails}

@@ -462,10 +462,26 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       sorter: (a, b) => a.quantity - b.quantity,
       render: (_, record) => (
         <InputNumber
+          disabled={!canEdit?.can}
           min={1}
           width={100}
           value={record.quantity}
           onChange={(value) => handleQuantityChange(value as number, record)}
+          className="w-100"
+        />
+      ),
+    },
+    {
+      title: "SL Hoàn trả",
+      key: "returnQuantity",
+      dataIndex: "returnQuantity",
+      align: "center",
+      sorter: (a, b) => a.returnQuantity - b.returnQuantity,
+      render: (_, record) => (
+        <InputNumber
+          disabled
+          width={100}
+          value={record.returnQuantity}
           className="w-100"
         />
       ),
@@ -479,6 +495,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
       render: (_, record) => (
         <InputNumber
           min={1}
+          disabled={!canEdit?.can}
           formatter={(value) =>
             `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }

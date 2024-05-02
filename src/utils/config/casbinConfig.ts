@@ -38,7 +38,7 @@ p, ROLE_STAFF, payments, (list)
 p, ROLE_STAFF, payment-methods, (list)
 p, ROLE_STAFF, transactions, (list)
 
-p, ROLE_STAFF, products, (list)
+p, ROLE_STAFF, products, (list)|(show)
 p, ROLE_STAFF, product-details, (list)|(show)
 p, ROLE_STAFF, brands, (list)
 p, ROLE_STAFF, styles, (list)
