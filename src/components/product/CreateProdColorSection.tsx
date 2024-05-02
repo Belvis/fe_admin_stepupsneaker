@@ -16,7 +16,11 @@ import {
   Typography,
 } from "antd";
 import { StyledCheckableTag } from "./styled";
-import { IColorResponse, IUserSelected } from "../../interfaces";
+import {
+  IColorResponse,
+  IProductDetailResponse,
+  IUserSelected,
+} from "../../interfaces";
 import { Dispatch, SetStateAction } from "react";
 import { CreateColor } from "../../pages/product/color/create";
 
@@ -25,11 +29,15 @@ const { Title, Text } = Typography;
 type CreateProdColorSectionProps = {
   userSelected: IUserSelected;
   setUserSelected: Dispatch<SetStateAction<IUserSelected>>;
+  productDetails: IProductDetailResponse[];
+  setProductDetails: Dispatch<SetStateAction<IProductDetailResponse[]>>;
 };
 
 export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
   userSelected,
   setUserSelected,
+  productDetails,
+  setProductDetails,
 }) => {
   const t = useTranslate();
   const { message } = App.useApp();
@@ -81,6 +89,13 @@ export const CreateProdColorSection: React.FC<CreateProdColorSectionProps> = ({
         return { ...prevUserSelected, color: updatedColors };
       }
       return prevUserSelected;
+    });
+
+    setProductDetails((prevProductDetails) => {
+      const updatedProductDetails = prevProductDetails.filter(
+        (detail) => detail.color !== color
+      );
+      return updatedProductDetails;
     });
   };
 

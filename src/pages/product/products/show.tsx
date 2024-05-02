@@ -5,11 +5,14 @@ import {
   HttpError,
   IResourceComponentsProps,
   useApiUrl,
+  useCan,
   useCustomMutation,
+  useDelete,
   useParsed,
   useTranslate,
 } from "@refinedev/core";
 import {
+  App,
   Avatar,
   Badge,
   Button,
@@ -27,7 +30,10 @@ import { ProductSearchForm } from "../../../components/product/ProductSearchForm
 import { ProductStatus } from "../../../components/product/ProductStatus";
 import ColumnActions from "../../../components/table/ColumnActions";
 import { tablePaginationSettings } from "../../../constants/tablePaginationConfig";
-import { showWarningConfirmDialog } from "../../../helpers/confirm";
+import {
+  showDangerConfirmDialog,
+  showWarningConfirmDialog,
+} from "../../../helpers/confirm";
 import { productDetailToRequest } from "../../../helpers/mapper";
 import {
   IProductDetailFilterVariables,
@@ -42,9 +48,30 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { id } = useParsed();
   const API_URL = useApiUrl();
+  const { message } = App.useApp();
+  const { data: canEdit } = useCan({
+    resource: "product-details",
+    action: "edit",
+  });
 
   const { mutate: mutateUpdateMany, isLoading } =
     useCustomMutation<IProductDetailResponse>();
+  const { mutate: mutateDelete } = useDelete();
+
+  function handleDelete(id: string): void {
+    showDangerConfirmDialog({
+      options: {
+        accept: () => {
+          mutateDelete({
+            resource: "product-details",
+            id: id,
+          });
+        },
+        reject: () => {},
+      },
+      t: t,
+    });
+  }
 
   /**
    * State lưu trữ product-details.
@@ -494,6 +521,7 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           hideShow
           record={record}
           onEditClick={() => editModalShow(record.id)}
+          onDeleteClick={() => handleDelete(record.id)}
         />
       ),
     },
@@ -551,8 +579,22 @@ export const ProductShow: React.FC<IResourceComponentsProps> = () => {
           <Button
             loading={isLoading}
             type="primary"
+            disabled={!canEdit?.can}
             icon={<CheckSquareOutlined />}
             onClick={() => {
+              const hasZeroQuantityOrPrice = productDetails.some(
+                (detail) => detail.quantity === 0 || detail.price === 0
+              );
+
+              if (
+                !productDetails ||
+                hasZeroQuantityOrPrice ||
+                productDetails.length === 0
+              ) {
+                message.info(t("products.messages.invalid"));
+                return;
+              }
+
               showWarningConfirmDialog({
                 options: {
                   accept: handleSubmit,

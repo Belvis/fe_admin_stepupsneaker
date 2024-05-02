@@ -11,10 +11,13 @@ import { CreateProdHeaderSection } from "../../../components/product/CreateProdH
 import { CreateProdSizeSection } from "../../../components/product/CreateProdSizeSection";
 import { ProdAttributeSelect } from "../../../components/product/ProdAttributeSelect";
 import { ProductDetailTable } from "../../../components/product/ProductDetailTable";
-import { IUserSelected } from "../../../interfaces";
+import { IProductDetailResponse, IUserSelected } from "../../../interfaces";
 
 export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
+  const [productDetails, setProductDetails] = useState<
+    IProductDetailResponse[]
+  >([]);
 
   const [userSelected, setUserSelected] = useState<IUserSelected>({
     tradeMark: undefined,
@@ -100,15 +103,23 @@ export const ProductCreate: React.FC<IResourceComponentsProps> = () => {
           <CreateProdColorSection
             userSelected={userSelected}
             setUserSelected={setUserSelected}
+            productDetails={productDetails}
+            setProductDetails={setProductDetails}
           />
           <CreateProdSizeSection
             userSelected={userSelected}
             setUserSelected={setUserSelected}
+            productDetails={productDetails}
+            setProductDetails={setProductDetails}
           />
         </Row>
       </Card>
       {/* Product detail table */}
-      <ProductDetailTable userSelected={userSelected} />
+      <ProductDetailTable
+        userSelected={userSelected}
+        productDetails={productDetails}
+        setProductDetails={setProductDetails}
+      />
     </Fragment>
   );
 };
