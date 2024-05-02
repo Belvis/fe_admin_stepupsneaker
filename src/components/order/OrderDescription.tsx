@@ -165,7 +165,9 @@ export const OrderDescription: React.FC<OrderDescriptionProps> = ({
                     />
                     {!(
                       payment.transactionCode === "Cash" ||
-                      payment.transactionCode === "CASH"
+                      payment.transactionCode === "CASH" ||
+                      payment.transactionCode === "Tiền mặt" ||
+                      payment.transactionCode === "Hoàn thành"
                     ) && (
                       <>
                         {" - "}

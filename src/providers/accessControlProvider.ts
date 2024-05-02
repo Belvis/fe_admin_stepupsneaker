@@ -19,6 +19,8 @@ export const accessControlProvider: AccessControlProvider = {
     const decodedToken = decodeToken(token);
     const role = getRoleFromDecodedToken(decodedToken);
 
+    console.log("resource", resource);
+
     if (action === "field") {
       return Promise.resolve({
         can: await enforcer.enforce(

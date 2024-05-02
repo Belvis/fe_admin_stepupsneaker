@@ -35,7 +35,9 @@ import { tablePaginationSettings } from "../../constants/tablePaginationConfig";
 export const ReviewList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { mutate, isLoading } = useUpdate();
-  const { resource } = useResource();
+  const { resource, resources } = useResource();
+
+  console.log("resources", resources);
 
   const handleAction = (record: IReviewResponse, status: IReviewStatus) => {
     mutate(

@@ -32,13 +32,14 @@ export const calculateIndex = (
 export const calculateChange = (
   payments: IPaymentResponse[],
   totalPrice: number,
-  discount: number
+  discount: number,
+  shippingMoney: number
 ) => {
   const totalPaid = payments
     .filter((payment) => payment.paymentStatus !== "PENDING")
     .reduce((acc, payment) => acc + payment.totalMoney, 0);
 
-  const changeAmount = totalPaid - (totalPrice - discount);
+  const changeAmount = totalPaid - (totalPrice + shippingMoney - discount);
 
   return changeAmount;
 };

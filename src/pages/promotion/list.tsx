@@ -1,5 +1,6 @@
 import { List, getDefaultSortOrder, useTable } from "@refinedev/antd";
 import {
+  CanAccess,
   CrudFilters,
   HttpError,
   IResourceComponentsProps,
@@ -187,33 +188,56 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   : "Vô hiệu hoá giảm giá"
               }
             >
-              <Button
-                disabled={
-                  record.status === "IN_ACTIVE" || record.status === "EXPIRED"
+              <CanAccess
+                resource="promotions"
+                action="edit"
+                key="promotions-author"
+                fallback={
+                  <Button
+                    disabled
+                    style={{
+                      color: "#800080",
+                      borderColor: "#800080",
+                    }}
+                    size="small"
+                    icon={
+                      record.status === "CANCELLED" ? (
+                        <LinkOutlined />
+                      ) : (
+                        <StopOutlined />
+                      )
+                    }
+                  />
                 }
-                loading={isLoading}
-                color="purple"
-                style={{ color: "#800080", borderColor: "#800080" }}
-                size="small"
-                icon={
-                  record.status === "CANCELLED" ? (
-                    <LinkOutlined />
-                  ) : (
-                    <StopOutlined />
-                  )
-                }
-                onClick={() => {
-                  showWarningConfirmDialog({
-                    options: {
-                      accept: () => {
-                        deactivate(record.id);
+              >
+                <Button
+                  disabled={
+                    record.status === "IN_ACTIVE" || record.status === "EXPIRED"
+                  }
+                  loading={isLoading}
+                  color="purple"
+                  style={{ color: "#800080", borderColor: "#800080" }}
+                  size="small"
+                  icon={
+                    record.status === "CANCELLED" ? (
+                      <LinkOutlined />
+                    ) : (
+                      <StopOutlined />
+                    )
+                  }
+                  onClick={() => {
+                    showWarningConfirmDialog({
+                      options: {
+                        accept: () => {
+                          deactivate(record.id);
+                        },
+                        reject: () => {},
                       },
-                      reject: () => {},
-                    },
-                    t: t,
-                  });
-                }}
-              />
+                      t: t,
+                    });
+                  }}
+                />
+              </CanAccess>
             </Tooltip>,
           ]}
         />

@@ -50,7 +50,8 @@ export const DeliverySalesRightContent: React.FC<
   const { paymentMethods, payments, setPaymentMethods, setPayments } =
     useContext(POSContext);
 
-  const { form, discount, isCOD, setIsCOD } = useContext(DeliverySalesContext);
+  const { form, discount, isCOD, setIsCOD, shippingMoney } =
+    useContext(DeliverySalesContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -189,7 +190,12 @@ export const DeliverySalesRightContent: React.FC<
     if (!payments || hasPendingPayment || isCOD) {
       changeAmount = 0;
     } else {
-      changeAmount = calculateChange(payments, totalPrice, discount);
+      changeAmount = calculateChange(
+        payments,
+        totalPrice,
+        discount,
+        shippingMoney
+      );
     }
 
     return (

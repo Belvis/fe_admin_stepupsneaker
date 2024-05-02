@@ -11,6 +11,7 @@ import {
   useTable,
 } from "@refinedev/antd";
 import {
+  CanAccess,
   CrudFilters,
   HttpError,
   IResourceComponentsProps,
@@ -290,35 +291,59 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                     : "Vô hiệu hoá giảm giá"
                 }
               >
-                <Button
-                  loading={isLoading}
-                  disabled={
-                    record.status === "IN_ACTIVE" || record.status === "EXPIRED"
+                <CanAccess
+                  resource="vouchers"
+                  action="edit"
+                  key="vouchers-author"
+                  fallback={
+                    <Button
+                      disabled
+                      style={{
+                        color: "#800080",
+                        borderColor: "#800080",
+                      }}
+                      size="small"
+                      icon={
+                        record.status === "CANCELLED" ? (
+                          <LinkOutlined />
+                        ) : (
+                          <StopOutlined />
+                        )
+                      }
+                    />
                   }
-                  style={{
-                    color: "#800080",
-                    borderColor: "#800080",
-                  }}
-                  size="small"
-                  icon={
-                    record.status === "CANCELLED" ? (
-                      <LinkOutlined />
-                    ) : (
-                      <StopOutlined />
-                    )
-                  }
-                  onClick={() => {
-                    showWarningConfirmDialog({
-                      options: {
-                        accept: () => {
-                          deactivate(record.id);
+                >
+                  <Button
+                    loading={isLoading}
+                    disabled={
+                      record.status === "IN_ACTIVE" ||
+                      record.status === "EXPIRED"
+                    }
+                    style={{
+                      color: "#800080",
+                      borderColor: "#800080",
+                    }}
+                    size="small"
+                    icon={
+                      record.status === "CANCELLED" ? (
+                        <LinkOutlined />
+                      ) : (
+                        <StopOutlined />
+                      )
+                    }
+                    onClick={() => {
+                      showWarningConfirmDialog({
+                        options: {
+                          accept: () => {
+                            deactivate(record.id);
+                          },
+                          reject: () => {},
                         },
-                        reject: () => {},
-                      },
-                      t: t,
-                    });
-                  }}
-                />
+                        t: t,
+                      });
+                    }}
+                  />
+                </CanAccess>
               </Tooltip>,
             ]}
           />

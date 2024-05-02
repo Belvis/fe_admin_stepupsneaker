@@ -13,6 +13,7 @@ import {
 import { PaymentComfirmModal } from "../PaymentConfirmModal";
 import { InvoiceTemplate } from "../../../template/InvoiceTemplate";
 import { useReactToPrint } from "react-to-print";
+import { calculatePayment } from "../../../utils/common/calculator";
 
 type DeliverySalesRightFooterProps = {
   order: IOrderResponse;
