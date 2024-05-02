@@ -15,7 +15,7 @@ import {
 import { Card, Col, Row, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import CommonSearchForm from "../../../components/form/CommonSearchForm";
 import { CreateProdAttribute } from "../../../components/product/CreateProdAttribute";
 import { EditProdAttribute } from "../../../components/product/EditProdAttribute";
@@ -113,25 +113,28 @@ export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {
         ),
       },
     ],
-    [t, sorters, current, pageSize]
+    [t, sorters, current, pageSize, resource]
   );
 
-  function handleDelete(id: string): void {
-    if (resource) {
-      showDangerConfirmDialog({
-        options: {
-          accept: () => {
-            mutateDelete({
-              resource: resource?.name,
-              id: id,
-            });
+  const handleDelete = useCallback(
+    (id: string): void => {
+      if (resource) {
+        showDangerConfirmDialog({
+          options: {
+            accept: () => {
+              mutateDelete({
+                resource: resource?.name,
+                id: id,
+              });
+            },
+            reject: () => {},
           },
-          reject: () => {},
-        },
-        t: t,
-      });
-    }
-  }
+          t: t,
+        });
+      }
+    },
+    [resource]
+  );
 
   return (
     <List

@@ -17,7 +17,7 @@ import {
 } from "antd";
 
 import { NumberField } from "@refinedev/antd";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import { initializeProductClient } from "../../../helpers/mapper";
 import { getDiscountPrice } from "../../../helpers/money";
@@ -25,6 +25,7 @@ import { IProductData, IProductResponse } from "../../../interfaces";
 import { SaleIcon } from "../../icons/icon-sale";
 import { Quantity } from "../styled";
 import { isNumber } from "lodash";
+import { POSContext } from "../../../contexts/point-of-sales";
 const { Text, Title, Paragraph } = Typography;
 
 type ProductModalProps = {
@@ -45,6 +46,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const t = useTranslate();
   const { message } = App.useApp();
   const breakpoint = Grid.useBreakpoint();
+  const { refetchProducts } = useContext(POSContext);
 
   const [qty, setQty] = useState(1);
 
@@ -114,6 +116,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             message.error(t("common.error") + error.message);
           },
           onSuccess: (data, variables, context) => {
+            refetchProducts();
             close();
             callBack();
             message.success(t("common.update.success"));
