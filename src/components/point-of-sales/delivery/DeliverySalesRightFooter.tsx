@@ -108,9 +108,6 @@ export const DeliverySalesRightFooter: React.FC<
   } = useModal();
 
   const handlePayButtonClick = () => {
-    if (shippingMoney <= 0) {
-      return message.error("Vui lòng tính phí vận chuyển trước");
-    }
     form
       .validateFields()
       .then((values: any) => {
