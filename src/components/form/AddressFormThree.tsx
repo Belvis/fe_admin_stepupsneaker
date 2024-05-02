@@ -323,6 +323,9 @@ export const AddressFormThree: React.FC<AddressFormThreeProps> = ({
           {
             validator: (_, value) => validateCommon(_, value, t, "line"),
           },
+          {
+            whitespace: true,
+          },
         ]}
       >
         <Input maxLength={LENGTH_DESCRIPTION} showCount />

@@ -38,7 +38,7 @@ export const RoleList: React.FC<IResourceComponentsProps> = () => {
       roleFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return roleFilters;

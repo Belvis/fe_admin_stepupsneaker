@@ -89,6 +89,9 @@ export const SelectOrder: React.FC<IResourceComponentsProps> = () => {
                 validator: (_, value) =>
                   validateCommon(_, value, t, "orderCode"),
               },
+              {
+                whitespace: true,
+              },
             ]}
           >
             <Input prefix={<SearchOutlined />} />

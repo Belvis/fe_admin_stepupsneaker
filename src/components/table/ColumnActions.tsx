@@ -67,7 +67,8 @@ const ColumnActions: React.FC<ColumnActionsProps> = ({
       )}
       {!hideDelete && (
         <Tooltip title={t("actions.delete")}>
-          <Button
+          <DeleteButton
+            hideText
             danger
             size="small"
             icon={<DeleteOutlined />}

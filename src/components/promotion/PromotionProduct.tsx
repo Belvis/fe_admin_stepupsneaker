@@ -90,7 +90,7 @@ const PromotionProduct: React.FC<PromotionProductProps> = ({
       filters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return filters;

@@ -11,6 +11,7 @@ import {
   useTable,
 } from "@refinedev/antd";
 import {
+  CanAccess,
   CrudFilters,
   HttpError,
   IResourceComponentsProps,
@@ -80,7 +81,7 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
       voucherFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
       voucherFilters.push({
         field: "status",
@@ -290,35 +291,59 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                     : "Vô hiệu hoá giảm giá"
                 }
               >
-                <Button
-                  loading={isLoading}
-                  disabled={
-                    record.status === "IN_ACTIVE" || record.status === "EXPIRED"
+                <CanAccess
+                  resource="vouchers"
+                  action="edit"
+                  key="vouchers-author"
+                  fallback={
+                    <Button
+                      disabled
+                      style={{
+                        color: "#800080",
+                        borderColor: "#800080",
+                      }}
+                      size="small"
+                      icon={
+                        record.status === "CANCELLED" ? (
+                          <LinkOutlined />
+                        ) : (
+                          <StopOutlined />
+                        )
+                      }
+                    />
                   }
-                  style={{
-                    color: "#800080",
-                    borderColor: "#800080",
-                  }}
-                  size="small"
-                  icon={
-                    record.status === "CANCELLED" ? (
-                      <LinkOutlined />
-                    ) : (
-                      <StopOutlined />
-                    )
-                  }
-                  onClick={() => {
-                    showWarningConfirmDialog({
-                      options: {
-                        accept: () => {
-                          deactivate(record.id);
+                >
+                  <Button
+                    loading={isLoading}
+                    disabled={
+                      record.status === "IN_ACTIVE" ||
+                      record.status === "EXPIRED"
+                    }
+                    style={{
+                      color: "#800080",
+                      borderColor: "#800080",
+                    }}
+                    size="small"
+                    icon={
+                      record.status === "CANCELLED" ? (
+                        <LinkOutlined />
+                      ) : (
+                        <StopOutlined />
+                      )
+                    }
+                    onClick={() => {
+                      showWarningConfirmDialog({
+                        options: {
+                          accept: () => {
+                            deactivate(record.id);
+                          },
+                          reject: () => {},
                         },
-                        reject: () => {},
-                      },
-                      t: t,
-                    });
-                  }}
-                />
+                        t: t,
+                      });
+                    }}
+                  />
+                </CanAccess>
               </Tooltip>,
             ]}
           />
@@ -400,16 +425,18 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                   width: "200px",
                 },
                 {
-                  label: "Giá trị tối thiểu",
-                  name: "priceMin",
+                  label: "Số lượng tối thiểu",
+                  name: "quantityMin",
                   type: "input-number",
                   showLabel: true,
+                  useFormatterAndParser: false,
                 },
                 {
-                  label: "Giá trị tối đa",
-                  name: "priceMax",
+                  label: "Số lượng tối đa",
+                  name: "quantityMax",
                   type: "input-number",
                   showLabel: true,
+                  useFormatterAndParser: false,
                 },
                 {
                   label: "",
@@ -439,20 +466,6 @@ export const VoucherList: React.FC<IResourceComponentsProps> = () => {
                   name: "constraintMax",
                   type: "input-number",
                   showLabel: true,
-                },
-                {
-                  label: "Số lượng tối thiểu",
-                  name: "quantityMin",
-                  type: "input-number",
-                  showLabel: true,
-                  useFormatterAndParser: false,
-                },
-                {
-                  label: "Số lượng tối đa",
-                  name: "quantityMax",
-                  type: "input-number",
-                  showLabel: true,
-                  useFormatterAndParser: false,
                 },
               ]}
             />

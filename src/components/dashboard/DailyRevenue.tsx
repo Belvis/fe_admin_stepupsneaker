@@ -122,7 +122,6 @@ export const DailyRevenue: React.FC = () => {
               ]);
             }
           }}
-          disabledDate={disabledDate}
           style={{
             float: "right",
             color: "#fffff !important",

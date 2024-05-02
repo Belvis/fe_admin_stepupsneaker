@@ -24,6 +24,7 @@ import { getDiscountPrice } from "../../../helpers/money";
 import { IProductData, IProductResponse } from "../../../interfaces";
 import { SaleIcon } from "../../icons/icon-sale";
 import { Quantity } from "../styled";
+import { isNumber } from "lodash";
 const { Text, Title, Paragraph } = Typography;
 
 type ProductModalProps = {
@@ -139,6 +140,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
       setSelectedProductColor(initData.initialSelectedColor);
       setSelectedProductSize(initData.initialSelectedSize);
       setProductStock(initData.initialProductStock);
+      setQty(1);
     }
   }, [modalProps.open]);
 
@@ -150,6 +152,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const finalDiscountedPrice = +(
     (discountedPrice ?? selectedProductSize.discount) * 1
   );
+
+  const handleQuantityChange = (value: number | null) => {
+    if (isNumber(value) && value > 0) {
+      if (value > selectedProductSize.stock) {
+        return message.info(t("products.messages.limitReached"));
+      }
+
+      if (value !== selectedProductSize.stock) {
+        setQty(value);
+      }
+    }
+  };
 
   return (
     <Modal
@@ -353,6 +367,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                     min={1}
                     value={qty}
                     disabled={productStock <= 0}
+                    onChange={(value) => handleQuantityChange(value)}
                   />
                   <button onClick={increaseQty} disabled={productStock <= 0}>
                     <AiFillPlusCircle />

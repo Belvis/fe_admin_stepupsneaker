@@ -71,7 +71,6 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
     record?.status === "WAIT_FOR_CONFIRMATION" ||
     record?.status === "WAIT_FOR_DELIVERY";
   const canForceConfirmOrder =
-    record?.status === "PENDING" ||
     record?.status === "WAIT_FOR_CONFIRMATION" ||
     record?.status === "WAIT_FOR_DELIVERY" ||
     record?.status === "DELIVERING" ||

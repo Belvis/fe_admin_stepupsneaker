@@ -160,6 +160,9 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                     {
                       validator: validateFullName,
                     },
+                    {
+                      whitespace: true,
+                    },
                   ]}
                 >
                   <Input maxLength={LENGTH_NAME} showCount />
@@ -177,6 +180,9 @@ export const CustomerEditModal: React.FC<CustomerEditModalProps> = ({
                   rules={[
                     {
                       validator: validateEmail,
+                    },
+                    {
+                      whitespace: true,
                     },
                   ]}
                 >

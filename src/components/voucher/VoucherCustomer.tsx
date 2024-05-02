@@ -71,7 +71,7 @@ const VoucherCustomer: React.FC<VoucherCustomerProps> = ({
       customerFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return customerFilters;

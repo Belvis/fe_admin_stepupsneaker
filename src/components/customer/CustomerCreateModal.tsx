@@ -147,6 +147,9 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
                     {
                       validator: validateFullName,
                     },
+                    {
+                      whitespace: true,
+                    },
                   ]}
                   required
                 >
@@ -165,6 +168,9 @@ export const CustomerCreateModal: React.FC<CustomerCreateModalProps> = ({
                   rules={[
                     {
                       validator: validateEmail,
+                    },
+                    {
+                      whitespace: true,
                     },
                   ]}
                 >

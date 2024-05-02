@@ -87,6 +87,9 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
                 {
                   validator: (_, value) => validateCommon(_, value, t, "code"),
                 },
+                {
+                  whitespace: true,
+                },
               ]}
             >
               <Input maxLength={LENGTH_CODE} showCount />
@@ -104,6 +107,9 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
               rules={[
                 {
                   validator: (_, value) => validateCommon(_, value, t, "name"),
+                },
+                {
+                  whitespace: true,
                 },
               ]}
             >

@@ -56,7 +56,7 @@ const ReasonModal: React.FC<ReasonModalProps> = ({
                 return {
                   message: t("common.error") + error?.message,
                   description: "Oops!..",
-                  type: "success",
+                  type: "error",
                 };
               },
             },

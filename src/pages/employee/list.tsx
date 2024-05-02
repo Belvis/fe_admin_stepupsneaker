@@ -69,7 +69,7 @@ export const EmployeeList: React.FC<IResourceComponentsProps> = () => {
       employeeFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return employeeFilters;

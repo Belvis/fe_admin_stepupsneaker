@@ -14,7 +14,10 @@ import { ColumnsType } from "antd/es/table";
 import { useContext, useEffect, useState } from "react";
 import { DeliverySalesContext } from "../../contexts/point-of-sales/delivery-sales";
 import { IOrderResponse, IPaymentResponse } from "../../interfaces";
-import { calculateChange } from "../../utils/common/calculator";
+import {
+  calculateChange,
+  calculatePayment,
+} from "../../utils/common/calculator";
 import _ from "lodash";
 import useOrderCalculations from "../../hooks/useOrderCalculations";
 import { QRCODE_ICON_URL, QRCODE_VALUE } from "../../constants/common";
@@ -41,7 +44,7 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
   const [copiedPayments, setCopiedPayments] = useState<IPaymentResponse[]>([]);
 
   const { payments, setPayments } = useContext(POSContext);
-  const { discount } = useContext(DeliverySalesContext);
+  const { discount, shippingMoney } = useContext(DeliverySalesContext);
 
   useEffect(() => {
     setCopiedPayments(_.cloneDeep(payments || []));
@@ -59,12 +62,15 @@ export const PaymentComfirmModal: React.FC<PaymentComfirmModalProps> = ({
       const change = calculateChange(
         copiedPayments ?? [],
         totalPrice,
-        discount
+        discount,
+        shippingMoney
       );
+
       if (change < 0) {
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
         return;
       }
+
       setPayments(copiedPayments);
       submitOrder(copiedPayments);
       close();

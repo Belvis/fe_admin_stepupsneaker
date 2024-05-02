@@ -65,6 +65,9 @@ export const CreateProdAttribute: React.FC<CreateProdAttributeProps> = ({
             {
               validator: (_, value) => validateCommon(_, value, t, "name"),
             },
+            {
+              whitespace: true,
+            },
           ]}
         >
           <Input maxLength={LENGTH_NAME} showCount />

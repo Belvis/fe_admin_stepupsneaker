@@ -13,6 +13,7 @@ import {
 import { PaymentComfirmModal } from "../PaymentConfirmModal";
 import { InvoiceTemplate } from "../../../template/InvoiceTemplate";
 import { useReactToPrint } from "react-to-print";
+import { calculatePayment } from "../../../utils/common/calculator";
 
 type DeliverySalesRightFooterProps = {
   order: IOrderResponse;
@@ -108,9 +109,6 @@ export const DeliverySalesRightFooter: React.FC<
   } = useModal();
 
   const handlePayButtonClick = () => {
-    if (shippingMoney <= 0) {
-      return message.error("Vui lòng tính phí vận chuyển trước");
-    }
     form
       .validateFields()
       .then((values: any) => {

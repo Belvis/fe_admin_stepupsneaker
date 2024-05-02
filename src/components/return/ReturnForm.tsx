@@ -186,6 +186,9 @@ export const ReturnForm: React.FC<ReturnFormProps> = ({
                   {
                     validator: validatePhoneNumber,
                   },
+                  {
+                    whitespace: true,
+                  },
                 ]}
               >
                 <Input maxLength={LENGTH_PHONE} showCount />

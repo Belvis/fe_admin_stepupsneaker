@@ -56,6 +56,9 @@ export const EditProdAttribute: React.FC<EditProdAttributeProps> = ({
             {
               validator: (_, value) => validateCommon(_, value, t, "name"),
             },
+            {
+              whitespace: true,
+            },
           ]}
         >
           <Input maxLength={LENGTH_NAME} showCount />

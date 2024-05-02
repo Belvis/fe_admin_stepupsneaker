@@ -43,7 +43,7 @@ export const ReturnList: React.FC<IResourceComponentsProps> = () => {
       filters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
       filters.push({
         field: "paymentType",

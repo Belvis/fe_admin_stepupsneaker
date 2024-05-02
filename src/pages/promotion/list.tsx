@@ -1,5 +1,6 @@
 import { List, getDefaultSortOrder, useTable } from "@refinedev/antd";
 import {
+  CanAccess,
   CrudFilters,
   HttpError,
   IResourceComponentsProps,
@@ -61,7 +62,7 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
       promotionFilter.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
       promotionFilter.push({
         field: "startDate",
@@ -187,33 +188,56 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   : "Vô hiệu hoá giảm giá"
               }
             >
-              <Button
-                disabled={
-                  record.status === "IN_ACTIVE" || record.status === "EXPIRED"
+              <CanAccess
+                resource="promotions"
+                action="edit"
+                key="promotions-author"
+                fallback={
+                  <Button
+                    disabled
+                    style={{
+                      color: "#800080",
+                      borderColor: "#800080",
+                    }}
+                    size="small"
+                    icon={
+                      record.status === "CANCELLED" ? (
+                        <LinkOutlined />
+                      ) : (
+                        <StopOutlined />
+                      )
+                    }
+                  />
                 }
-                loading={isLoading}
-                color="purple"
-                style={{ color: "#800080", borderColor: "#800080" }}
-                size="small"
-                icon={
-                  record.status === "CANCELLED" ? (
-                    <LinkOutlined />
-                  ) : (
-                    <StopOutlined />
-                  )
-                }
-                onClick={() => {
-                  showWarningConfirmDialog({
-                    options: {
-                      accept: () => {
-                        deactivate(record.id);
+              >
+                <Button
+                  disabled={
+                    record.status === "IN_ACTIVE" || record.status === "EXPIRED"
+                  }
+                  loading={isLoading}
+                  color="purple"
+                  style={{ color: "#800080", borderColor: "#800080" }}
+                  size="small"
+                  icon={
+                    record.status === "CANCELLED" ? (
+                      <LinkOutlined />
+                    ) : (
+                      <StopOutlined />
+                    )
+                  }
+                  onClick={() => {
+                    showWarningConfirmDialog({
+                      options: {
+                        accept: () => {
+                          deactivate(record.id);
+                        },
+                        reject: () => {},
                       },
-                      reject: () => {},
-                    },
-                    t: t,
-                  });
-                }}
-              />
+                      t: t,
+                    });
+                  }}
+                />
+              </CanAccess>
             </Tooltip>,
           ]}
         />
@@ -276,13 +300,7 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   name: "q",
                   type: "input",
                   placeholder: t(`promotions.filters.search.placeholder`),
-                  width: "400px",
-                },
-                {
-                  label: "",
-                  name: "dateRange",
-                  type: "range",
-                  width: "400px",
+                  width: "200px",
                 },
                 {
                   label: "",
@@ -293,16 +311,10 @@ export const PromotionList: React.FC<IResourceComponentsProps> = () => {
                   width: "200px",
                 },
                 {
-                  label: "Giá trị tối thiểu",
-                  name: "priceMin",
-                  type: "input-number",
-                  showLabel: true,
-                },
-                {
-                  label: "Giá trị tối đa",
-                  name: "priceMax",
-                  type: "input-number",
-                  showLabel: true,
+                  label: "",
+                  name: "dateRange",
+                  type: "range",
+                  width: "400px",
                 },
               ]}
             />

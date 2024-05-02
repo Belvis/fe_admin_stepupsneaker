@@ -48,7 +48,7 @@ export const ProdAttributeList: React.FC<IResourceComponentsProps> = () => {
       ProdAttributeFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return ProdAttributeFilters;

@@ -63,6 +63,7 @@
   },
   "scripts": {
     "start": "refine dev --port 6969",
+    "expose": "refine dev --port 6969 --host",
     "build": "refine build",
     "preview": "refine start",
     "refine": "refine"

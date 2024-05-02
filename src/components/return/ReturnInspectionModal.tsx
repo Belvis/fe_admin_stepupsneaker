@@ -140,7 +140,7 @@ export const ReturnInspectionModal: React.FC<ReturnInspectionModalProps> = ({
             },
           ]}
         >
-          <Input min={1} />
+          <InputNumber style={{ width: "100%" }} min={1} />
         </Form.Item>
         <Form.Item
           label={t("return-form-details.fields.unitPrice")}

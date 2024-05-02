@@ -142,6 +142,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       message.error(t("payments.modal.error.transactionCode"));
       return;
     }
+
     if (selectedMethod && payments && payments.length == 1) {
       const updatedPayments = payments.map((payment) => {
         if (payment.paymentMethod === selectedMethod) {
@@ -305,7 +306,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
       );
 
     if (!hasEmptyTransactionCode) {
-      const change = calculateChange(payments ?? [], totalPrice, discount);
+      const change = calculateChange(payments ?? [], totalPrice, discount, 0);
 
       if (change < 0) {
         message.error(t("orders.notification.tab.checkoutDrawer.error"));
@@ -556,7 +557,7 @@ export const CheckOutDrawer: React.FC<CheckOutDrawerProps> = ({
     if (!payments || hasPendingPayment) {
       changeAmount = 0;
     } else {
-      changeAmount = calculateChange(payments, totalPrice, discount);
+      changeAmount = calculateChange(payments, totalPrice, discount, 0);
     }
 
     return (

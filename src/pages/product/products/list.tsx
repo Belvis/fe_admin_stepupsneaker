@@ -98,7 +98,7 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
       productDetailFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       productDetailFilters.push({
@@ -365,13 +365,6 @@ export const ProductList: React.FC<IResourceComponentsProps> = () => {
             }}
             rowKey="id"
             columns={columns}
-            onRow={(record) => {
-              return {
-                onDoubleClick: () => {
-                  show("products", record.id);
-                },
-              };
-            }}
           />
         </Col>
       </Row>

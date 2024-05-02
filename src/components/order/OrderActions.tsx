@@ -11,7 +11,7 @@ const getStatusAction = (status: OrderStatus) => {
       return "WAIT_FOR_DELIVERY";
     case "COMPLETED":
     case "CANCELED":
-      return null;
+      return "CANCELED";
     default:
       return null;
   }
@@ -33,6 +33,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({
 
   const handleAction = (status: OrderStatus) => {
     const newStatus = getStatusAction(status);
+
     if (newStatus) {
       const submitData = orderToRequest(record);
       mutate(
@@ -40,8 +41,25 @@ export const OrderActions: React.FC<OrderActionProps> = ({
           resource: "orders/confirmation-order",
           id: submitData.id,
           values: {
-            ...submitData,
             status: newStatus,
+            orderHistoryNote:
+              newStatus === "CANCELED"
+                ? "Đơn hàng đã bị hủy bởi nhân viên cửa hàng"
+                : "Đơn hàng đã được xác nhận bởi nhân viên cửa hàng",
+          },
+          successNotification: (data, values, resource) => {
+            return {
+              message: t("common.update.success"),
+              description: t("common.success"),
+              type: "success",
+            };
+          },
+          errorNotification(error) {
+            return {
+              message: t("common.error") + error?.message,
+              description: "Oops!..",
+              type: "error",
+            };
           },
         },
         {
@@ -67,7 +85,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({
               style={{ color: "#52c41a", fontSize: 17, fontWeight: 500 }}
             />
           }
-          onClick={() => handleAction("CANCELED")}
+          onClick={() => handleAction(record.status)}
         >
           {hideText ? null : t("buttons.accept")}
         </Button>
@@ -86,7 +104,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({
             record.status === "CANCELED" ||
             record.status === "RETURNED"
           }
-          onClick={() => handleAction(record.status)}
+          onClick={() => handleAction("CANCELED")}
         >
           {hideText ? null : t("buttons.reject")}
         </Button>

@@ -87,6 +87,9 @@ export const VoucherCreate: React.FC<IResourceComponentsProps> = () => {
                 {
                   validator: (_, value) => validateCommon(_, value, t, "name"),
                 },
+                {
+                  whitespace: true,
+                },
               ]}
             >
               <Input maxLength={LENGTH_NAME} showCount />
@@ -104,6 +107,9 @@ export const VoucherCreate: React.FC<IResourceComponentsProps> = () => {
               rules={[
                 {
                   validator: (_, value) => validateCommon(_, value, t, "code"),
+                },
+                {
+                  whitespace: true,
                 },
               ]}
             >

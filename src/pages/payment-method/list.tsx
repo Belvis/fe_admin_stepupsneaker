@@ -34,7 +34,7 @@ export const PaymentMethodList: React.FC<IResourceComponentsProps> = () => {
       paymentMethodFilters.push({
         field: "q",
         operator: "eq",
-        value: q ? q : undefined,
+        value: q ? q.trim() : undefined,
       });
 
       return paymentMethodFilters;

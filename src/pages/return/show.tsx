@@ -126,11 +126,7 @@ export const ReturnShow: React.FC<IResourceComponentsProps> = () => {
             justifyContent: "end",
           },
         }}
-        footerButtons={
-          <>
-            <SaveButton {...saveButtonProps} />
-          </>
-        }
+        footerButtons={<></>}
       >
         {returnFormDetails && (
           <ReturnForm
